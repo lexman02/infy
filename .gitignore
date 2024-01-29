@@ -1,0 +1,27 @@
+# Node modules for React
+/node_modules
+
+# Build folder for React
+/build
+
+# Environment variables for React
+/.env
+
+# Go build files
+*.exe
+*.exe~
+*.dll
+*.so
+*.a
+*.test
+*.out
+
+# Go modules
+/go.sum
+/go.mod
+
+# GoLand IDE files
+.idea/
+
+# macOS files
+.DS_Store
