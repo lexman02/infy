@@ -12,5 +12,5 @@
   * [Node.js](https://nodejs.org/en)
 * Run Necessary Commands
   * Change into the **frontend** directory
-  * In the terminal, run the following command: **npm install** to install the necessary dependencies.
+  * In the terminal, run the following command to install the necessary dependencies: **npm install**.
   * To start the application, run the following command: **npm run dev**. 
