@@ -4,13 +4,15 @@ import Favorites from './pages/favorites.jsx';
 import Profile from './pages/profile.jsx';
 import Search from './pages/search.jsx'
 import Home from './pages/Home.jsx';
+import logo from './img/logo.png';
+
 
 export default function App() {
   return (
-    <>
-        <h1 className="text-3xl font-bold underline">
-            Infy
-        </h1>
+    <div className="bg-violet-950">
+      <div className="flex justify-center">
+        <img src={logo} alt="Infy Logo" width="250" height="250" />
+      </div>
         <Router>
             <Navbar />
             <Routes>
@@ -20,6 +22,6 @@ export default function App() {
               <Route exact path="/search" element={<Search/>}/>
             </Routes>
         </Router>
-    </>
+    </div>
   )
 }
