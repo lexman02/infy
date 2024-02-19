@@ -1,0 +1,57 @@
+package middleware
+
+import (
+	"github.com/gin-gonic/gin"
+	"github.com/golang-jwt/jwt/v5"
+	"infy/models"
+	"infy/utils"
+)
+
+func Authorized() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		cookie, err := c.Cookie("token")
+		if err != nil {
+			c.JSON(401, gin.H{"error": "Unauthorized"})
+			c.Abort()
+			return
+		}
+
+		token, err := jwt.Parse(cookie, func(token *jwt.Token) (interface{}, error) {
+			jwtSecretKey := utils.GetEnv("JWT_SECRET_KEY", "")
+			return []byte(jwtSecretKey), nil
+		})
+		if err != nil {
+			c.JSON(401, gin.H{"error": "Unauthorized"})
+			c.Abort()
+			return
+		}
+
+		if !token.Valid {
+			c.JSON(401, gin.H{"error": "Token is not valid"})
+			c.Abort()
+			return
+		}
+
+		if claims, ok := token.Claims.(jwt.MapClaims); ok && token.Valid {
+			userId := claims["sub"].(string)
+			user, err := models.FindUserByID(userId, c.Request.Context())
+			if err != nil {
+				c.JSON(401, gin.H{"error": "Unauthorized"})
+				c.Abort()
+				return
+			}
+			c.Set("user", user)
+			c.Next()
+		}
+	}
+}
+
+func ErrorHandler() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		c.Next()
+		if len(c.Errors) > 0 {
+			c.JSON(400, gin.H{"errors": c.Errors})
+			c.Abort()
+		}
+	}
+}
