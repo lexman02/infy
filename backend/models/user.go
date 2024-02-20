@@ -49,7 +49,7 @@ func FindUserByID(id string, ctx context.Context) (*User, error) {
 	return &user, err
 }
 
-// GetJwtToken returns a JWT token with user email claims
+// GetJwtToken returns a JWT token with the user's ID as the subject
 func (u *User) GetJwtToken(exp time.Time) (string, error) {
 	claims := &jwt.RegisteredClaims{
 		Subject:   u.ID.Hex(),

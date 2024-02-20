@@ -7,6 +7,7 @@ import (
 func InitRoutes() *gin.Engine {
 	router := gin.Default()
 
+	// Initialize the routes
 	AuthRoutes(router)
 
 	return router

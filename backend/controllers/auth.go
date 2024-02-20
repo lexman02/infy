@@ -11,20 +11,24 @@ import (
 	"time"
 )
 
+// Login checks if the user exists and compares the password with the hashed password and sets a JWT token as a cookie
 func Login(c *gin.Context) {
 	var login struct {
 		Email    string `json:"email" binding:"required"`
 		Password string `json:"password" binding:"required"`
 	}
 
+	// Bind the request body to the login struct
 	if err := c.ShouldBindJSON(&login); err != nil {
 		c.JSON(500, gin.H{"error": "An error occurred"})
 		log.Println(err)
 		return
 	}
 
+	// Find the user by email
 	user, err := models.FindUserByEmail(login.Email, c.Request.Context())
 	if err != nil {
+		// If the user is not found, return an error
 		if errors.Is(err, mongo.ErrNoDocuments) {
 			c.JSON(401, gin.H{"error": "Invalid email or password"})
 			return
@@ -35,12 +39,14 @@ func Login(c *gin.Context) {
 		return
 	}
 
+	// Compare the password with the hashed password
 	err = bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(login.Password))
 	if err != nil {
 		c.JSON(401, gin.H{"error": "Invalid email or password"})
 		return
 	}
 
+	// Generate a JWT token
 	expTime := time.Now().Add(24 * time.Hour)
 	token, err := user.GetJwtToken(expTime)
 	if err != nil {
@@ -49,10 +55,12 @@ func Login(c *gin.Context) {
 		return
 	}
 
+	// Set the token as a cookie
 	c.SetCookie("token", token, int(expTime.Unix()), "/", "localhost", utils.IsProd(), true)
 	c.JSON(200, gin.H{"success": "Logged in"})
 }
 
+// Signup checks if the user already exists and creates a new user
 func Signup(c *gin.Context) {
 	var signup struct {
 		Email    string `json:"email" binding:"required"`
@@ -60,18 +68,21 @@ func Signup(c *gin.Context) {
 		Password string `json:"password" binding:"required"`
 	}
 
+	// Bind the request body to the signup struct
 	if err := c.ShouldBindJSON(&signup); err != nil {
 		c.JSON(500, gin.H{"error": "An error occurred"})
 		log.Println(err)
 		return
 	}
 
+	// Check if the user already exists by email
 	user, _ := models.FindUserByEmail(signup.Email, c.Request.Context())
 	if user != nil {
 		c.JSON(400, gin.H{"error": "User already exists"})
 		return
 	}
 
+	// Hash the password
 	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(signup.Password), bcrypt.DefaultCost)
 	if err != nil {
 		c.JSON(500, gin.H{"error": "An error occurred"})
@@ -79,6 +90,7 @@ func Signup(c *gin.Context) {
 		return
 	}
 
+	// Create the user
 	user = models.NewUser(signup.Username, signup.Email, string(hashedPassword))
 	err = user.Save(c.Request.Context())
 	if err != nil {
@@ -88,14 +100,6 @@ func Signup(c *gin.Context) {
 	}
 
 	c.JSON(200, gin.H{"success": "User created"})
-}
-
-func Home(c *gin.Context) {
-
-}
-
-func Premium(c *gin.Context) {
-
 }
 
 func Logout(c *gin.Context) {
