@@ -9,7 +9,7 @@ import logo from './img/logo.png';
 
 export default function App() {
   return (
-    <div className="bg-violet-950">
+    <div>
       <div className="flex justify-center">
         <img src={logo} alt="Infy Logo" width="250" height="250" />
       </div>
