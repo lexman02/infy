@@ -11,7 +11,7 @@ export default function Login(){
                     <input type="text" id="username" name="username"></input><br/><br/>
                     <label for="password" className="text-neutral-50">Password:</label><br/>
                     <input type="text" id="password" name="password"></input><br/><br/>
-                    <input type="submit" value="Log In" className="bg-violet-900 text-neutral-50" />
+                    <input type="submit" value="Log In" className="bg-violet-900 text-neutral-50 rounded-lg px-4 py-2 hover:bg-violet-950" />
                 </form>
             </div>
         </div>
