@@ -56,7 +56,7 @@ func Login(c *gin.Context) {
 	}
 
 	// Set the token as a cookie
-	c.SetCookie("token", token, int(expTime.Unix()), "/", "localhost", utils.IsProd(), true)
+	c.SetCookie("token", token, int(expTime.Unix()), "/", utils.GetEnv("SITE_DOMAIN", "localhost"), utils.IsProd(), true)
 	c.JSON(200, gin.H{"success": "Logged in"})
 }
 
@@ -100,6 +100,26 @@ func Signup(c *gin.Context) {
 	}
 
 	c.JSON(200, gin.H{"success": "User created"})
+}
+
+func User(c *gin.Context) {
+	user := c.MustGet("user").(*models.User)
+	if user == nil {
+		c.JSON(401, gin.H{"error": "Unauthorized"})
+		return
+	}
+
+	type userResponse struct {
+		Username string `json:"username"`
+		Email    string `json:"email"`
+		IsAdmin  bool   `json:"isAdmin"`
+	}
+
+	c.JSON(200, gin.H{"user": userResponse{
+		Username: user.Username,
+		Email:    user.Email,
+		IsAdmin:  user.IsAdmin,
+	}})
 }
 
 func Logout(c *gin.Context) {
