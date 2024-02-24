@@ -1,6 +1,7 @@
-import Signup from "./signup";
 export default function Home(){
     return(
-        <Signup/>
+        <div>
+            <h1 className="text-neutral-50">Welcome to INFY!</h1>
+        </div>
     );
 }
