@@ -9,6 +9,7 @@ func InitRoutes() *gin.Engine {
 
 	// Initialize the routes
 	AuthRoutes(router)
+	PostRoutes(router)
 
 	return router
 }

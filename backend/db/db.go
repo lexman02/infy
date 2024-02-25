@@ -41,3 +41,8 @@ func CloseMongo() {
 func UsersCollection() *mongo.Collection {
 	return client.Database("infy").Collection("users")
 }
+
+// PostsCollection is a function that returns the posts collection
+func PostsCollection() *mongo.Collection {
+	return client.Database("infy").Collection("posts")
+}
