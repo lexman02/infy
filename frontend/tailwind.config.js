@@ -6,9 +6,6 @@ export default {
   ],
   theme: {
     extend: {
-      backgroundImage: {
-        'space-infy': "url('src/img/background-infy.jpg')",
-      },
     },
   },
   plugins: [],
