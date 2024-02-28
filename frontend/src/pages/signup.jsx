@@ -26,6 +26,8 @@ export default function Signup(){
                     <input type="text" id="username" name="username" className="hover:bg-neutral-400"></input><br/><br/>
                     <label htmlFor="password" className="text-neutral-50">Password:</label><br/>
                     <input type="password" id="password" name="password" className="hover:bg-neutral-400"></input><br/><br/>
+                    <label htmlFor="confirm_password" className="text-neutral-50">Password:</label><br/>
+                    <input type="confirm_password" id="confirm_password" name="confirm_password" className="hover:bg-neutral-400"></input><br/><br/>
                     <label htmlFor="email" className="text-neutral-50">Email:</label><br/>
                     <input type="text" id="email" name="email" className="hover:bg-neutral-400"></input><br/><br/>
                     <input type="submit" value="Submit" className="bg-violet-900 text-neutral-50 px-4 py-2 rounded-lg hover:bg-violet-950" />

@@ -63,15 +63,22 @@ func Login(c *gin.Context) {
 // Signup checks if the user already exists and creates a new user
 func Signup(c *gin.Context) {
 	var signup struct {
-		Email    string `json:"email" binding:"required"`
-		Username string `json:"username" binding:"required"`
-		Password string `json:"password" binding:"required"`
+		Email           string `json:"email" binding:"required"`
+		Username        string `json:"username" binding:"required"`
+		Password        string `json:"password" binding:"required"`
+		ConfirmPassword string `json:"confirm_password" binding:"required"`
 	}
 
 	// Bind the request body to the signup struct
 	if err := c.ShouldBindJSON(&signup); err != nil {
 		c.JSON(500, gin.H{"error": "An error occurred"})
 		log.Println(err)
+		return
+	}
+
+	// Check if the passwords match
+	if signup.Password != signup.ConfirmPassword {
+		c.JSON(500, gin.H{"error": "Passwords do not match"})
 		return
 	}
 
