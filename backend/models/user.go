@@ -2,20 +2,24 @@ package models
 
 import (
 	"context"
+	"infy/db"
+	"log"
+	"os"
+	"time"
+
 	"github.com/golang-jwt/jwt/v5"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
-	"infy/db"
-	"os"
-	"time"
 )
 
 type User struct {
-	ID       primitive.ObjectID `json:"id" bson:"_id"`
-	Username string             `json:"username"`
-	Email    string             `json:"email"`
-	Password string             `json:"password"`
-	IsAdmin  bool               `json:"isAdmin" bson:"isAdmin"`
+	ID        primitive.ObjectID `json:"id" bson:"_id"`
+	Username  string             `json:"username"`
+	Email     string             `json:"email"`
+	Password  string             `json:"password"`
+	IsAdmin   bool               `json:"isAdmin" bson:"isAdmin"`
+	Watched   []string           `bson:"watched"`
+	Watchlist []string           `bson:"watchlist"`
 }
 
 // NewUser creates a new user instance
@@ -75,4 +79,63 @@ func (u *User) Save(ctx context.Context) error {
 	}
 
 	return nil
+}
+
+// AddMovieToWatchedList adds a movie ID to the user's watched list
+func AddMovieToWatchedList(userID, movieID string) error {
+	userObjectID, err := primitive.ObjectIDFromHex(userID)
+	if err != nil {
+		log.Printf("Error converting userID to ObjectID: %v", err)
+		return err
+	}
+
+	update := bson.M{"$addToSet": bson.M{"watched": movieID}} // Prevent duplicates
+	result, err := db.UsersCollection().UpdateByID(context.Background(), userObjectID, update)
+	if err != nil {
+		log.Printf("Error adding movie to watched list: %v", err)
+		return err
+	}
+
+	// Now 'result' is defined, and you can log its properties
+	log.Printf("Updated document count: %v", result.ModifiedCount)
+	return nil
+}
+
+// AddMovieToWatchlist adds a movie ID to the user's watchlist
+func AddMovieToWatchlist(userID, movieID string) error {
+	userObjectID, err := primitive.ObjectIDFromHex(userID)
+	if err != nil {
+		return err
+	}
+
+	update := bson.M{"$addToSet": bson.M{"watchlist": movieID}} // Prevent duplicates
+	_, err = db.UsersCollection().UpdateByID(context.Background(), userObjectID, update)
+
+	return err
+}
+
+// RemoveMovieFromWatchedList removes a movie ID from the user's watched list
+func RemoveMovieFromWatchedList(userID, movieID string) error {
+	userObjectID, err := primitive.ObjectIDFromHex(userID)
+	if err != nil {
+		return err
+	}
+
+	update := bson.M{"$pull": bson.M{"watched": movieID}}
+	_, err = db.UsersCollection().UpdateByID(context.Background(), userObjectID, update)
+
+	return err
+}
+
+// RemoveMovieFromWatchlist removes a movie ID from the user's watchlist
+func RemoveMovieFromWatchlist(userID, movieID string) error {
+	userObjectID, err := primitive.ObjectIDFromHex(userID)
+	if err != nil {
+		return err
+	}
+
+	update := bson.M{"$pull": bson.M{"watchlist": movieID}}
+	_, err = db.UsersCollection().UpdateByID(context.Background(), userObjectID, update)
+
+	return err
 }
