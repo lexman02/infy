@@ -2,11 +2,12 @@ package models
 
 import (
 	"context"
+	"infy/db"
+
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
-	"infy/db"
 )
 
 type Post struct {
@@ -65,8 +66,8 @@ func UpdateUserPost(id, content string, userId primitive.ObjectID, ctx context.C
 	}
 
 	// Create the filter and update
-	filter := bson.D{{"_id", objectID}, {"user._id", userId}}
-	update := bson.D{{"$set", bson.D{{"content", content}}}}
+	filter := bson.D{{Key: "_id", Value: objectID}, {Key: "user._id", Value: userId}}
+	update := bson.D{{Key: "$set", Value: bson.D{{Key: "content", Value: content}}}}
 
 	// Set the return document to after
 	opts := options.FindOneAndUpdate().SetReturnDocument(options.After)
@@ -90,7 +91,7 @@ func DeleteUserPost(id string, userId primitive.ObjectID, ctx context.Context) e
 	}
 
 	// Create the filter
-	filter := bson.D{{"_id", objectID}, {"user._id", userId}}
+	filter := bson.D{{Key: "_id", Value: objectID}, {Key: "user._id", Value: userId}}
 
 	// Delete the post by ID and user ID if they match
 	results, err := db.PostsCollection().DeleteOne(ctx, filter)
