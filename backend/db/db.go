@@ -46,3 +46,8 @@ func UsersCollection() *mongo.Collection {
 func PostsCollection() *mongo.Collection {
 	return client.Database("infy").Collection("posts")
 }
+
+// ProfileCollection is a function that returns the profile collection
+func ProfileCollection() *mongo.Collection {
+	return client.Database("infy").Collection("profiles")
+}

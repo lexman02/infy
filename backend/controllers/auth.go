@@ -67,6 +67,9 @@ func Signup(c *gin.Context) {
 		Username        string `json:"username" binding:"required"`
 		Password        string `json:"password" binding:"required"`
 		ConfirmPassword string `json:"confirm_password" binding:"required"`
+		FirstName       string `json:"first_name" binding:"required"`
+		LastName        string `json:"last_name"`
+		DateOfBirth     string `json:"date_of_birth"`
 	}
 
 	// Bind the request body to the signup struct
@@ -97,8 +100,18 @@ func Signup(c *gin.Context) {
 		return
 	}
 
+	// Create the user profile
+	dateOfBirth, err := time.Parse("2006-01-02", signup.DateOfBirth)
+	if err != nil {
+		c.JSON(500, gin.H{"error": "An error occurred"})
+		log.Println(err)
+		return
+	}
+
+	profile := models.NewProfile(signup.FirstName, signup.LastName, dateOfBirth, models.NewPreferences())
+
 	// Create the user
-	user = models.NewUser(signup.Username, signup.Email, string(hashedPassword))
+	user = models.NewUser(signup.Username, signup.Email, string(hashedPassword), profile)
 	err = user.Save(c.Request.Context())
 	if err != nil {
 		c.JSON(500, gin.H{"error": "An error occurred"})
