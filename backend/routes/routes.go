@@ -25,6 +25,7 @@ func InitRoutes() *gin.Engine {
 	ProfileRoutes(router)
 
 	router.GET("/search/movies", controllers.SearchMovies)
+	router.GET("/movies/:id", controllers.GetMovieDetails)
 
 	return router
 }

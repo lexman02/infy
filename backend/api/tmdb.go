@@ -3,17 +3,19 @@ package api
 import (
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
+	"infy/models"
+	"io"
 	"net/http"
 )
 
 type TMDbSearchResponse struct {
 	Results []struct {
-		ID     int     `json:"id"`
-		Title  string  `json:"title"`
-		Year   string  `json:"release_date"`
-		Rating float64 `json:"vote_average"`
-		Plot   string  `json:"overview"`
+		ID         int     `json:"id"`
+		Title      string  `json:"title"`
+		PosterPath string  `json:"poster_path"`
+		Year       string  `json:"release_date"`
+		Rating     float64 `json:"vote_average"`
+		Plot       string  `json:"overview"`
 	} `json:"results"`
 }
 
@@ -27,7 +29,7 @@ func SearchMovies(query string) (*TMDbSearchResponse, error) {
 	}
 	defer resp.Body.Close()
 
-	body, err := ioutil.ReadAll(resp.Body)
+	body, err := io.ReadAll(resp.Body)
 	if err != nil {
 		return nil, err
 	}
@@ -38,6 +40,29 @@ func SearchMovies(query string) (*TMDbSearchResponse, error) {
 	}
 
 	return &searchResponse, nil
+}
+
+func GetMovieDetails(movieID string) (*models.Movie, error) {
+	apiKey := "89ab36f9a46f1199473c3da9950f2221"
+	url := fmt.Sprintf("https://api.themoviedb.org/3/movie/%s?api_key=%s", movieID, apiKey)
+
+	resp, err := http.Get(url)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+
+	body, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+
+	var movieDetails models.Movie
+	if err := json.Unmarshal(body, &movieDetails); err != nil {
+		return nil, err
+	}
+
+	return &movieDetails, nil
 }
 
 func IsValidMovieID(movieID string) (bool, error) {

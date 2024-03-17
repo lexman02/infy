@@ -140,3 +140,15 @@ func SearchMovies(c *gin.Context) {
 
 	c.JSON(http.StatusOK, results)
 }
+
+func GetMovieDetails(c *gin.Context) {
+	movieID := c.Param("id") // Get the movie ID from the URL parameter
+
+	movieDetails, err := api.GetMovieDetails(movieID)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to get movie details"})
+		return
+	}
+
+	c.JSON(http.StatusOK, movieDetails)
+}

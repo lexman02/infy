@@ -1,11 +1,11 @@
 import React from "react";
-import {Link, useLocation} from "react-router-dom";
+import {useLocation} from "react-router-dom";
 import {HomeIcon, MagnifyingGlassIcon, StarIcon, UserCircleIcon} from "@heroicons/react/20/solid";
 import NavbarItem from "./NavbarItem.jsx";
 
 export default function Navbar(){
     const location = useLocation();
-    let data = sessionStorage.getItem('userData');
+    const data = sessionStorage.getItem('userData');
 
     if (location.pathname === "/login" || location.pathname === "/signup") {
         return null;

@@ -15,12 +15,20 @@ type Post struct {
 	User     *User              `json:"user" bson:"user"`
 	Likes    int                `json:"likes"`
 	Dislikes int                `json:"dislikes"`
+	Movie    *Movie             `json:"movie"`
 	Content  string             `json:"content"`
 }
 
+type Movie struct {
+	ID         int    `json:"id"`
+	Title      string `json:"title"`
+	PosterPath string `json:"poster_path"`
+	Tagline    string `json:"tagline"`
+}
+
 // NewPost creates a new post instance
-func NewPost(user *User, content string) *Post {
-	return &Post{ID: primitive.NewObjectID(), User: user, Likes: 0, Dislikes: 0, Content: content}
+func NewPost(user *User, movie *Movie, content string) *Post {
+	return &Post{ID: primitive.NewObjectID(), User: user, Likes: 0, Dislikes: 0, Movie: movie, Content: content}
 }
 
 // FindAllPosts finds all the posts

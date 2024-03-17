@@ -1,11 +1,13 @@
 package controllers
 
 import (
+	"infy/api"
+	"infy/models"
+	"log"
+
 	"github.com/gin-gonic/gin"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
-	"infy/models"
-	"log"
 )
 
 func GetPosts(c *gin.Context) {
@@ -55,6 +57,7 @@ func GetPost(c *gin.Context) {
 
 func CreatePost(c *gin.Context) {
 	var post struct {
+		MovieID string `json:"movie_id" binding:"required"`
 		Content string `json:"content" binding:"required"`
 	}
 
@@ -72,8 +75,16 @@ func CreatePost(c *gin.Context) {
 		return
 	}
 
+	// Get the movie details
+	movie, err := api.GetMovieDetails(post.MovieID)
+	if err != nil {
+		c.JSON(500, gin.H{"error": "An error occurred"})
+		log.Println(err)
+		return
+	}
+
 	// Create the post
-	newPost := models.NewPost(user.(*models.User), post.Content)
+	newPost := models.NewPost(user.(*models.User), movie, post.Content)
 	if err := newPost.Save(c.Request.Context()); err != nil {
 		c.JSON(500, gin.H{"error": "An error occurred"})
 		log.Println(err)
