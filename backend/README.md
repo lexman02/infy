@@ -1,4 +1,7 @@
 # Backend
+
+> [For developer documentation and guides, see docs](./docs)
+
 ## Getting Started
 1. [Install Go](https://go.dev/doc/install)
 2. [Install Docker](https://docs.docker.com/get-docker/)
