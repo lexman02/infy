@@ -1,0 +1,540 @@
+{
+    "client": "Thunder Client",
+    "collectionName": "infy",
+    "dateExported": "2024-03-18T04:10:52.557Z",
+    "version": "1.1",
+    "folders": [
+        {
+            "_id": "6299c7fd-5ef2-4c92-b6ff-82989330908d",
+            "name": "Auth",
+            "containerId": "",
+            "created": "2024-03-13T03:32:04.928Z",
+            "sortNum": 10000
+        },
+        {
+            "_id": "cbf1e30a-8c7f-4810-8617-89b73055e936",
+            "name": "Signup",
+            "containerId": "6299c7fd-5ef2-4c92-b6ff-82989330908d",
+            "created": "2024-03-13T03:32:18.420Z",
+            "sortNum": 20000
+        },
+        {
+            "_id": "87105a9f-a27d-495e-946b-d6c0c457709d",
+            "name": "Login",
+            "containerId": "6299c7fd-5ef2-4c92-b6ff-82989330908d",
+            "created": "2024-03-13T03:37:57.516Z",
+            "sortNum": 30000
+        },
+        {
+            "_id": "5c047a0f-866f-454b-bcff-140ec2ede87b",
+            "name": "Post",
+            "containerId": "",
+            "created": "2024-03-13T03:39:21.287Z",
+            "sortNum": 40000
+        },
+        {
+            "_id": "2cf605fb-edd7-4770-9748-b5b7b995688d",
+            "name": "Comment",
+            "containerId": "",
+            "created": "2024-03-18T03:20:29.579Z",
+            "sortNum": 45000
+        },
+        {
+            "_id": "a32f63bd-f02b-4c3c-874d-9659ee978ed3",
+            "name": "Profile",
+            "containerId": "",
+            "created": "2024-03-13T03:43:54.208Z",
+            "sortNum": 50000
+        }
+    ],
+    "requests": [
+        {
+            "_id": "9e034902-2029-4dec-8dbe-0bb9bb8ef415",
+            "colId": "69955776-64ba-4c59-86a7-701eadc586aa",
+            "containerId": "cbf1e30a-8c7f-4810-8617-89b73055e936",
+            "name": "testuser",
+            "url": "http://localhost:8000/auth/signup",
+            "method": "POST",
+            "sortNum": 10000,
+            "created": "2024-03-13T03:32:33.384Z",
+            "modified": "2024-03-13T03:34:15.577Z",
+            "headers": [
+                {
+                    "name": "User-Agent",
+                    "value": "Thunder Client (https://www.thunderclient.com)",
+                    "isDisabled": true
+                }
+            ],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"email\": \"test@test.com\",\n  \"password\": \"testpass\",\n  \"confirm_password\": \"testpass\",\n  \"username\": \"testuser\",\n  \"first_name\": \"Test\",\n  \"last_name\": \"User\",\n  \"date_of_birth\": \"1990-01-01\"\n}",
+                "form": []
+            },
+            "tests": []
+        },
+        {
+            "_id": "87dc617f-e041-4c9c-aeb2-55996a3643e2",
+            "colId": "69955776-64ba-4c59-86a7-701eadc586aa",
+            "containerId": "cbf1e30a-8c7f-4810-8617-89b73055e936",
+            "name": "testuser2",
+            "url": "http://localhost:8000/auth/signup",
+            "method": "POST",
+            "sortNum": 12500,
+            "created": "2024-03-13T03:36:54.454Z",
+            "modified": "2024-03-14T03:57:59.164Z",
+            "headers": [
+                {
+                    "name": "User-Agent",
+                    "value": "Thunder Client (https://www.thunderclient.com)",
+                    "isDisabled": true
+                }
+            ],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"email\": \"test1@test.com\",\n  \"password\": \"testpass1\",\n  \"confirm_password\": \"testpass1\",\n  \"username\": \"testuser1\",\n  \"first_name\": \"Test\",\n  \"last_name\": \"User\",\n  \"date_of_birth\": \"1990-01-01\"\n}",
+                "form": []
+            },
+            "reqType": "post",
+            "tests": []
+        },
+        {
+            "_id": "325bdc48-26db-4594-9746-7e7f3858c75a",
+            "colId": "69955776-64ba-4c59-86a7-701eadc586aa",
+            "containerId": "cbf1e30a-8c7f-4810-8617-89b73055e936",
+            "name": "testuser3",
+            "url": "http://localhost:8000/auth/signup",
+            "method": "POST",
+            "sortNum": 13750,
+            "created": "2024-03-14T03:57:50.774Z",
+            "modified": "2024-03-14T03:58:25.819Z",
+            "headers": [
+                {
+                    "name": "User-Agent",
+                    "value": "Thunder Client (https://www.thunderclient.com)",
+                    "isDisabled": true
+                }
+            ],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"email\": \"test2@test.com\",\n  \"password\": \"testpass2\",\n  \"confirm_password\": \"testpass2\",\n  \"username\": \"testuser2\",\n  \"first_name\": \"Test\",\n  \"last_name\": \"User\",\n  \"date_of_birth\": \"1990-01-01\"\n}",
+                "form": []
+            },
+            "reqType": "post",
+            "tests": []
+        },
+        {
+            "_id": "1ca31e76-7ed4-4609-8389-d95716dd6c58",
+            "colId": "69955776-64ba-4c59-86a7-701eadc586aa",
+            "containerId": "cbf1e30a-8c7f-4810-8617-89b73055e936",
+            "name": "Missing confirm_password",
+            "url": "http://localhost:8000/auth/signup",
+            "method": "POST",
+            "sortNum": 15000,
+            "created": "2024-03-13T03:34:40.432Z",
+            "modified": "2024-03-13T03:35:33.281Z",
+            "headers": [
+                {
+                    "name": "User-Agent",
+                    "value": "Thunder Client (https://www.thunderclient.com)",
+                    "isDisabled": true
+                }
+            ],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"email\": \"test@test.com\",\n  \"password\": \"testpass\",\n  \"username\": \"testuser\",\n  \"first_name\": \"Test\",\n  \"last_name\": \"User\",\n  \"date_of_birth\": \"1990-01-01\"\n}",
+                "form": []
+            },
+            "reqType": "post",
+            "tests": []
+        },
+        {
+            "_id": "554c389f-3120-4f58-bb74-9600a4d2f564",
+            "colId": "69955776-64ba-4c59-86a7-701eadc586aa",
+            "containerId": "cbf1e30a-8c7f-4810-8617-89b73055e936",
+            "name": "Password mismatch",
+            "url": "http://localhost:8000/auth/signup",
+            "method": "POST",
+            "sortNum": 25000,
+            "created": "2024-03-13T03:35:51.640Z",
+            "modified": "2024-03-13T03:36:30.120Z",
+            "headers": [
+                {
+                    "name": "User-Agent",
+                    "value": "Thunder Client (https://www.thunderclient.com)",
+                    "isDisabled": true
+                }
+            ],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"email\": \"test@test.com\",\n  \"password\": \"testpass\",\n  \"confirm_password\": \"testpass1\",\n  \"username\": \"testuser\",\n  \"first_name\": \"Test\",\n  \"last_name\": \"User\",\n  \"date_of_birth\": \"1990-01-01\"\n}",
+                "form": []
+            },
+            "reqType": "post",
+            "tests": []
+        },
+        {
+            "_id": "88528571-bdad-46b6-acc1-cba57ff25da9",
+            "colId": "69955776-64ba-4c59-86a7-701eadc586aa",
+            "containerId": "87105a9f-a27d-495e-946b-d6c0c457709d",
+            "name": "testuser",
+            "url": "http://localhost:8000/auth/login",
+            "method": "POST",
+            "sortNum": 40000,
+            "created": "2024-03-13T03:38:04.256Z",
+            "modified": "2024-03-13T03:38:27.910Z",
+            "headers": [
+                {
+                    "name": "User-Agent",
+                    "value": "Thunder Client (https://www.thunderclient.com)",
+                    "isDisabled": true
+                }
+            ],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"email\": \"test@test.com\",\n  \"password\": \"testpass\"\n}",
+                "form": []
+            },
+            "tests": []
+        },
+        {
+            "_id": "b8b8e161-7f28-45da-80ac-f84480118475",
+            "colId": "69955776-64ba-4c59-86a7-701eadc586aa",
+            "containerId": "87105a9f-a27d-495e-946b-d6c0c457709d",
+            "name": "testuser2",
+            "url": "http://localhost:8000/auth/login",
+            "method": "POST",
+            "sortNum": 50000,
+            "created": "2024-03-13T03:38:30.183Z",
+            "modified": "2024-03-13T03:38:46.349Z",
+            "headers": [
+                {
+                    "name": "User-Agent",
+                    "value": "Thunder Client (https://www.thunderclient.com)",
+                    "isDisabled": true
+                }
+            ],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"email\": \"test1@test.com\",\n  \"password\": \"testpass1\"\n}",
+                "form": []
+            },
+            "reqType": "post",
+            "tests": []
+        },
+        {
+            "_id": "8a577e0d-0118-4727-8e68-fb814357341d",
+            "colId": "69955776-64ba-4c59-86a7-701eadc586aa",
+            "containerId": "6299c7fd-5ef2-4c92-b6ff-82989330908d",
+            "name": "Get home",
+            "url": "http://localhost:8000/auth/user",
+            "method": "GET",
+            "sortNum": 50000,
+            "created": "2024-03-13T03:39:05.048Z",
+            "modified": "2024-03-13T03:39:13.567Z",
+            "headers": [],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "a21eeac1-9fc7-460b-9b38-39496695eac9",
+            "colId": "69955776-64ba-4c59-86a7-701eadc586aa",
+            "containerId": "5c047a0f-866f-454b-bcff-140ec2ede87b",
+            "name": "Create a post",
+            "url": "http://localhost:8000/posts",
+            "method": "POST",
+            "sortNum": 60000,
+            "created": "2024-03-13T03:39:31.985Z",
+            "modified": "2024-03-16T08:02:44.728Z",
+            "headers": [
+                {
+                    "name": "User-Agent",
+                    "value": "Thunder Client (https://www.thunderclient.com)",
+                    "isDisabled": true
+                }
+            ],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"movie_id\": \"12345\",\n  \"content\": \"This is a test post\"\n}",
+                "form": []
+            },
+            "reqType": "post",
+            "tests": []
+        },
+        {
+            "_id": "d3985210-867f-4189-a5ed-b83e64ed64e4",
+            "colId": "69955776-64ba-4c59-86a7-701eadc586aa",
+            "containerId": "87105a9f-a27d-495e-946b-d6c0c457709d",
+            "name": "testuser3",
+            "url": "http://localhost:8000/auth/login",
+            "method": "POST",
+            "sortNum": 60000,
+            "created": "2024-03-14T03:58:46.654Z",
+            "modified": "2024-03-14T03:58:56.710Z",
+            "headers": [
+                {
+                    "name": "User-Agent",
+                    "value": "Thunder Client (https://www.thunderclient.com)",
+                    "isDisabled": true
+                }
+            ],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"email\": \"test2@test.com\",\n  \"password\": \"testpass2\"\n}",
+                "form": []
+            },
+            "reqType": "post",
+            "tests": []
+        },
+        {
+            "_id": "0cf4026a-ab0a-439a-b6ce-0cfb089c4f6b",
+            "colId": "69955776-64ba-4c59-86a7-701eadc586aa",
+            "containerId": "5c047a0f-866f-454b-bcff-140ec2ede87b",
+            "name": "Get all posts",
+            "url": "http://localhost:8000/posts",
+            "method": "GET",
+            "sortNum": 70000,
+            "created": "2024-03-13T03:40:11.437Z",
+            "modified": "2024-03-13T03:40:24.439Z",
+            "headers": [
+                {
+                    "name": "User-Agent",
+                    "value": "Thunder Client (https://www.thunderclient.com)",
+                    "isDisabled": true
+                }
+            ],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "c400a523-00ee-4ad1-8f20-273776d6f3c0",
+            "colId": "69955776-64ba-4c59-86a7-701eadc586aa",
+            "containerId": "5c047a0f-866f-454b-bcff-140ec2ede87b",
+            "name": "Get a post",
+            "url": "http://localhost:8000/posts/65f636a239b9cc3da0d461b7",
+            "method": "GET",
+            "sortNum": 80000,
+            "created": "2024-03-13T03:40:26.156Z",
+            "modified": "2024-03-18T03:45:21.118Z",
+            "headers": [
+                {
+                    "name": "User-Agent",
+                    "value": "Thunder Client (https://www.thunderclient.com)",
+                    "isDisabled": true
+                }
+            ],
+            "params": [],
+            "reqType": "get",
+            "tests": []
+        },
+        {
+            "_id": "3a814c1a-aebb-422a-bae3-6b82eaa2c656",
+            "colId": "69955776-64ba-4c59-86a7-701eadc586aa",
+            "containerId": "5c047a0f-866f-454b-bcff-140ec2ede87b",
+            "name": "Update a post",
+            "url": "http://localhost:8000/posts/65dba1ed7cbd104b1c7f3557",
+            "method": "PUT",
+            "sortNum": 80000,
+            "created": "2024-03-13T03:43:06.765Z",
+            "modified": "2024-03-13T03:43:21.318Z",
+            "headers": [
+                {
+                    "name": "User-Agent",
+                    "value": "Thunder Client (https://www.thunderclient.com)",
+                    "isDisabled": true
+                }
+            ],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"content\": \"This is a test post updated\"\n}",
+                "form": []
+            },
+            "tests": []
+        },
+        {
+            "_id": "d186afc6-b667-48e4-adfd-01760e2e4f07",
+            "colId": "69955776-64ba-4c59-86a7-701eadc586aa",
+            "containerId": "5c047a0f-866f-454b-bcff-140ec2ede87b",
+            "name": "Delete a post",
+            "url": "http://localhost:8000/posts/65f2765ab9c4b25672abee53",
+            "method": "DELETE",
+            "sortNum": 90000,
+            "created": "2024-03-13T03:43:38.735Z",
+            "modified": "2024-03-14T04:04:35.304Z",
+            "headers": [
+                {
+                    "name": "User-Agent",
+                    "value": "Thunder Client (https://www.thunderclient.com)",
+                    "isDisabled": true
+                }
+            ],
+            "params": [],
+            "reqType": "del",
+            "tests": []
+        },
+        {
+            "_id": "212e2d3b-974b-479a-a429-646fd8705225",
+            "colId": "69955776-64ba-4c59-86a7-701eadc586aa",
+            "containerId": "a32f63bd-f02b-4c3c-874d-9659ee978ed3",
+            "name": "Get user profile",
+            "url": "http://localhost:8000/profile/user",
+            "method": "GET",
+            "sortNum": 100000,
+            "created": "2024-03-13T03:44:00.446Z",
+            "modified": "2024-03-13T03:45:07.028Z",
+            "headers": [
+                {
+                    "name": "User-Agent",
+                    "value": "Thunder Client (https://www.thunderclient.com)",
+                    "isDisabled": true
+                }
+            ],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "e8534664-3961-44df-a6ac-a390a005c9c4",
+            "colId": "69955776-64ba-4c59-86a7-701eadc586aa",
+            "containerId": "a32f63bd-f02b-4c3c-874d-9659ee978ed3",
+            "name": "Get specific user profile",
+            "url": "http://localhost:8000/profile/testuser1",
+            "method": "GET",
+            "sortNum": 110000,
+            "created": "2024-03-13T03:45:20.219Z",
+            "modified": "2024-03-14T03:59:50.071Z",
+            "headers": [
+                {
+                    "name": "User-Agent",
+                    "value": "Thunder Client (https://www.thunderclient.com)",
+                    "isDisabled": true
+                }
+            ],
+            "params": [],
+            "reqType": "get",
+            "tests": []
+        },
+        {
+            "_id": "7789e3f0-7157-40a2-8614-c72ddd168c47",
+            "colId": "69955776-64ba-4c59-86a7-701eadc586aa",
+            "containerId": "a32f63bd-f02b-4c3c-874d-9659ee978ed3",
+            "name": "Follow a user",
+            "url": "http://localhost:8000/profile/follow/65f269e17533d263ef30e25c",
+            "method": "POST",
+            "sortNum": 110000,
+            "created": "2024-03-13T03:46:10.932Z",
+            "modified": "2024-03-14T03:09:00.622Z",
+            "headers": [
+                {
+                    "name": "User-Agent",
+                    "value": "Thunder Client (https://www.thunderclient.com)",
+                    "isDisabled": true
+                }
+            ],
+            "params": [],
+            "reqType": "post",
+            "tests": []
+        },
+        {
+            "_id": "8a29731b-c009-4187-94a8-1e2452b31cac",
+            "colId": "69955776-64ba-4c59-86a7-701eadc586aa",
+            "containerId": "a32f63bd-f02b-4c3c-874d-9659ee978ed3",
+            "name": "Unfollow a user",
+            "url": "http://localhost:8000/profile/unfollow/65dcae795093cf1dfee05ff5",
+            "method": "DELETE",
+            "sortNum": 120000,
+            "created": "2024-03-13T03:46:38.221Z",
+            "modified": "2024-03-13T03:46:52.112Z",
+            "headers": [
+                {
+                    "name": "User-Agent",
+                    "value": "Thunder Client (https://www.thunderclient.com)",
+                    "isDisabled": true
+                }
+            ],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "4c60c9df-6f4a-4ca4-9f90-2dc8cbd83f09",
+            "colId": "69955776-64ba-4c59-86a7-701eadc586aa",
+            "containerId": "2cf605fb-edd7-4770-9748-b5b7b995688d",
+            "name": "Create a comment",
+            "url": "http://localhost:8000/comments",
+            "method": "POST",
+            "sortNum": 130000,
+            "created": "2024-03-18T03:20:51.462Z",
+            "modified": "2024-03-18T03:44:36.359Z",
+            "headers": [
+                {
+                    "name": "User-Agent",
+                    "value": "Thunder Client (https://www.thunderclient.com)",
+                    "isDisabled": true
+                }
+            ],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"post_id\": \"65f636a239b9cc3da0d461b7\",\n  \"content\": \"Test comment 2\"\n}",
+                "form": []
+            },
+            "reqType": "post",
+            "tests": []
+        },
+        {
+            "_id": "2ed8ce3e-77d6-4182-bff8-ce9d4bfd9a0b",
+            "colId": "69955776-64ba-4c59-86a7-701eadc586aa",
+            "containerId": "2cf605fb-edd7-4770-9748-b5b7b995688d",
+            "name": "Update a comment",
+            "url": "http://localhost:8000/comments/65f7b719779352faeec548c7",
+            "method": "PUT",
+            "sortNum": 140000,
+            "created": "2024-03-18T03:32:31.136Z",
+            "modified": "2024-03-18T03:39:16.843Z",
+            "headers": [
+                {
+                    "name": "User-Agent",
+                    "value": "Thunder Client (https://www.thunderclient.com)",
+                    "isDisabled": true
+                }
+            ],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"content\": \"Updated test comment\"\n}",
+                "form": []
+            },
+            "reqType": "post",
+            "tests": []
+        },
+        {
+            "_id": "28d190a5-699a-42af-b88a-690947978b5a",
+            "colId": "69955776-64ba-4c59-86a7-701eadc586aa",
+            "containerId": "2cf605fb-edd7-4770-9748-b5b7b995688d",
+            "name": "Delete a comment",
+            "url": "http://localhost:8000/comments/65f7b719779352faeec548c7",
+            "method": "DELETE",
+            "sortNum": 150000,
+            "created": "2024-03-18T03:38:47.031Z",
+            "modified": "2024-03-18T03:39:24.913Z",
+            "headers": [
+                {
+                    "name": "User-Agent",
+                    "value": "Thunder Client (https://www.thunderclient.com)",
+                    "isDisabled": true
+                }
+            ],
+            "params": [],
+            "reqType": "put",
+            "tests": []
+        }
+    ]
+}

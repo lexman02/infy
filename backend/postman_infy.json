@@ -1,0 +1,665 @@
+{
+    "info": {
+        "_postman_id": "32b41178-d123-4125-9348-f524e4998058",
+        "name": "infy",
+        "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+        "description": ""
+    },
+    "item": [
+        {
+            "name": "Auth",
+            "item": [
+                {
+                    "name": "Signup",
+                    "item": [
+                        {
+                            "name": "testuser",
+                            "request": {
+                                "method": "POST",
+                                "url": {
+                                    "raw": "http://localhost:8000/auth/signup",
+                                    "path": [
+                                        "auth",
+                                        "signup"
+                                    ],
+                                    "protocol": "http",
+                                    "host": [
+                                        "localhost"
+                                    ],
+                                    "port": "8000"
+                                },
+                                "header": [
+                                    {
+                                        "key": "User-Agent",
+                                        "value": "Thunder Client (https://www.thunderclient.com)",
+                                        "disabled": true
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "options": {
+                                        "raw": {
+                                            "language": "json"
+                                        }
+                                    },
+                                    "raw": "{\n  \"email\": \"test@test.com\",\n  \"password\": \"testpass\",\n  \"confirm_password\": \"testpass\",\n  \"username\": \"testuser\",\n  \"first_name\": \"Test\",\n  \"last_name\": \"User\",\n  \"date_of_birth\": \"1990-01-01\"\n}"
+                                }
+                            }
+                        },
+                        {
+                            "name": "Missing confirm_password",
+                            "request": {
+                                "method": "POST",
+                                "url": {
+                                    "raw": "http://localhost:8000/auth/signup",
+                                    "path": [
+                                        "auth",
+                                        "signup"
+                                    ],
+                                    "protocol": "http",
+                                    "host": [
+                                        "localhost"
+                                    ],
+                                    "port": "8000"
+                                },
+                                "header": [
+                                    {
+                                        "key": "User-Agent",
+                                        "value": "Thunder Client (https://www.thunderclient.com)",
+                                        "disabled": true
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "options": {
+                                        "raw": {
+                                            "language": "json"
+                                        }
+                                    },
+                                    "raw": "{\n  \"email\": \"test@test.com\",\n  \"password\": \"testpass\",\n  \"username\": \"testuser\",\n  \"first_name\": \"Test\",\n  \"last_name\": \"User\",\n  \"date_of_birth\": \"1990-01-01\"\n}"
+                                }
+                            }
+                        },
+                        {
+                            "name": "Password mismatch",
+                            "request": {
+                                "method": "POST",
+                                "url": {
+                                    "raw": "http://localhost:8000/auth/signup",
+                                    "path": [
+                                        "auth",
+                                        "signup"
+                                    ],
+                                    "protocol": "http",
+                                    "host": [
+                                        "localhost"
+                                    ],
+                                    "port": "8000"
+                                },
+                                "header": [
+                                    {
+                                        "key": "User-Agent",
+                                        "value": "Thunder Client (https://www.thunderclient.com)",
+                                        "disabled": true
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "options": {
+                                        "raw": {
+                                            "language": "json"
+                                        }
+                                    },
+                                    "raw": "{\n  \"email\": \"test@test.com\",\n  \"password\": \"testpass\",\n  \"confirm_password\": \"testpass1\",\n  \"username\": \"testuser\",\n  \"first_name\": \"Test\",\n  \"last_name\": \"User\",\n  \"date_of_birth\": \"1990-01-01\"\n}"
+                                }
+                            }
+                        },
+                        {
+                            "name": "testuser2",
+                            "request": {
+                                "method": "POST",
+                                "url": {
+                                    "raw": "http://localhost:8000/auth/signup",
+                                    "path": [
+                                        "auth",
+                                        "signup"
+                                    ],
+                                    "protocol": "http",
+                                    "host": [
+                                        "localhost"
+                                    ],
+                                    "port": "8000"
+                                },
+                                "header": [
+                                    {
+                                        "key": "User-Agent",
+                                        "value": "Thunder Client (https://www.thunderclient.com)",
+                                        "disabled": true
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "options": {
+                                        "raw": {
+                                            "language": "json"
+                                        }
+                                    },
+                                    "raw": "{\n  \"email\": \"test1@test.com\",\n  \"password\": \"testpass1\",\n  \"confirm_password\": \"testpass1\",\n  \"username\": \"testuser1\",\n  \"first_name\": \"Test\",\n  \"last_name\": \"User\",\n  \"date_of_birth\": \"1990-01-01\"\n}"
+                                }
+                            }
+                        },
+                        {
+                            "name": "testuser3",
+                            "request": {
+                                "method": "POST",
+                                "url": {
+                                    "raw": "http://localhost:8000/auth/signup",
+                                    "path": [
+                                        "auth",
+                                        "signup"
+                                    ],
+                                    "protocol": "http",
+                                    "host": [
+                                        "localhost"
+                                    ],
+                                    "port": "8000"
+                                },
+                                "header": [
+                                    {
+                                        "key": "User-Agent",
+                                        "value": "Thunder Client (https://www.thunderclient.com)",
+                                        "disabled": true
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "options": {
+                                        "raw": {
+                                            "language": "json"
+                                        }
+                                    },
+                                    "raw": "{\n  \"email\": \"test2@test.com\",\n  \"password\": \"testpass2\",\n  \"confirm_password\": \"testpass2\",\n  \"username\": \"testuser2\",\n  \"first_name\": \"Test\",\n  \"last_name\": \"User\",\n  \"date_of_birth\": \"1990-01-01\"\n}"
+                                }
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "Login",
+                    "item": [
+                        {
+                            "name": "testuser",
+                            "request": {
+                                "method": "POST",
+                                "url": {
+                                    "raw": "http://localhost:8000/auth/login",
+                                    "path": [
+                                        "auth",
+                                        "login"
+                                    ],
+                                    "protocol": "http",
+                                    "host": [
+                                        "localhost"
+                                    ],
+                                    "port": "8000"
+                                },
+                                "header": [
+                                    {
+                                        "key": "User-Agent",
+                                        "value": "Thunder Client (https://www.thunderclient.com)",
+                                        "disabled": true
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "options": {
+                                        "raw": {
+                                            "language": "json"
+                                        }
+                                    },
+                                    "raw": "{\n  \"email\": \"test@test.com\",\n  \"password\": \"testpass\"\n}"
+                                }
+                            }
+                        },
+                        {
+                            "name": "testuser2",
+                            "request": {
+                                "method": "POST",
+                                "url": {
+                                    "raw": "http://localhost:8000/auth/login",
+                                    "path": [
+                                        "auth",
+                                        "login"
+                                    ],
+                                    "protocol": "http",
+                                    "host": [
+                                        "localhost"
+                                    ],
+                                    "port": "8000"
+                                },
+                                "header": [
+                                    {
+                                        "key": "User-Agent",
+                                        "value": "Thunder Client (https://www.thunderclient.com)",
+                                        "disabled": true
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "options": {
+                                        "raw": {
+                                            "language": "json"
+                                        }
+                                    },
+                                    "raw": "{\n  \"email\": \"test1@test.com\",\n  \"password\": \"testpass1\"\n}"
+                                }
+                            }
+                        },
+                        {
+                            "name": "testuser3",
+                            "request": {
+                                "method": "POST",
+                                "url": {
+                                    "raw": "http://localhost:8000/auth/login",
+                                    "path": [
+                                        "auth",
+                                        "login"
+                                    ],
+                                    "protocol": "http",
+                                    "host": [
+                                        "localhost"
+                                    ],
+                                    "port": "8000"
+                                },
+                                "header": [
+                                    {
+                                        "key": "User-Agent",
+                                        "value": "Thunder Client (https://www.thunderclient.com)",
+                                        "disabled": true
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "options": {
+                                        "raw": {
+                                            "language": "json"
+                                        }
+                                    },
+                                    "raw": "{\n  \"email\": \"test2@test.com\",\n  \"password\": \"testpass2\"\n}"
+                                }
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "Get home",
+                    "request": {
+                        "method": "GET",
+                        "url": {
+                            "raw": "http://localhost:8000/auth/user",
+                            "path": [
+                                "auth",
+                                "user"
+                            ],
+                            "protocol": "http",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "8000"
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Post",
+            "item": [
+                {
+                    "name": "Create a post",
+                    "request": {
+                        "method": "POST",
+                        "url": {
+                            "raw": "http://localhost:8000/posts",
+                            "path": [
+                                "posts"
+                            ],
+                            "protocol": "http",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "8000"
+                        },
+                        "header": [
+                            {
+                                "key": "User-Agent",
+                                "value": "Thunder Client (https://www.thunderclient.com)",
+                                "disabled": true
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            },
+                            "raw": "{\n  \"movie_id\": \"12345\",\n  \"content\": \"This is a test post\"\n}"
+                        }
+                    }
+                },
+                {
+                    "name": "Get all posts",
+                    "request": {
+                        "method": "GET",
+                        "url": {
+                            "raw": "http://localhost:8000/posts",
+                            "path": [
+                                "posts"
+                            ],
+                            "protocol": "http",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "8000"
+                        },
+                        "header": [
+                            {
+                                "key": "User-Agent",
+                                "value": "Thunder Client (https://www.thunderclient.com)",
+                                "disabled": true
+                            }
+                        ]
+                    }
+                },
+                {
+                    "name": "Get a post",
+                    "request": {
+                        "method": "GET",
+                        "url": {
+                            "raw": "http://localhost:8000/posts/65f636a239b9cc3da0d461b7",
+                            "path": [
+                                "posts",
+                                "65f636a239b9cc3da0d461b7"
+                            ],
+                            "protocol": "http",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "8000"
+                        },
+                        "header": [
+                            {
+                                "key": "User-Agent",
+                                "value": "Thunder Client (https://www.thunderclient.com)",
+                                "disabled": true
+                            }
+                        ]
+                    }
+                },
+                {
+                    "name": "Update a post",
+                    "request": {
+                        "method": "PUT",
+                        "url": {
+                            "raw": "http://localhost:8000/posts/65dba1ed7cbd104b1c7f3557",
+                            "path": [
+                                "posts",
+                                "65dba1ed7cbd104b1c7f3557"
+                            ],
+                            "protocol": "http",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "8000"
+                        },
+                        "header": [
+                            {
+                                "key": "User-Agent",
+                                "value": "Thunder Client (https://www.thunderclient.com)",
+                                "disabled": true
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            },
+                            "raw": "{\n  \"content\": \"This is a test post updated\"\n}"
+                        }
+                    }
+                },
+                {
+                    "name": "Delete a post",
+                    "request": {
+                        "method": "DELETE",
+                        "url": {
+                            "raw": "http://localhost:8000/posts/65f2765ab9c4b25672abee53",
+                            "path": [
+                                "posts",
+                                "65f2765ab9c4b25672abee53"
+                            ],
+                            "protocol": "http",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "8000"
+                        },
+                        "header": [
+                            {
+                                "key": "User-Agent",
+                                "value": "Thunder Client (https://www.thunderclient.com)",
+                                "disabled": true
+                            }
+                        ]
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Profile",
+            "item": [
+                {
+                    "name": "Get user profile",
+                    "request": {
+                        "method": "GET",
+                        "url": {
+                            "raw": "http://localhost:8000/profile/user",
+                            "path": [
+                                "profile",
+                                "user"
+                            ],
+                            "protocol": "http",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "8000"
+                        },
+                        "header": [
+                            {
+                                "key": "User-Agent",
+                                "value": "Thunder Client (https://www.thunderclient.com)",
+                                "disabled": true
+                            }
+                        ]
+                    }
+                },
+                {
+                    "name": "Get specific user profile",
+                    "request": {
+                        "method": "GET",
+                        "url": {
+                            "raw": "http://localhost:8000/profile/testuser1",
+                            "path": [
+                                "profile",
+                                "testuser1"
+                            ],
+                            "protocol": "http",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "8000"
+                        },
+                        "header": [
+                            {
+                                "key": "User-Agent",
+                                "value": "Thunder Client (https://www.thunderclient.com)",
+                                "disabled": true
+                            }
+                        ]
+                    }
+                },
+                {
+                    "name": "Follow a user",
+                    "request": {
+                        "method": "POST",
+                        "url": {
+                            "raw": "http://localhost:8000/profile/follow/65f269e17533d263ef30e25c",
+                            "path": [
+                                "profile",
+                                "follow",
+                                "65f269e17533d263ef30e25c"
+                            ],
+                            "protocol": "http",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "8000"
+                        },
+                        "header": [
+                            {
+                                "key": "User-Agent",
+                                "value": "Thunder Client (https://www.thunderclient.com)",
+                                "disabled": true
+                            }
+                        ]
+                    }
+                },
+                {
+                    "name": "Unfollow a user",
+                    "request": {
+                        "method": "DELETE",
+                        "url": {
+                            "raw": "http://localhost:8000/profile/unfollow/65dcae795093cf1dfee05ff5",
+                            "path": [
+                                "profile",
+                                "unfollow",
+                                "65dcae795093cf1dfee05ff5"
+                            ],
+                            "protocol": "http",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "8000"
+                        },
+                        "header": [
+                            {
+                                "key": "User-Agent",
+                                "value": "Thunder Client (https://www.thunderclient.com)",
+                                "disabled": true
+                            }
+                        ]
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Comment",
+            "item": [
+                {
+                    "name": "Create a comment",
+                    "request": {
+                        "method": "POST",
+                        "url": {
+                            "raw": "http://localhost:8000/comments",
+                            "path": [
+                                "comments"
+                            ],
+                            "protocol": "http",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "8000"
+                        },
+                        "header": [
+                            {
+                                "key": "User-Agent",
+                                "value": "Thunder Client (https://www.thunderclient.com)",
+                                "disabled": true
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            },
+                            "raw": "{\n  \"post_id\": \"65f636a239b9cc3da0d461b7\",\n  \"content\": \"Test comment 2\"\n}"
+                        }
+                    }
+                },
+                {
+                    "name": "Update a comment",
+                    "request": {
+                        "method": "PUT",
+                        "url": {
+                            "raw": "http://localhost:8000/comments/65f7b719779352faeec548c7",
+                            "path": [
+                                "comments",
+                                "65f7b719779352faeec548c7"
+                            ],
+                            "protocol": "http",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "8000"
+                        },
+                        "header": [
+                            {
+                                "key": "User-Agent",
+                                "value": "Thunder Client (https://www.thunderclient.com)",
+                                "disabled": true
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            },
+                            "raw": "{\n  \"content\": \"Updated test comment\"\n}"
+                        }
+                    }
+                },
+                {
+                    "name": "Delete a comment",
+                    "request": {
+                        "method": "DELETE",
+                        "url": {
+                            "raw": "http://localhost:8000/comments/65f7b719779352faeec548c7",
+                            "path": [
+                                "comments",
+                                "65f7b719779352faeec548c7"
+                            ],
+                            "protocol": "http",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "8000"
+                        },
+                        "header": [
+                            {
+                                "key": "User-Agent",
+                                "value": "Thunder Client (https://www.thunderclient.com)",
+                                "disabled": true
+                            }
+                        ]
+                    }
+                }
+            ]
+        }
+    ]
+}
