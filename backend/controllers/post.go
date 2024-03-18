@@ -40,16 +40,16 @@ func GetPost(c *gin.Context) {
 		return
 	}
 	// Get all comments for the post since it's the post details
-	//comments, err := models.FindCommentsByPostID(post.ID.Hex(), c.Request.Context())
-	//if err != nil {
-	//	c.JSON(500, gin.H{"error": "An error occurred"})
-	//	return
-	//}
+	comments, err := models.FindCommentsByPostID(post.ID.Hex(), c.Request.Context())
+	if err != nil {
+		c.JSON(500, gin.H{"error": "An error occurred"})
+		return
+	}
 
 	postResponse := map[string]interface{}{
-		"post":    post,
-		"created": post.ID.Timestamp().Format("2006-01-02 15:04:05"),
-		//"comments": comments,
+		"post":     post,
+		"created":  post.ID.Timestamp().Format("2006-01-02 15:04:05"),
+		"comments": comments,
 	}
 
 	c.JSON(200, postResponse)

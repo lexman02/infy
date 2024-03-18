@@ -23,6 +23,7 @@ func InitRoutes() *gin.Engine {
 	AuthRoutes(router)
 	PostRoutes(router)
 	ProfileRoutes(router)
+	CommentRoutes(router)
 
 	router.GET("/search/movies", controllers.SearchMovies)
 	router.GET("/movies/:id", controllers.GetMovieDetails)

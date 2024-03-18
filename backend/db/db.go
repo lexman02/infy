@@ -2,10 +2,11 @@ package db
 
 import (
 	"context"
-	"go.mongodb.org/mongo-driver/mongo"
-	"go.mongodb.org/mongo-driver/mongo/options"
 	"log"
 	"os"
+
+	"go.mongodb.org/mongo-driver/mongo"
+	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
 var client *mongo.Client
@@ -47,7 +48,7 @@ func PostsCollection() *mongo.Collection {
 	return client.Database("infy").Collection("posts")
 }
 
-// ProfileCollection is a function that returns the profile collection
-func ProfileCollection() *mongo.Collection {
-	return client.Database("infy").Collection("profiles")
+// CommentsCollection is a function that returns the comments collection
+func CommentsCollection() *mongo.Collection {
+	return client.Database("infy").Collection("comments")
 }
