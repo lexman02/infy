@@ -31,13 +31,7 @@ export default function Home(){
             </div>
             {/* display the posts */}
             <div className="divide-y divide-neutral-500">
-                {posts.length > 0 ? (
-                    posts.map(post => <Post key={post.post.id} post={post.post} />)
-                ) : (
-                    <div className="p-4 text-neutral-300 font-medium text-lg bg-black/40 rounded-b-lg">
-                        No posts yet... Be the first to post by selecting a movie above!
-                    </div>
-                )}
+                {posts.map(post => <Post key={post.post.id} post={post.post} />)}
             </div>
         </div>
     );
