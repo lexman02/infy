@@ -1,11 +1,11 @@
 import Navbar from './components/Navbar.jsx';
 import {BrowserRouter as Router, Routes, Route} from "react-router-dom";
 import Favorites from './pages/favorites.jsx';
-import Profile from './pages/Profile.jsx';
+import Profile from './pages/profile.jsx';
 import Search from './pages/search.jsx'
 import Home from './pages/Home.jsx';
-import Login from "./pages/Login.jsx";
-import Signup from "./pages/Signup.jsx";
+import Login from "./pages/login.jsx";
+import Signup from "./pages/signup.jsx";
 import logo from './img/logo.png';
 
 
