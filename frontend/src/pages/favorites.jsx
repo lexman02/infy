@@ -23,14 +23,16 @@ export default function Favorites() {
                 type="text"
                 value={inputValue}
                 onChange={(e) => setInputValue(e.target.value)}
-                placeholder="Search a movie!"
+                placeholder="Search a movie to add!"
             />
-            <button onClick={addMovie}>Add</button>
+            {" "}
+            <button onClick={addMovie}> | Add | </button>
             <ul>
                 {movies.map((movie, index) => (
                     <li key={index}>
                         {movie}
-                        <button onClick={() => removeMovie(index)}>Remove</button>
+                        {" "}
+                        <button onClick={() => removeMovie(index)}>| Remove</button>
                     </li>
                 ))}
             </ul>
