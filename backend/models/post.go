@@ -11,12 +11,17 @@ import (
 )
 
 type Post struct {
-	ID       primitive.ObjectID `json:"id" bson:"_id"`
-	User     *User              `json:"user" bson:"user"`
-	Likes    int                `json:"likes"`
-	Dislikes int                `json:"dislikes"`
-	Movie    *Movie             `json:"movie"`
-	Content  string             `json:"content"`
+	ID        primitive.ObjectID `json:"id" bson:"_id"`
+	User      *User              `json:"user" bson:"user"`
+	Reactions []UserReactions    `json:"-"`
+	Movie     *Movie             `json:"movie"`
+	Content   string             `json:"content"`
+}
+
+type UserReactions struct {
+	UserID   primitive.ObjectID `json:"user_id" bson:"user_id"`
+	Liked    bool               `json:"liked"`
+	Disliked bool               `json:"disliked"`
 }
 
 type Movie struct {
@@ -28,13 +33,11 @@ type Movie struct {
 
 // NewPost creates a new post instance
 func NewPost(user *User, movie *Movie, content string) *Post {
-	return &Post{ID: primitive.NewObjectID(), User: user, Likes: 0, Dislikes: 0, Movie: movie, Content: content}
+	return &Post{ID: primitive.NewObjectID(), User: user, Reactions: nil, Movie: movie, Content: content}
 }
 
 // FindAllPosts finds all the posts
 func FindAllPosts(ctx context.Context) ([]*Post, error) {
-	var posts []*Post
-
 	// Find all posts
 	cursor, err := db.PostsCollection().Find(ctx, bson.M{})
 	if err != nil {
@@ -42,6 +45,7 @@ func FindAllPosts(ctx context.Context) ([]*Post, error) {
 	}
 
 	// Decode all the posts
+	var posts []*Post
 	if err = cursor.All(ctx, &posts); err != nil {
 		return nil, err
 	}
@@ -127,14 +131,29 @@ func (p *Post) Save(ctx context.Context) error {
 	return nil
 }
 
-// AddLike adds a like to the post
-func (p *Post) AddLike() {
-	p.Likes++
-}
+func UpdateReaction(postID string, userID primitive.ObjectID, like, dislike bool, ctx context.Context) error {
+	// Encode the post ID to an ObjectID type
+	postObjectID, err := primitive.ObjectIDFromHex(postID)
+	if err != nil {
+		return err
+	}
 
-// AddDislike adds a dislike to the post
-func (p *Post) AddDislike() {
-	p.Dislikes++
+	// Create a UserReactions object
+	reaction := UserReactions{UserID: userID, Liked: like, Disliked: dislike}
+
+	// Remove the existing reaction from the user
+	_, err = db.PostsCollection().UpdateOne(ctx, bson.M{"_id": postObjectID}, bson.M{"$pull": bson.M{"reactions": bson.M{"user_id": userID}}})
+	if err != nil {
+		return err
+	}
+
+	// Add the new reaction from the user
+	_, err = db.PostsCollection().UpdateOne(ctx, bson.M{"_id": postObjectID}, bson.M{"$push": bson.M{"reactions": reaction}})
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
 
 func FindPostsByUserID(userID string, ctx context.Context) ([]*Post, error) {

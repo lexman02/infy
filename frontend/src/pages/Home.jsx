@@ -8,7 +8,7 @@ export default function Home(){
     const [newPost, setNewPost] = useState(false);
 
     useEffect(() => {
-        const fetchPosts = axios.get('http://localhost:8000/posts/', {withCredentials: true})
+        axios.get('http://localhost:8000/posts/', {withCredentials: true})
             .then(response => {
                 if (response.data > 0) {
                     setPosts(response.data);
@@ -18,8 +18,6 @@ export default function Home(){
             .catch(error => {
                 console.error(error);
             });
-        
-        fetchPosts;
     }, [newPost]);
 
     const handleNewPost = () => {
@@ -35,7 +33,7 @@ export default function Home(){
             {/* display the posts */}
             <div className="divide-y divide-neutral-500">
                 {posts.length > 0 ? (
-                    posts.map(post => <Post key={post.post.id} post={post.post} />)
+                    posts.map(post => <Post key={post.post.id} post={post} />)
                 ) : (
                     <div className="p-4 text-neutral-300 font-medium text-lg bg-black/40 rounded-b-lg">
                         No posts yet... Be the first to post by selecting a movie above!
