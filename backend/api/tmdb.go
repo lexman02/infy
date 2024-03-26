@@ -19,6 +19,17 @@ type TMDbSearchResponse struct {
 	} `json:"results"`
 }
 
+type TMDbTrendingResponse struct {
+	Results []struct {
+		ID         int     `json:"id"`
+		Title      string  `json:"title"`
+		PosterPath string  `json:"poster_path"`
+		Year       string  `json:"release_date"`
+		Rating     float64 `json:"vote_average"`
+		Plot       string  `json:"overview"`
+	} `json:"results"`
+}
+
 func SearchMovies(query string) (*TMDbSearchResponse, error) {
 	apiKey := "89ab36f9a46f1199473c3da9950f2221"
 	url := fmt.Sprintf("https://api.themoviedb.org/3/search/movie?api_key=%s&query=%s", apiKey, query)
@@ -79,4 +90,28 @@ func IsValidMovieID(movieID string) (bool, error) {
 		return true, nil // Movie ID is valid
 	}
 	return false, nil // Movie ID is not valid, but no error occurred
+}
+
+// timeWindow can be "day" or "week".
+func GetTrendingMovies(timeWindow string) (*TMDbTrendingResponse, error) {
+	apiKey := "89ab36f9a46f1199473c3da9950f2221"
+	url := fmt.Sprintf("https://api.themoviedb.org/3/trending/movie/%s?api_key=%s", timeWindow, apiKey)
+
+	resp, err := http.Get(url)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+
+	body, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+
+	var trendingResponse TMDbTrendingResponse
+	if err := json.Unmarshal(body, &trendingResponse); err != nil {
+		return nil, err
+	}
+
+	return &trendingResponse, nil
 }

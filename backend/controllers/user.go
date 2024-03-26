@@ -141,6 +141,21 @@ func SearchMovies(c *gin.Context) {
 	c.JSON(http.StatusOK, results)
 }
 
+// GetTrendingMovies handles requests for fetching trending movies.
+func GetTrendingMovies(c *gin.Context) {
+	timeWindow := c.Param("timeWindow") // Get timeWindow from URL parameter.
+
+	// Fetch trending movies from TMDb API.
+	trendingMovies, err := api.GetTrendingMovies(timeWindow)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to fetch trending movies"})
+		return
+	}
+
+	// Respond with the fetched trending movies.
+	c.JSON(http.StatusOK, trendingMovies)
+}
+
 func GetMovieDetails(c *gin.Context) {
 	movieID := c.Param("id") // Get the movie ID from the URL parameter
 
