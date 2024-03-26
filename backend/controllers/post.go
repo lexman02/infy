@@ -4,6 +4,7 @@ import (
 	"infy/api"
 	"infy/models"
 	"log"
+	"net/http"
 
 	"github.com/gin-gonic/gin"
 	"go.mongodb.org/mongo-driver/bson/primitive"
@@ -165,4 +166,16 @@ func DeletePost(c *gin.Context) {
 	}
 
 	c.JSON(200, gin.H{"message": "Post deleted successfully"})
+}
+
+func GetUserPosts(c *gin.Context) {
+	userID := c.Param("userID") // Extracting userID from the URL parameter
+
+	posts, err := models.FindPostsByUserID(userID, c.Request.Context())
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to retrieve user's posts"})
+		return
+	}
+
+	c.JSON(http.StatusOK, posts)
 }

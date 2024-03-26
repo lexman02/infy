@@ -1,9 +1,10 @@
 package routes
 
 import (
-	"github.com/gin-gonic/gin"
 	"infy/controllers"
 	"infy/middleware"
+
+	"github.com/gin-gonic/gin"
 )
 
 func PostRoutes(r *gin.Engine) {
@@ -14,5 +15,6 @@ func PostRoutes(r *gin.Engine) {
 		post.POST("/", middleware.Authorized(), controllers.CreatePost)
 		post.PUT("/:id", middleware.Authorized(), controllers.UpdatePost)
 		post.DELETE("/:id", middleware.Authorized(), controllers.DeletePost)
+		post.GET("/user/:userID", controllers.GetUserPosts) // New route to fetch posts by a specific user
 	}
 }

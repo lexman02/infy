@@ -136,3 +136,24 @@ func (p *Post) AddLike() {
 func (p *Post) AddDislike() {
 	p.Dislikes++
 }
+
+func FindPostsByUserID(userID string, ctx context.Context) ([]*Post, error) {
+	var posts []*Post
+	userObjectID, err := primitive.ObjectIDFromHex(userID)
+	if err != nil {
+		return nil, err
+	}
+
+	filter := bson.M{"user._id": userObjectID}
+	cursor, err := db.PostsCollection().Find(ctx, filter)
+	if err != nil {
+		return nil, err
+	}
+	defer cursor.Close(ctx)
+
+	if err = cursor.All(ctx, &posts); err != nil {
+		return nil, err
+	}
+
+	return posts, nil
+}
