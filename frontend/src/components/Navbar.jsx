@@ -15,6 +15,7 @@ export default function Navbar(){
         if (!data) {
             return false;
         }
+        return true;
     }
 
     return (

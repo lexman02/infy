@@ -2,13 +2,14 @@ package controllers
 
 import (
 	"errors"
-	"github.com/gin-gonic/gin"
-	"go.mongodb.org/mongo-driver/mongo"
-	"golang.org/x/crypto/bcrypt"
 	"infy/models"
 	"infy/utils"
 	"log"
 	"time"
+
+	"github.com/gin-gonic/gin"
+	"go.mongodb.org/mongo-driver/mongo"
+	"golang.org/x/crypto/bcrypt"
 )
 
 // Login checks if the user exists and compares the password with the hashed password and sets a JWT token as a cookie
@@ -68,8 +69,8 @@ func Signup(c *gin.Context) {
 		Password        string `json:"password" binding:"required"`
 		ConfirmPassword string `json:"confirm_password" binding:"required"`
 		FirstName       string `json:"first_name" binding:"required"`
-		LastName        string `json:"last_name"`
-		DateOfBirth     string `json:"date_of_birth"`
+		LastName        string `json:"last_name" binding:"required"`
+		DateOfBirth     string `json:"date_of_birth" binding:"required"`
 	}
 
 	// Bind the request body to the signup struct
@@ -119,6 +120,17 @@ func Signup(c *gin.Context) {
 		return
 	}
 
+	// Generate a JWT token
+	expTime := time.Now().Add(24 * time.Hour)
+	token, err := user.GetJwtToken(expTime)
+	if err != nil {
+		c.JSON(500, gin.H{"error": "Could not generate token"})
+		log.Println(err)
+		return
+	}
+
+	// Set the token as a cookie
+	c.SetCookie("token", token, int(expTime.Unix()), "/", utils.GetEnv("SITE_DOMAIN", "localhost"), utils.IsProd(), true)
 	c.JSON(200, gin.H{"success": "User created"})
 }
 

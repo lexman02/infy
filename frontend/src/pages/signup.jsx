@@ -6,9 +6,9 @@ export default function Signup(){
         e.preventDefault();
         const data = Object.fromEntries(new FormData(e.target));
         try {
-            await axios.post('http://localhost:8000/auth/signup', data);
-            // Redirect the user to the login page
-            window.location.href = '/login';
+            await axios.post('http://localhost:8000/auth/signup', data, {withCredentials: true});
+            // Redirect the user to the profile page
+            window.location.href = '/profile';
         } catch (error) {
             console.error(error);
         }
