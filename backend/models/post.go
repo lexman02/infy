@@ -176,3 +176,20 @@ func FindPostsByUserID(userID string, ctx context.Context) ([]*Post, error) {
 
 	return posts, nil
 }
+
+func FindPostsByMovieID(movieID string, ctx context.Context) ([]*Post, error) {
+	var posts []*Post
+
+	filter := bson.M{"movie_id": movieID}
+	cursor, err := db.PostsCollection().Find(ctx, filter)
+	if err != nil {
+		return nil, err
+	}
+	defer cursor.Close(ctx)
+
+	if err = cursor.All(ctx, &posts); err != nil {
+		return nil, err
+	}
+
+	return posts, nil
+}

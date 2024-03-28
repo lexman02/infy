@@ -20,6 +20,8 @@ func PostRoutes(r *gin.Engine) {
 		post.POST("/:id/like", middleware.Authorized(), controllers.LikePost)
 		// Dislike a post
 		post.POST("/:id/dislike", middleware.Authorized(), controllers.DislikePost)
-		post.GET("/user/:userID", controllers.GetUserPosts) // New route to fetch posts by a specific user
+		post.GET("/user/:userID", controllers.GetUserPosts)
+		post.GET("/movie/:movieID", controllers.GetPostsByMovieID)
+
 	}
 }

@@ -31,6 +31,7 @@ func ProfileRoutes(r *gin.Engine) {
 			movies.POST("/add/watchlist", controllers.AddMovieToWatchlist)
 			movies.DELETE("/watched/:id", controllers.RemoveMovieFromWatched)
 			movies.DELETE("/watchlist/:id", controllers.RemoveMovieFromWatchlist)
+			movies.GET("/:movieID/watchedByFollowed", controllers.GetFollowedUsersWhoWatchedMovie)
 		}
 
 	}

@@ -29,5 +29,9 @@ func InitRoutes() *gin.Engine {
 	router.GET("/movies/:id", controllers.GetMovieDetails)
 	router.GET("/trending/:timeWindow", controllers.GetTrendingMovies)
 
+	router.GET("/movies/:id/cast", controllers.GetMovieCast)
+	router.GET("/movies/:id/reviews", controllers.GetMovieReviews)
+	router.GET("/movies/:id/similar", controllers.GetSimilarMovies)
+
 	return router
 }

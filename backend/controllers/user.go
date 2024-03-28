@@ -17,8 +17,6 @@ func AddMovieToWatched(c *gin.Context) {
 	}
 
 	userID := user.(*models.User).ID.Hex()
-	//testing purposes
-	//userID := "65ee2c28cd0a4aae45abf0f9"
 
 	var requestBody struct {
 		MovieID string `json:"movieId"`
@@ -166,4 +164,48 @@ func GetMovieDetails(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, movieDetails)
+}
+
+func GetMovieCast(c *gin.Context) {
+	movieID := c.Param("id")
+	cast, err := api.GetMovieCast(movieID)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to fetch movie cast"})
+		return
+	}
+	c.JSON(http.StatusOK, cast)
+}
+
+func GetMovieReviews(c *gin.Context) {
+	movieID := c.Param("id")
+	reviews, err := api.GetMovieReviews(movieID)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to fetch movie reviews"})
+		return
+	}
+	c.JSON(http.StatusOK, reviews)
+}
+
+func GetSimilarMovies(c *gin.Context) {
+	movieID := c.Param("id")
+	similarMovies, err := api.GetSimilarMovies(movieID)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to fetch similar movies"})
+		return
+	}
+	c.JSON(http.StatusOK, similarMovies)
+}
+
+func GetFollowedUsersWhoWatchedMovie(c *gin.Context) {
+	user, _ := c.Get("user")
+	userID := user.(*models.User).ID.Hex()
+	movieID := c.Param("movieID")
+
+	users, err := models.FindFollowedWhoWatchedMovie(userID, movieID)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to fetch data"})
+		return
+	}
+
+	c.JSON(http.StatusOK, users)
 }

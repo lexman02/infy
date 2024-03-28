@@ -99,6 +99,18 @@ func GetPost(c *gin.Context) {
 	c.JSON(200, postResponse)
 }
 
+func GetPostsByMovieID(c *gin.Context) {
+	movieID := c.Param("movieID") // Extracting movieID from the URL parameter
+
+	posts, err := models.FindPostsByMovieID(movieID, c.Request.Context())
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to retrieve posts for the movie"})
+		return
+	}
+
+	c.JSON(http.StatusOK, posts)
+}
+
 func CreatePost(c *gin.Context) {
 	var post struct {
 		MovieID string `json:"movie_id" binding:"required"`
@@ -264,7 +276,7 @@ func DislikePost(c *gin.Context) {
 }
 
 func GetUserPosts(c *gin.Context) {
-	userID := c.Param("userID") // Extracting userID from the URL parameter
+	userID := c.Param("userID")
 
 	posts, err := models.FindPostsByUserID(userID, c.Request.Context())
 	if err != nil {

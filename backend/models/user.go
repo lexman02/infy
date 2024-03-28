@@ -10,6 +10,7 @@ import (
 	"github.com/golang-jwt/jwt/v5"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
+	"go.mongodb.org/mongo-driver/mongo"
 )
 
 type User struct {
@@ -224,4 +225,40 @@ func RemoveMovieFromWatchlist(userID, movieID string) error {
 	_, err = db.UsersCollection().UpdateByID(context.Background(), userObjectID, update)
 
 	return err
+}
+
+func FindFollowedWhoWatchedMovie(userID, movieID string) ([]User, error) {
+	var users []User
+	userObjectID, err := primitive.ObjectIDFromHex(userID)
+	if err != nil {
+		return nil, err
+	}
+
+	pipeline := mongo.Pipeline{
+		bson.D{{Key: "$match", Value: bson.M{"_id": userObjectID}}},
+		bson.D{{Key: "$lookup", Value: bson.M{
+			"from": "users",
+			"let":  bson.M{"followingIds": "$preferences.following"},
+			"pipeline": mongo.Pipeline{
+				bson.D{{Key: "$match", Value: bson.M{"$expr": bson.M{"$in": []interface{}{"$_id", "$$followingIds"}}}}},
+				bson.D{{Key: "$match", Value: bson.M{"preferences.watched": movieID}}},
+			},
+			"as": "followedWhoWatched",
+		}}},
+		bson.D{{Key: "$unwind", Value: "$followedWhoWatched"}},
+		bson.D{{Key: "$replaceRoot", Value: bson.M{"newRoot": "$followedWhoWatched"}}},
+	}
+
+	ctx := context.TODO()
+	cursor, err := db.UsersCollection().Aggregate(ctx, pipeline)
+	if err != nil {
+		return nil, err
+	}
+	defer cursor.Close(ctx)
+
+	if err = cursor.All(ctx, &users); err != nil {
+		return nil, err
+	}
+
+	return users, nil
 }
