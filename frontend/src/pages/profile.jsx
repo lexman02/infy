@@ -1,32 +1,39 @@
-import {useEffect, useState} from "react";
+import {useContext, useEffect} from "react";
 import axios from "axios";
+import { UserContext } from "../contexts/UserProvider";
 
 export default function Profile(){
-    const [userData, setUserData] = useState(null);
+    const {userData, setUserData} = useContext(UserContext);
 
-    async function getUserData() {
-        // Check if user data is already in session storage
-        let data = sessionStorage.getItem('userData');
-        if (data) {
-            // Parse the user data from JSON
-            data = JSON.parse(data);
-        } else {
-            try {
-                const response = await axios.get('http://localhost:8000/auth/user', {withCredentials: true});
-                data = response.data;
-                // Save the user data in session storage
-                sessionStorage.setItem('userData', JSON.stringify(data));
-            } catch (error) {
+    function getUserData() {
+        if (userData === null) {
+            axios.get('http://localhost:8000/auth/user', {withCredentials: true})
+            .then(response => {
+                if (response.data) {
+                    setUserData(response.data);
+                }
+            })
+            .catch(error => {
                 console.error(error);
-            }
+                window.location.href = '/login';
+            });
         }
+    }
 
-        setUserData(data);
+    function logout() {
+        axios.post('http://localhost:8000/auth/logout', {}, {withCredentials: true})
+        .then(() => {
+            setUserData(null);
+            window.location.href = '/';
+        })
+        .catch(error => {
+            console.error(error);
+        });
     }
 
     useEffect(() => {
-        getUserData().then(r => console.log(r));
-    }, []);
+        getUserData();
+    });
 
     return (
         <div>
@@ -34,6 +41,7 @@ export default function Profile(){
                 <div>
                     <h1 className="text-neutral-50">Welcome back, {userData.user.username}!</h1>
                     <h2 className="text-neutral-50">Email: {userData.user.email}</h2>
+                    <button onClick={logout}>Logout</button>
                 </div>
             )}
         </div>

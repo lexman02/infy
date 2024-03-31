@@ -1,12 +1,15 @@
-import React, {useEffect} from 'react';
+import React, {useContext, useEffect} from 'react';
 import axios from 'axios';
+import { UserContext } from '../contexts/UserProvider';
 
 export default function Login(){
+    const {userData} = useContext(UserContext);
+
     useEffect(() => {
-        if (sessionStorage.getItem('userData')) {
+        if (userData !== null) {
             window.location.href = '/profile';
         }
-    }, []);
+    });
 
     const handleSubmit = async (e) => {
         e.preventDefault();

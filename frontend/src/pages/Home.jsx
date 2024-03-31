@@ -10,10 +10,11 @@ export default function Home(){
     useEffect(() => {
         axios.get('http://localhost:8000/posts/', {withCredentials: true})
             .then(response => {
-                if (response.data > 0) {
+                if (response.data.length > 0) {
                     setPosts(response.data);
+                } else {
+                    setPosts(0);
                 }
-                setPosts(0);
             })
             .catch(error => {
                 console.error(error);

@@ -155,5 +155,6 @@ func User(c *gin.Context) {
 }
 
 func Logout(c *gin.Context) {
-
+	c.SetCookie("token", "", -1, "/", utils.GetEnv("SITE_DOMAIN", "localhost"), utils.IsProd(), true)
+	c.JSON(200, gin.H{"success": "Logged out"})
 }
