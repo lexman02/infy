@@ -9,7 +9,9 @@ export default function Navbar(){
     const location = useLocation();
 
     if (location.pathname === "/login" || location.pathname === "/signup") {
-        return null;
+        return (
+            <div></div>
+        );
     }
 
     const Avatar = () => {

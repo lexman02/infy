@@ -11,9 +11,11 @@ import logo from './img/logo.png';
 
 export default function App() {
   return (
-    <div className="bg-black/10 min-h-screen text-neutral-100 font-sans">
+    <div className="flex flex-col justify-between bg-black/10 min-h-screen text-neutral-100 font-sans">
       <div className="flex justify-center">
-        <img src={logo} alt="Infy Logo" width="250" height="250" />
+        <a href="/">
+          <img src={logo} alt="Infy Logo" className="w-48 h-48"/>
+        </a>
       </div>
         <Router>
             <Routes>

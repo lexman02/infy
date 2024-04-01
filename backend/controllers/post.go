@@ -284,5 +284,56 @@ func GetUserPosts(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, posts)
+	// Get the token from the cookie
+	token, err := c.Cookie("token")
+	if err != nil {
+		token = ""
+	}
+
+	// Get the user ID from the token
+	var authenticatedUserID primitive.ObjectID
+	if token != "" {
+		middleware.Authorized()(c)
+		user, exists := c.Get("user")
+		if exists {
+			authenticatedUserID = user.(*models.User).ID
+		}
+	}
+
+	// Create a response with the post and the created date
+	var postsResponse []map[string]interface{}
+	for _, post := range posts {
+		// Like and dislike counters
+		var likes, dislikes int = 0, 0
+		// Like and dislike status
+		var liked, disliked bool = false, false
+
+		// Check if the user has liked the post and increment the like or dislike counters
+		for _, reaction := range post.Reactions {
+			if reaction.Liked {
+				likes++
+			}
+
+			if reaction.Disliked {
+				dislikes++
+			}
+
+			if reaction.UserID == authenticatedUserID {
+				liked = reaction.Liked
+				disliked = reaction.Disliked
+			}
+		}
+
+		// Append the post to the response
+		postsResponse = append(postsResponse, map[string]interface{}{
+			"post":     post,
+			"liked":    liked,
+			"disliked": disliked,
+			"likes":    likes,
+			"dislikes": dislikes,
+			"created":  post.ID.Timestamp().Format("2006-01-02 15:04:05"),
+		})
+	}
+
+	c.JSON(http.StatusOK, postsResponse)
 }

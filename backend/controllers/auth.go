@@ -142,12 +142,14 @@ func User(c *gin.Context) {
 	}
 
 	type userResponse struct {
+		ID       string `json:"id"`
 		Username string `json:"username"`
 		Email    string `json:"email"`
 		IsAdmin  bool   `json:"isAdmin"`
 	}
 
 	c.JSON(200, gin.H{"user": userResponse{
+		ID:       user.ID.Hex(),
 		Username: user.Username,
 		Email:    user.Email,
 		IsAdmin:  user.IsAdmin,

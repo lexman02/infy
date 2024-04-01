@@ -1,6 +1,7 @@
 import {useContext, useEffect} from "react";
 import axios from "axios";
 import { UserContext } from "../contexts/UserProvider";
+import ProfileInformation from "../components/ProfileInformation";
 
 export default function Profile(){
     const {userData, setUserData} = useContext(UserContext);
@@ -30,7 +31,7 @@ export default function Profile(){
             console.error(error);
         });
     }
-
+    
     useEffect(() => {
         getUserData();
     });
@@ -39,11 +40,10 @@ export default function Profile(){
         <div>
             {userData && (
                 <div>
-                    <h1 className="text-neutral-50">Welcome back, {userData.user.username}!</h1>
-                    <h2 className="text-neutral-50">Email: {userData.user.email}</h2>
-                    <button onClick={logout}>Logout</button>
+                    <ProfileInformation userData={userData}/>
+                    <button onClick={logout} className="flex justify-center items-center bg-violet-900 text-neutral-50 rounded-lg px-4 py-2 hover:bg-violet-950">Logout</button>
                 </div>
             )}
         </div>
     );
-} 
+}

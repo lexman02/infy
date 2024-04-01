@@ -34,11 +34,11 @@ export default function Login(){
 
                     {/*Email field */}
                     <label htmlFor="email" className="text-neutral-50">Email:</label><br/>
-                    <input type="text" id="email" name="email"></input><br/><br/>
+                    <input type="text" id="email" name="email" className="text-neutral-900"></input><br/><br/>
 
                     {/*Password field */}
                     <label htmlFor="password" className="text-neutral-50">Password:</label><br/>
-                    <input type="password" id="password" name="password"></input><br/><br/>
+                    <input type="password" id="password" name="password" className="text-neutral-900"></input><br/><br/>
 
                     {/*Submit field */}
                     <input type="submit" value="Log In" className="bg-violet-900 text-neutral-50 rounded-lg px-4 py-2 hover:bg-violet-950" />
