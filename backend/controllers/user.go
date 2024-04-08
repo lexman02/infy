@@ -155,7 +155,7 @@ func GetTrendingMovies(c *gin.Context) {
 }
 
 func GetMovieDetails(c *gin.Context) {
-	movieID := c.Param("id") // Get the movie ID from the URL parameter
+	movieID := c.Param("movieID") // Get the movie ID from the URL parameter
 
 	movieDetails, err := api.GetMovieDetails(movieID)
 	if err != nil {
@@ -167,7 +167,7 @@ func GetMovieDetails(c *gin.Context) {
 }
 
 func GetMovieCast(c *gin.Context) {
-	movieID := c.Param("id")
+	movieID := c.Param("movieID")
 	cast, err := api.GetMovieCast(movieID)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to fetch movie cast"})
@@ -177,7 +177,7 @@ func GetMovieCast(c *gin.Context) {
 }
 
 func GetMovieReviews(c *gin.Context) {
-	movieID := c.Param("id")
+	movieID := c.Param("movieID")
 	reviews, err := api.GetMovieReviews(movieID)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to fetch movie reviews"})
@@ -187,7 +187,7 @@ func GetMovieReviews(c *gin.Context) {
 }
 
 func GetSimilarMovies(c *gin.Context) {
-	movieID := c.Param("id")
+	movieID := c.Param("movieID")
 	similarMovies, err := api.GetSimilarMovies(movieID)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to fetch similar movies"})

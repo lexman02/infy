@@ -52,27 +52,18 @@ Next function might be redundant so idk if we want to just keep one saying findc
 */
 
 // FindCommentsByPostID finds comments by post ID
-func FindCommentsByPostID(id string, ctx context.Context) (*[]Comment, error) {
-	var comments []Comment
-
-	// Encode the ID to an ObjectID type
-	objectID, err := primitive.ObjectIDFromHex(id)
+func FindCommentsByPostID(postID string, ctx context.Context) ([]*Comment, error) {
+	postObjectID, _ := primitive.ObjectIDFromHex(postID)                        // Assuming postID is valid and converting it to ObjectID
+	opts := options.Find().SetSort(bson.D{bson.E{Key: "createdAt", Value: -1}}) // Sorting by createdAt in descending order
+	cursor, err := db.CommentsCollection().Find(ctx, bson.M{"postId": postObjectID}, opts)
 	if err != nil {
 		return nil, err
 	}
-
-	// Find the comments with the post ID
-	cursor, err := db.CommentsCollection().Find(ctx, bson.M{"post_id": objectID})
-	if err != nil {
-		return nil, err
-	}
-
-	// Decode all the comments
+	var comments []*Comment
 	if err = cursor.All(ctx, &comments); err != nil {
 		return nil, err
 	}
-
-	return &comments, nil
+	return comments, nil
 }
 
 // DeleteUserComment deletes a comment by ID and user ID

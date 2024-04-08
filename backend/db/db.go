@@ -52,3 +52,8 @@ func PostsCollection() *mongo.Collection {
 func CommentsCollection() *mongo.Collection {
 	return client.Database("infy").Collection("comments")
 }
+
+// PollsCollection returns the polls collection from the database
+func PollsCollection() *mongo.Collection {
+	return client.Database("infy").Collection("polls")
+}

@@ -26,12 +26,11 @@ func InitRoutes() *gin.Engine {
 	CommentRoutes(router)
 
 	router.GET("/search/movies", controllers.SearchMovies)
-	router.GET("/movies/:id", controllers.GetMovieDetails)
 	router.GET("/trending/:timeWindow", controllers.GetTrendingMovies)
 
-	router.GET("/movies/:id/cast", controllers.GetMovieCast)
-	router.GET("/movies/:id/reviews", controllers.GetMovieReviews)
-	router.GET("/movies/:id/similar", controllers.GetSimilarMovies)
+	router.GET("/movies/:movieID/cast", controllers.GetMovieCast)
+	router.GET("/movies/:movieID/reviews", controllers.GetMovieReviews)
+	router.GET("/movies/:movieID/similar", controllers.GetSimilarMovies)
 
 	return router
 }
