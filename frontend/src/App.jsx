@@ -8,6 +8,7 @@ import Login from "./pages/login.jsx";
 import Signup from "./pages/signup.jsx";
 import DetailedPost from "./pages/DetailedPost.jsx";
 import logo from './img/logo.png';
+import MovieDetails from './pages/MovieDetails.jsx';
 
 
 export default function App() {
@@ -27,6 +28,7 @@ export default function App() {
                 <Route exact path="/profile" element={<Profile/>}/>
                 <Route exact path="/favorites" element={<Favorites/>}/>
                 <Route exact path="/search" element={<Search/>}/>
+                <Route exact path="/movie/:movieID" element = {<MovieDetails/>}/>
             </Routes>
             <Navbar />
         </Router>

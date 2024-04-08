@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {HandThumbUpIcon, HandThumbDownIcon, ChatBubbleOvalLeftIcon} from "@heroicons/react/20/solid";
 import defaultAvatar from "../img/default-avatar.png";
 
@@ -82,7 +82,9 @@ export default function Post({ post, detailed = false }) {
                             <p className="font-light">
                                 watched
                             </p>
-                            <span className="font-medium line-clamp-1">{post.post.movie.title}</span>
+                            <Link to={"/movie/" + post.post.movie.id}>
+                                <span className="font-medium">{post.post.movie.title}</span> 
+                            </Link>
                         </div>
                     </div>
                 </div>
