@@ -90,8 +90,49 @@ func GetPost(c *gin.Context) {
 		return
 	}
 
+	// Get the token from the cookie
+	token, err := c.Cookie("token")
+	if err != nil {
+		token = ""
+	}
+
+	// Get the user ID from the token
+	var userID primitive.ObjectID
+	if token != "" {
+		middleware.Authorized()(c)
+		user, exists := c.Get("user")
+		if exists {
+			userID = user.(*models.User).ID
+		}
+	}
+
+	// Like and dislike counters
+	var likes, dislikes int = 0, 0
+	// Like and dislike status
+	var liked, disliked bool = false, false
+
+	// Check if the user has liked the post and increment the like or dislike counters
+	for _, reaction := range post.Reactions {
+		if reaction.Liked {
+			likes++
+		}
+
+		if reaction.Disliked {
+			dislikes++
+		}
+
+		if reaction.UserID == userID {
+			liked = reaction.Liked
+			disliked = reaction.Disliked
+		}
+	}
+
 	postResponse := map[string]interface{}{
 		"post":     post,
+		"liked":    liked,
+		"disliked": disliked,
+		"likes":    likes,
+		"dislikes": dislikes,
 		"created":  post.ID.Timestamp().Format("2006-01-02 15:04:05"),
 		"comments": comments,
 	}

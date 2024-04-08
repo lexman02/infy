@@ -26,7 +26,7 @@ export default function Home(){
     }
 
     return(
-        <div className="md:my-6 md:mx-60">
+        <div className="md:my-6 md:mx-60 flex-grow">
             {/* button to add a new post */}
             <div className="border-b rounded-t-lg border-neutral-500 bg-black/40 p-4">
                 <NewPost onNewPost={handleNewPost} />
