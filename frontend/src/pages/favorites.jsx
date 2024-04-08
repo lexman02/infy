@@ -11,7 +11,7 @@ export default function Favorites() {
     const [movies, setMovies] = useState(() => {
         const saved = localStorage.getItem("movies");
         const initialValue = JSON.parse(saved);
-        return initialValue || "";
+        return initialValue || [];
     });
 
     const inputClass = isLoading || searchResults.length > 0 ? 'border-b rounded-t-lg' : 'border rounded-lg';
@@ -50,18 +50,17 @@ export default function Favorites() {
             setSearchResults([]);
         }
     }, [inputValue]);
-    
+
     // useEffect to save to Local Storage 
     useEffect(() => {
         localStorage.setItem('movies', JSON.stringify(movies));
     }, [movies]);
 
 
-
     return (
         <div>
             <div>
-                <label htmlFor="movie-search" className="block mb-2 text-md font-medium text-neutral-200">Want to add something?</label>
+                <label htmlFor="movie-search" className="block mb-2 text-md font-medium text-neutral-200"> Want to add something? </label>
                 <input type="text" id="movie-search" name="movie-search" placeholder="Search for a movie to add!" onChange={e => setInputValue(e.target.value)} className={`${inputClass} border-indigo-500/30 bg-indigo-950/70 text-neutral-200 sm:text-sm block w-full p-2.5`} />
             </div>
 
@@ -78,12 +77,12 @@ export default function Favorites() {
                     <div key={result.id} className="cursor-pointer last:pb-6 first:pt-6">
                         <div className="flex flex-col">
                             <div className="flex hover:bg-black/30 hover:rounded-lg">
-                                <img src={`https://image.tmdb.org/t/p/original/${result.poster_path}`} alt={result.title} className="w-20 h-32 object-cover rounded-lg"  />
+                                <img src={`https://image.tmdb.org/t/p/original/${result.poster_path}`} alt={result.title} className="w-20 h-32 object-cover rounded-lg" />
                                 <div className="px-4 w-full" >
                                     <li key={index}>
-                                    <h2 className="text-xl font-bold text-neutral-200 mb-2">{result.title}</h2>
-                                    <p className="text-neutral-400 line-clamp-2">{result.overview}</p>
-                                    <button className="block mb-2 text-md font-medium text-neutral-200" onClick={() => addMovie(result.title)}>| ADD THIS FILM RIGHT HERE |</button>
+                                        <h2 className="text-xl font-bold text-neutral-200 mb-2">{result.title}</h2>
+                                        <p className="text-neutral-400 line-clamp-2">{result.overview}</p>
+                                        <button className="block mb-2 text-md font-medium text-neutral-200" onClick={() => addMovie(result.title)}>| ADD THIS FILM RIGHT HERE |</button>
                                     </li>
                                 </div>
                             </div>
@@ -95,7 +94,7 @@ export default function Favorites() {
                 ))}
             </div>
 
-            <label htmlFor="movie-search" className="block mb-2 text-md font-medium text-neutral-200">Your Watchlist</label>
+            <label htmlFor="movie-search" className="block mb-2 text-md font-medium text-neutral-200"> Your Watchlist </label>
 
             <ul>
                 {movies.map((movie, index) => (
