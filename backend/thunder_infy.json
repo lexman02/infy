@@ -1,7 +1,7 @@
 {
     "client": "Thunder Client",
     "collectionName": "infy",
-    "dateExported": "2024-03-18T04:10:52.557Z",
+    "dateExported": "2024-04-09T01:28:40.076Z",
     "version": "1.1",
     "folders": [
         {
@@ -45,6 +45,20 @@
             "containerId": "",
             "created": "2024-03-13T03:43:54.208Z",
             "sortNum": 50000
+        },
+        {
+            "_id": "855ca029-7dcb-460b-908c-6fd3ddfe7a58",
+            "name": "Movie",
+            "containerId": "",
+            "created": "2024-04-07T20:12:39.443Z",
+            "sortNum": 60000
+        },
+        {
+            "_id": "ad632a31-cf86-4b1d-aac9-fa99a133461a",
+            "name": "Polls",
+            "containerId": "855ca029-7dcb-460b-908c-6fd3ddfe7a58",
+            "created": "2024-04-07T22:00:21.681Z",
+            "sortNum": 70000
         }
     ],
     "requests": [
@@ -71,6 +85,26 @@
                 "raw": "{\n  \"email\": \"test@test.com\",\n  \"password\": \"testpass\",\n  \"confirm_password\": \"testpass\",\n  \"username\": \"testuser\",\n  \"first_name\": \"Test\",\n  \"last_name\": \"User\",\n  \"date_of_birth\": \"1990-01-01\"\n}",
                 "form": []
             },
+            "tests": []
+        },
+        {
+            "_id": "d6b44686-48ce-4f61-b505-9282b41c4c24",
+            "colId": "69955776-64ba-4c59-86a7-701eadc586aa",
+            "containerId": "ad632a31-cf86-4b1d-aac9-fa99a133461a",
+            "name": "Get movie polls",
+            "url": "http://localhost:8000/movies/597/polls",
+            "method": "GET",
+            "sortNum": 10000,
+            "created": "2024-04-07T20:20:39.544Z",
+            "modified": "2024-04-07T20:20:53.310Z",
+            "headers": [
+                {
+                    "name": "User-Agent",
+                    "value": "Thunder Client (https://www.thunderclient.com)",
+                    "isDisabled": true
+                }
+            ],
+            "params": [],
             "tests": []
         },
         {
@@ -149,6 +183,31 @@
                 "form": []
             },
             "reqType": "post",
+            "tests": []
+        },
+        {
+            "_id": "18a74bad-7beb-4f65-af18-d5b5c3e4218a",
+            "colId": "69955776-64ba-4c59-86a7-701eadc586aa",
+            "containerId": "ad632a31-cf86-4b1d-aac9-fa99a133461a",
+            "name": "Create movie poll",
+            "url": "http://localhost:8000/movies/597/polls",
+            "method": "POST",
+            "sortNum": 20000,
+            "created": "2024-04-07T20:22:47.109Z",
+            "modified": "2024-04-07T21:58:27.422Z",
+            "headers": [
+                {
+                    "name": "User-Agent",
+                    "value": "Thunder Client (https://www.thunderclient.com)",
+                    "isDisabled": true
+                }
+            ],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"question\": \"Test question\",\n  \"options\": [\n    \"test option 1\",\n    \"test option 2\"\n  ]\n}",
+                "form": []
+            },
             "tests": []
         },
         {
@@ -472,7 +531,7 @@
             "method": "POST",
             "sortNum": 130000,
             "created": "2024-03-18T03:20:51.462Z",
-            "modified": "2024-03-18T03:44:36.359Z",
+            "modified": "2024-04-04T02:59:39.649Z",
             "headers": [
                 {
                     "name": "User-Agent",
@@ -483,10 +542,9 @@
             "params": [],
             "body": {
                 "type": "json",
-                "raw": "{\n  \"post_id\": \"65f636a239b9cc3da0d461b7\",\n  \"content\": \"Test comment 2\"\n}",
+                "raw": "{\n  \"post_id\": \"65f61a48db96c538c627ec5a\",\n  \"content\": \"Test comment 2\"\n}",
                 "form": []
             },
-            "reqType": "post",
             "tests": []
         },
         {
@@ -534,6 +592,224 @@
             ],
             "params": [],
             "reqType": "put",
+            "tests": []
+        },
+        {
+            "_id": "801def1c-0399-4a1e-98f6-7c3afcf614d8",
+            "colId": "69955776-64ba-4c59-86a7-701eadc586aa",
+            "containerId": "5c047a0f-866f-454b-bcff-140ec2ede87b",
+            "name": "Like a post",
+            "url": "http://localhost:8000/posts/65f61a48db96c538c627ec5a/like",
+            "method": "POST",
+            "sortNum": 160000,
+            "created": "2024-03-21T19:36:23.822Z",
+            "modified": "2024-03-25T00:49:39.856Z",
+            "headers": [
+                {
+                    "name": "User-Agent",
+                    "value": "Thunder Client (https://www.thunderclient.com)",
+                    "isDisabled": true
+                }
+            ],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"is_liked\": true\n}",
+                "form": []
+            },
+            "reqType": "post",
+            "tests": []
+        },
+        {
+            "_id": "c16892a6-45ba-4610-b798-a9038e2c74cf",
+            "colId": "69955776-64ba-4c59-86a7-701eadc586aa",
+            "containerId": "5c047a0f-866f-454b-bcff-140ec2ede87b",
+            "name": "Unlike a post",
+            "url": "http://localhost:8000/posts/65f61a48db96c538c627ec5a/unlike",
+            "method": "DELETE",
+            "sortNum": 170000,
+            "created": "2024-03-21T19:56:13.507Z",
+            "modified": "2024-03-21T19:56:36.219Z",
+            "headers": [
+                {
+                    "name": "User-Agent",
+                    "value": "Thunder Client (https://www.thunderclient.com)",
+                    "isDisabled": true
+                }
+            ],
+            "params": [],
+            "reqType": "post",
+            "tests": []
+        },
+        {
+            "_id": "e957cec1-7e1c-4d83-904a-a117ca953b4c",
+            "colId": "69955776-64ba-4c59-86a7-701eadc586aa",
+            "containerId": "855ca029-7dcb-460b-908c-6fd3ddfe7a58",
+            "name": "Get movie details",
+            "url": "http://localhost:8000/movies/597",
+            "method": "GET",
+            "sortNum": 180000,
+            "created": "2024-04-07T20:12:49.667Z",
+            "modified": "2024-04-07T20:15:39.409Z",
+            "headers": [
+                {
+                    "name": "User-Agent",
+                    "value": "Thunder Client (https://www.thunderclient.com)",
+                    "isDisabled": true
+                }
+            ],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "48477e13-d3e9-4981-8e19-ed55b2a2924b",
+            "colId": "69955776-64ba-4c59-86a7-701eadc586aa",
+            "containerId": "855ca029-7dcb-460b-908c-6fd3ddfe7a58",
+            "name": "Get movie cast",
+            "url": "http://localhost:8000/movies/597/cast",
+            "method": "GET",
+            "sortNum": 190000,
+            "created": "2024-04-07T22:00:35.895Z",
+            "modified": "2024-04-07T22:00:55.685Z",
+            "headers": [
+                {
+                    "name": "User-Agent",
+                    "value": "Thunder Client (https://www.thunderclient.com)",
+                    "isDisabled": true
+                }
+            ],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "31d7b094-c13e-4e73-bc44-3925921a7d59",
+            "colId": "69955776-64ba-4c59-86a7-701eadc586aa",
+            "containerId": "855ca029-7dcb-460b-908c-6fd3ddfe7a58",
+            "name": "Get trending movies (Day)",
+            "url": "http://localhost:8000/trending/day",
+            "method": "GET",
+            "sortNum": 190000,
+            "created": "2024-04-07T22:02:27.845Z",
+            "modified": "2024-04-07T22:03:48.461Z",
+            "headers": [
+                {
+                    "name": "User-Agent",
+                    "value": "Thunder Client (https://www.thunderclient.com)",
+                    "isDisabled": true
+                }
+            ],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "f2c9c682-d8f4-4269-a5f6-9f2a30198006",
+            "colId": "69955776-64ba-4c59-86a7-701eadc586aa",
+            "containerId": "855ca029-7dcb-460b-908c-6fd3ddfe7a58",
+            "name": "Get movie reviews",
+            "url": "http://localhost:8000/movies/597/reviews",
+            "method": "GET",
+            "sortNum": 200000,
+            "created": "2024-04-07T22:01:06.247Z",
+            "modified": "2024-04-07T22:01:22.276Z",
+            "headers": [
+                {
+                    "name": "User-Agent",
+                    "value": "Thunder Client (https://www.thunderclient.com)",
+                    "isDisabled": true
+                }
+            ],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "9f3729ff-c405-4cf2-897a-79da3e01c594",
+            "colId": "69955776-64ba-4c59-86a7-701eadc586aa",
+            "containerId": "855ca029-7dcb-460b-908c-6fd3ddfe7a58",
+            "name": "Get trending movies (Week)",
+            "url": "http://localhost:8000/trending/week",
+            "method": "GET",
+            "sortNum": 200000,
+            "created": "2024-04-07T22:04:06.347Z",
+            "modified": "2024-04-07T22:04:18.887Z",
+            "headers": [
+                {
+                    "name": "User-Agent",
+                    "value": "Thunder Client (https://www.thunderclient.com)",
+                    "isDisabled": true
+                }
+            ],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "2ccdf465-88ed-4aea-ae28-f2bdc0b2892c",
+            "colId": "69955776-64ba-4c59-86a7-701eadc586aa",
+            "containerId": "ad632a31-cf86-4b1d-aac9-fa99a133461a",
+            "name": "Vote for poll option",
+            "url": "http://localhost:8000/movies/597/polls/6613168d627655a25072c009/vote",
+            "method": "POST",
+            "sortNum": 200000,
+            "created": "2024-04-07T22:05:10.849Z",
+            "modified": "2024-04-07T22:06:49.481Z",
+            "headers": [
+                {
+                    "name": "User-Agent",
+                    "value": "Thunder Client (https://www.thunderclient.com)",
+                    "isDisabled": true
+                }
+            ],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"optionID\": \"661316a8627655a25072c00a\"\n}",
+                "form": []
+            },
+            "tests": []
+        },
+        {
+            "_id": "7c9baf16-378d-41e3-8c9a-1bbff72d5e9d",
+            "colId": "69955776-64ba-4c59-86a7-701eadc586aa",
+            "containerId": "855ca029-7dcb-460b-908c-6fd3ddfe7a58",
+            "name": "Get similar movies",
+            "url": "http://localhost:8000/movies/597/similar",
+            "method": "GET",
+            "sortNum": 210000,
+            "created": "2024-04-07T22:01:08.181Z",
+            "modified": "2024-04-07T22:01:53.729Z",
+            "headers": [
+                {
+                    "name": "User-Agent",
+                    "value": "Thunder Client (https://www.thunderclient.com)",
+                    "isDisabled": true
+                }
+            ],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "dbbd57e3-6ac0-467a-9d90-72df87ba5541",
+            "colId": "69955776-64ba-4c59-86a7-701eadc586aa",
+            "containerId": "855ca029-7dcb-460b-908c-6fd3ddfe7a58",
+            "name": "Get movie search results",
+            "url": "http://localhost:8000/movies/search?title=titanic",
+            "method": "GET",
+            "sortNum": 210000,
+            "created": "2024-04-09T01:19:48.452Z",
+            "modified": "2024-04-09T01:20:34.370Z",
+            "headers": [
+                {
+                    "name": "User-Agent",
+                    "value": "Thunder Client (https://www.thunderclient.com)",
+                    "isDisabled": true
+                }
+            ],
+            "params": [
+                {
+                    "name": "title",
+                    "value": "titanic",
+                    "isPath": false
+                }
+            ],
             "tests": []
         }
     ]

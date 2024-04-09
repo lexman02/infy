@@ -4,8 +4,6 @@ import (
 	"context"
 	"infy/db"
 
-	"time"
-
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -31,21 +29,6 @@ type Movie struct {
 	Title      string `json:"title"`
 	PosterPath string `json:"poster_path"`
 	Tagline    string `json:"tagline"`
-}
-
-type Poll struct {
-	ID        string    `bson:"_id" json:"id"`
-	Question  string    `bson:"question" json:"question"`
-	CreatedAt time.Time `bson:"created_at" json:"created_at"`
-	EndsAt    time.Time `bson:"ends_at" json:"ends_at"`
-	Options   []Option  `bson:"options" json:"options"`
-}
-
-type Option struct {
-	ID     string `bson:"_id" json:"id"`
-	PollID string `bson:"poll_id" json:"poll_id"`
-	Text   string `bson:"text" json:"text"`
-	Votes  int    `bson:"votes" json:"votes"`
 }
 
 // NewPost creates a new post instance
@@ -206,54 +189,4 @@ func FindPostsByMovieID(movieID string, ctx context.Context) ([]*Post, error) {
 	}
 
 	return posts, nil
-}
-
-func CreateNewPoll(movieID, question string, options []Option, ctx context.Context) (*Poll, error) {
-	pollID := primitive.NewObjectID()
-	opts := make([]interface{}, len(options))
-	for i, opt := range options {
-		opt.ID = primitive.NewObjectID().Hex() // Generate new ID for each option
-		opt.PollID = pollID.Hex()
-		opts[i] = opt
-	}
-	poll := Poll{
-		ID:        pollID.Hex(),
-		Question:  question,
-		CreatedAt: time.Now(),
-		EndsAt:    time.Now().Add(24 * time.Hour), // Example: setting the poll to end after 24 hours
-		Options:   options,
-	}
-	_, err := db.PollsCollection().InsertOne(ctx, poll)
-	if err != nil {
-		return nil, err
-	}
-	return &poll, nil
-}
-
-func IncrementPollOptionVote(pollID, optionID string, ctx context.Context) error {
-	filter := bson.M{
-		"_id":         pollID,
-		"options._id": optionID,
-	}
-	update := bson.M{
-		"$inc": bson.M{"options.$.votes": 1},
-	}
-	_, err := db.PollsCollection().UpdateOne(ctx, filter, update)
-	return err
-}
-
-func FindPollsByMovieID(movieID string, ctx context.Context) ([]*Poll, error) {
-	var polls []*Poll
-	filter := bson.M{"movie_id": movieID}
-	cursor, err := db.PollsCollection().Find(ctx, filter)
-	if err != nil {
-		return nil, err
-	}
-	defer cursor.Close(ctx)
-
-	if err = cursor.All(ctx, &polls); err != nil {
-		return nil, err
-	}
-
-	return polls, nil
 }

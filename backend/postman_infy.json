@@ -1,6 +1,6 @@
 {
     "info": {
-        "_postman_id": "32b41178-d123-4125-9348-f524e4998058",
+        "_postman_id": "9239cbd2-7ea0-40c3-b381-b4a44d2bc4ac",
         "name": "infy",
         "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
         "description": ""
@@ -454,6 +454,67 @@
                             }
                         ]
                     }
+                },
+                {
+                    "name": "Like a post",
+                    "request": {
+                        "method": "POST",
+                        "url": {
+                            "raw": "http://localhost:8000/posts/65f61a48db96c538c627ec5a/like",
+                            "path": [
+                                "posts",
+                                "65f61a48db96c538c627ec5a",
+                                "like"
+                            ],
+                            "protocol": "http",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "8000"
+                        },
+                        "header": [
+                            {
+                                "key": "User-Agent",
+                                "value": "Thunder Client (https://www.thunderclient.com)",
+                                "disabled": true
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            },
+                            "raw": "{\n  \"is_liked\": true\n}"
+                        }
+                    }
+                },
+                {
+                    "name": "Unlike a post",
+                    "request": {
+                        "method": "DELETE",
+                        "url": {
+                            "raw": "http://localhost:8000/posts/65f61a48db96c538c627ec5a/unlike",
+                            "path": [
+                                "posts",
+                                "65f61a48db96c538c627ec5a",
+                                "unlike"
+                            ],
+                            "protocol": "http",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "8000"
+                        },
+                        "header": [
+                            {
+                                "key": "User-Agent",
+                                "value": "Thunder Client (https://www.thunderclient.com)",
+                                "disabled": true
+                            }
+                        ]
+                    }
                 }
             ]
         },
@@ -596,7 +657,7 @@
                                     "language": "json"
                                 }
                             },
-                            "raw": "{\n  \"post_id\": \"65f636a239b9cc3da0d461b7\",\n  \"content\": \"Test comment 2\"\n}"
+                            "raw": "{\n  \"post_id\": \"65f61a48db96c538c627ec5a\",\n  \"content\": \"Test comment 2\"\n}"
                         }
                     }
                 },
@@ -643,6 +704,299 @@
                             "path": [
                                 "comments",
                                 "65f7b719779352faeec548c7"
+                            ],
+                            "protocol": "http",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "8000"
+                        },
+                        "header": [
+                            {
+                                "key": "User-Agent",
+                                "value": "Thunder Client (https://www.thunderclient.com)",
+                                "disabled": true
+                            }
+                        ]
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Movie",
+            "item": [
+                {
+                    "name": "Polls",
+                    "item": [
+                        {
+                            "name": "Get movie polls",
+                            "request": {
+                                "method": "GET",
+                                "url": {
+                                    "raw": "http://localhost:8000/movies/597/polls",
+                                    "path": [
+                                        "movies",
+                                        "597",
+                                        "polls"
+                                    ],
+                                    "protocol": "http",
+                                    "host": [
+                                        "localhost"
+                                    ],
+                                    "port": "8000"
+                                },
+                                "header": [
+                                    {
+                                        "key": "User-Agent",
+                                        "value": "Thunder Client (https://www.thunderclient.com)",
+                                        "disabled": true
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "Create movie poll",
+                            "request": {
+                                "method": "POST",
+                                "url": {
+                                    "raw": "http://localhost:8000/movies/597/polls",
+                                    "path": [
+                                        "movies",
+                                        "597",
+                                        "polls"
+                                    ],
+                                    "protocol": "http",
+                                    "host": [
+                                        "localhost"
+                                    ],
+                                    "port": "8000"
+                                },
+                                "header": [
+                                    {
+                                        "key": "User-Agent",
+                                        "value": "Thunder Client (https://www.thunderclient.com)",
+                                        "disabled": true
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "options": {
+                                        "raw": {
+                                            "language": "json"
+                                        }
+                                    },
+                                    "raw": "{\n  \"question\": \"Test question\",\n  \"options\": [\n    \"test option 1\",\n    \"test option 2\"\n  ]\n}"
+                                }
+                            }
+                        },
+                        {
+                            "name": "Vote for poll option",
+                            "request": {
+                                "method": "POST",
+                                "url": {
+                                    "raw": "http://localhost:8000/movies/597/polls/6613168d627655a25072c009/vote",
+                                    "path": [
+                                        "movies",
+                                        "597",
+                                        "polls",
+                                        "6613168d627655a25072c009",
+                                        "vote"
+                                    ],
+                                    "protocol": "http",
+                                    "host": [
+                                        "localhost"
+                                    ],
+                                    "port": "8000"
+                                },
+                                "header": [
+                                    {
+                                        "key": "User-Agent",
+                                        "value": "Thunder Client (https://www.thunderclient.com)",
+                                        "disabled": true
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "options": {
+                                        "raw": {
+                                            "language": "json"
+                                        }
+                                    },
+                                    "raw": "{\n  \"optionID\": \"661316a8627655a25072c00a\"\n}"
+                                }
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "Get movie details",
+                    "request": {
+                        "method": "GET",
+                        "url": {
+                            "raw": "http://localhost:8000/movies/597",
+                            "path": [
+                                "movies",
+                                "597"
+                            ],
+                            "protocol": "http",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "8000"
+                        },
+                        "header": [
+                            {
+                                "key": "User-Agent",
+                                "value": "Thunder Client (https://www.thunderclient.com)",
+                                "disabled": true
+                            }
+                        ]
+                    }
+                },
+                {
+                    "name": "Get movie cast",
+                    "request": {
+                        "method": "GET",
+                        "url": {
+                            "raw": "http://localhost:8000/movies/597/cast",
+                            "path": [
+                                "movies",
+                                "597",
+                                "cast"
+                            ],
+                            "protocol": "http",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "8000"
+                        },
+                        "header": [
+                            {
+                                "key": "User-Agent",
+                                "value": "Thunder Client (https://www.thunderclient.com)",
+                                "disabled": true
+                            }
+                        ]
+                    }
+                },
+                {
+                    "name": "Get movie reviews",
+                    "request": {
+                        "method": "GET",
+                        "url": {
+                            "raw": "http://localhost:8000/movies/597/reviews",
+                            "path": [
+                                "movies",
+                                "597",
+                                "reviews"
+                            ],
+                            "protocol": "http",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "8000"
+                        },
+                        "header": [
+                            {
+                                "key": "User-Agent",
+                                "value": "Thunder Client (https://www.thunderclient.com)",
+                                "disabled": true
+                            }
+                        ]
+                    }
+                },
+                {
+                    "name": "Get similar movies",
+                    "request": {
+                        "method": "GET",
+                        "url": {
+                            "raw": "http://localhost:8000/movies/597/similar",
+                            "path": [
+                                "movies",
+                                "597",
+                                "similar"
+                            ],
+                            "protocol": "http",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "8000"
+                        },
+                        "header": [
+                            {
+                                "key": "User-Agent",
+                                "value": "Thunder Client (https://www.thunderclient.com)",
+                                "disabled": true
+                            }
+                        ]
+                    }
+                },
+                {
+                    "name": "Get trending movies (Day)",
+                    "request": {
+                        "method": "GET",
+                        "url": {
+                            "raw": "http://localhost:8000/trending/day",
+                            "path": [
+                                "trending",
+                                "day"
+                            ],
+                            "protocol": "http",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "8000"
+                        },
+                        "header": [
+                            {
+                                "key": "User-Agent",
+                                "value": "Thunder Client (https://www.thunderclient.com)",
+                                "disabled": true
+                            }
+                        ]
+                    }
+                },
+                {
+                    "name": "Get trending movies (Week)",
+                    "request": {
+                        "method": "GET",
+                        "url": {
+                            "raw": "http://localhost:8000/trending/week",
+                            "path": [
+                                "trending",
+                                "week"
+                            ],
+                            "protocol": "http",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "8000"
+                        },
+                        "header": [
+                            {
+                                "key": "User-Agent",
+                                "value": "Thunder Client (https://www.thunderclient.com)",
+                                "disabled": true
+                            }
+                        ]
+                    }
+                },
+                {
+                    "name": "Get movie search results",
+                    "request": {
+                        "method": "GET",
+                        "url": {
+                            "raw": "http://localhost:8000/movies/search?title=titanic",
+                            "query": [
+                                {
+                                    "key": "title",
+                                    "value": "titanic"
+                                }
+                            ],
+                            "variable": [],
+                            "path": [
+                                "movies",
+                                "search"
                             ],
                             "protocol": "http",
                             "host": [

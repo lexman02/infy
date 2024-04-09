@@ -14,7 +14,7 @@ export default function MovieSearchPost({ onSelectResult }){
             setIsLoading(true);
             const fetchData = setTimeout(() => {
                 const params = `title=${encodeURIComponent(inputValue).replace(/%20/g, '%2B')}`;
-                axios.get(`http://localhost:8000/search/movies?${params}`)
+                axios.get(`http://localhost:8000/movies/search?${params}`)
                     .then(response => {
                         setSearchResults(response.data.results);
                         setIsLoading(false);

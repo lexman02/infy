@@ -24,13 +24,4 @@ func PostRoutes(r *gin.Engine) {
 		post.GET("/movie/:movieID", controllers.GetPostsByMovieID)
 
 	}
-
-	// Adding Polls routes under /movies to follow the structure given in the assignment
-	movies := r.Group("/movies")
-	{
-		movies.GET("/:movieID", controllers.GetMovieDetails) // Adjusted for consistency
-		movies.GET("/:movieID/polls", controllers.GetPollsByMovieID)
-		movies.POST("/:movieID/polls", middleware.Authorized(), controllers.CreatePoll)
-		movies.POST("/:movieID/polls/:pollID/vote", middleware.Authorized(), controllers.AddPollVote)
-	}
 }
