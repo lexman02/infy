@@ -3,6 +3,7 @@ package controllers
 import (
 	"infy/models"
 	"log"
+	"net/http"
 
 	"github.com/gin-gonic/gin"
 	"go.mongodb.org/mongo-driver/bson/primitive"
@@ -118,4 +119,45 @@ func DeleteComment(c *gin.Context) {
 	}
 
 	c.JSON(200, gin.H{"message": "Comment deleted successfully"})
+}
+
+func getUserIDFromContext(c *gin.Context) (primitive.ObjectID, bool) {
+	user, exists := c.Get("user")
+	if !exists {
+		return primitive.NilObjectID, false
+	}
+	if userModel, ok := user.(*models.User); ok {
+		return userModel.ID, true
+	}
+	return primitive.NilObjectID, false
+}
+
+func LikeComment(c *gin.Context) {
+	commentID := c.Param("commentId")
+	userID, ok := getUserIDFromContext(c)
+	if !ok {
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "Unauthorized"})
+		return
+	}
+
+	if err := models.ToggleLikeOnComment(commentID, userID.Hex(), true); err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to like comment"})
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{"message": "Comment liked successfully"})
+}
+
+func DislikeComment(c *gin.Context) {
+	commentID := c.Param("commentId")
+	userID, ok := getUserIDFromContext(c)
+	if !ok {
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "Unauthorized"})
+		return
+	}
+
+	if err := models.ToggleLikeOnComment(commentID, userID.Hex(), false); err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to dislike comment"})
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{"message": "Comment disliked successfully"})
 }

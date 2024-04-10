@@ -13,12 +13,14 @@ import (
 )
 
 type Comment struct {
-	ID       primitive.ObjectID `json:"id" bson:"_id"`
-	PostID   primitive.ObjectID `json:"post_id" bson:"post_id"`
-	User     *User              `json:"user" bson:"user"`
-	Likes    int                `json:"likes"`
-	Dislikes int                `json:"dislikes"`
-	Content  string             `json:"content"`
+	ID         primitive.ObjectID   `json:"id" bson:"_id"`
+	PostID     primitive.ObjectID   `json:"post_id" bson:"post_id"`
+	User       *User                `json:"user" bson:"user"`
+	Likes      int                  `json:"likes"`
+	Dislikes   int                  `json:"dislikes"`
+	LikedBy    []primitive.ObjectID `bson:"liked_by" json:"liked_by,omitempty"`
+	DislikedBy []primitive.ObjectID `bson:"disliked_by" json:"disliked_by,omitempty"`
+	Content    string               `json:"content"`
 }
 
 // NewComment creates a new comment instance
@@ -135,4 +137,27 @@ func (c *Comment) AddLike() {
 // AddDislike adds a dislike to the comment
 func (c *Comment) AddDislike() {
 	c.Dislikes++
+}
+
+// ToggleLikeOnComment updates the like or dislike state of a comment for a given user
+func ToggleLikeOnComment(commentID string, userID string, like bool) error {
+
+	cID, _ := primitive.ObjectIDFromHex(commentID)
+	uID, _ := primitive.ObjectIDFromHex(userID)
+
+	update := bson.M{}
+	if like {
+		update = bson.M{
+			"$addToSet": bson.M{"liked_by": uID},
+			"$pull":     bson.M{"disliked_by": uID},
+		}
+	} else {
+		update = bson.M{
+			"$addToSet": bson.M{"disliked_by": uID},
+			"$pull":     bson.M{"liked_by": uID},
+		}
+	}
+
+	_, err := db.CommentsCollection().UpdateOne(context.Background(), bson.M{"_id": cID}, update)
+	return err
 }
