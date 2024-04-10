@@ -9,15 +9,14 @@ export default function Navbar(){
     const location = useLocation();
 
     if (location.pathname === "/login" || location.pathname === "/signup") {
-        return (
-            <div></div>
-        );
+        return null;
     }
 
     const Avatar = () => {
         if (userData === null) {
             return false;
         }
+        
         return true;
     }
 
