@@ -37,12 +37,14 @@ func NewPost(user *User, movie *Movie, content string) *Post {
 }
 
 // FindAllPosts finds all the posts
-func FindAllPosts(ctx context.Context) ([]*Post, error) {
-	opts := options.Find().SetSort(bson.D{bson.E{Key: "createdAt", Value: -1}}) // Corrected line for sorting
+func FindAllPosts(ctx context.Context, limit int64) ([]*Post, error) {
+	opts := options.Find().SetSort(bson.D{bson.E{Key: "createdAt", Value: -1}}).SetLimit(limit) // Corrected line for sorting
 	cursor, err := db.PostsCollection().Find(ctx, bson.D{}, opts)
 	if err != nil {
 		return nil, err
 	}
+	defer cursor.Close(ctx)
+
 	var posts []*Post
 	if err = cursor.All(ctx, &posts); err != nil {
 		return nil, err
@@ -153,20 +155,23 @@ func UpdateReaction(postID string, userID primitive.ObjectID, like, dislike bool
 	return nil
 }
 
-func FindPostsByUserID(userID string, ctx context.Context) ([]*Post, error) {
-	var posts []*Post
+func FindPostsByUserID(userID string, ctx context.Context, limit int64) ([]*Post, error) {
 	userObjectID, err := primitive.ObjectIDFromHex(userID)
 	if err != nil {
 		return nil, err
 	}
 
+	// Define sorting and limiting options
+	opts := options.Find().SetSort(bson.D{{Key: "createdAt", Value: -1}}).SetLimit(limit)
+
 	filter := bson.M{"user._id": userObjectID}
-	cursor, err := db.PostsCollection().Find(ctx, filter)
+	cursor, err := db.PostsCollection().Find(ctx, filter, opts)
 	if err != nil {
 		return nil, err
 	}
 	defer cursor.Close(ctx)
 
+	var posts []*Post
 	if err = cursor.All(ctx, &posts); err != nil {
 		return nil, err
 	}
@@ -174,11 +179,14 @@ func FindPostsByUserID(userID string, ctx context.Context) ([]*Post, error) {
 	return posts, nil
 }
 
-func FindPostsByMovieID(movieID string, ctx context.Context) ([]*Post, error) {
+func FindPostsByMovieID(movieID string, ctx context.Context, limit int64) ([]*Post, error) {
 	var posts []*Post
 
+	// Define sorting and limiting options
+	opts := options.Find().SetSort(bson.D{{Key: "createdAt", Value: -1}}).SetLimit(limit)
+
 	filter := bson.M{"movie_id": movieID}
-	cursor, err := db.PostsCollection().Find(ctx, filter)
+	cursor, err := db.PostsCollection().Find(ctx, filter, opts)
 	if err != nil {
 		return nil, err
 	}

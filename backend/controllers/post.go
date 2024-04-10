@@ -14,7 +14,7 @@ import (
 
 func GetPosts(c *gin.Context) {
 	// Get the posts from the database
-	posts, err := models.FindAllPosts(c.Request.Context())
+	posts, err := models.FindAllPosts(c.Request.Context(), 20)
 	if err != nil {
 		c.JSON(500, gin.H{"error": "An error occurred"})
 		log.Println(err)
@@ -77,6 +77,7 @@ func GetPosts(c *gin.Context) {
 
 func GetPost(c *gin.Context) {
 	// Get the post by ID
+	limit := int64(20)
 	post, err := models.FindPostByID(c.Param("id"), c.Request.Context())
 	if err != nil {
 		c.JSON(500, gin.H{"error": "An error occurred"})
@@ -84,7 +85,7 @@ func GetPost(c *gin.Context) {
 		return
 	}
 	// Get all comments for the post since it's the post details
-	comments, err := models.FindCommentsByPostID(post.ID.Hex(), c.Request.Context())
+	comments, err := models.FindCommentsByPostID(post.ID.Hex(), c.Request.Context(), limit)
 	if err != nil {
 		c.JSON(500, gin.H{"error": "An error occurred"})
 		return
@@ -142,8 +143,9 @@ func GetPost(c *gin.Context) {
 
 func GetPostsByMovieID(c *gin.Context) {
 	movieID := c.Param("movieID") // Extracting movieID from the URL parameter
+	limit := int64(20)
 
-	posts, err := models.FindPostsByMovieID(movieID, c.Request.Context())
+	posts, err := models.FindPostsByMovieID(movieID, c.Request.Context(), limit)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to retrieve posts for the movie"})
 		return
@@ -318,8 +320,9 @@ func DislikePost(c *gin.Context) {
 
 func GetUserPosts(c *gin.Context) {
 	userID := c.Param("userID")
+	limit := int64(20)
 
-	posts, err := models.FindPostsByUserID(userID, c.Request.Context())
+	posts, err := models.FindPostsByUserID(userID, c.Request.Context(), limit)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to retrieve user's posts"})
 		return
