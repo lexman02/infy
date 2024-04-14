@@ -157,7 +157,7 @@ func GetTrendingMovies(c *gin.Context) {
 func GetMovieDetails(c *gin.Context) {
 	movieID := c.Param("movieID") // Get the movie ID from the URL parameter
 
-	movieDetails, err := api.GetMovieDetails(movieID)
+	movieDetails, _, err := api.GetMovieDetails(movieID, false)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to get movie details"})
 		return

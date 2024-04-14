@@ -181,7 +181,7 @@ func CreatePost(c *gin.Context) {
 	}
 
 	// Get the movie details
-	movie, err := api.GetMovieDetails(post.MovieID)
+	_, movie, err := api.GetMovieDetails(post.MovieID, true)
 	if err != nil {
 		c.JSON(500, gin.H{"error": "An error occurred"})
 		log.Println(err)

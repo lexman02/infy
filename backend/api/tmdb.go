@@ -57,6 +57,14 @@ type TMDbSimilarMoviesResponse struct {
 	} `json:"results"`
 }
 
+type MovieDetails struct {
+	models.Movie
+	Overview     string `json:"overview"`
+	BackdropPath string `json:"backdrop_path"`
+	Runtime      int    `json:"runtime"`
+	ReleaseDate  string `json:"release_date"`
+}
+
 func SearchMovies(query string) (*TMDbSearchResponse, error) {
 	apiKey := "89ab36f9a46f1199473c3da9950f2221"
 	url := fmt.Sprintf("https://api.themoviedb.org/3/search/movie?api_key=%s&query=%s", apiKey, query)
@@ -80,27 +88,38 @@ func SearchMovies(query string) (*TMDbSearchResponse, error) {
 	return &searchResponse, nil
 }
 
-func GetMovieDetails(movieID string) (*models.Movie, error) {
+func GetMovieDetails(movieID string, limited bool) (*MovieDetails, *models.Movie, error) {
 	apiKey := "89ab36f9a46f1199473c3da9950f2221"
 	url := fmt.Sprintf("https://api.themoviedb.org/3/movie/%s?api_key=%s", movieID, apiKey)
 
 	resp, err := http.Get(url)
 	if err != nil {
-		return nil, err
+		return nil, nil, err
 	}
 	defer resp.Body.Close()
 
 	body, err := io.ReadAll(resp.Body)
 	if err != nil {
-		return nil, err
+		return nil, nil, err
 	}
 
-	var movieDetails models.Movie
+	var movieDetails MovieDetails
 	if err := json.Unmarshal(body, &movieDetails); err != nil {
-		return nil, err
+		return nil, nil, err
 	}
 
-	return &movieDetails, nil
+	if limited {
+		movie := models.Movie{
+			ID:         movieDetails.ID,
+			Title:      movieDetails.Title,
+			PosterPath: movieDetails.PosterPath,
+			Tagline:    movieDetails.Tagline,
+		}
+
+		return nil, &movie, nil
+	}
+
+	return &movieDetails, nil, nil
 }
 
 func IsValidMovieID(movieID string) (bool, error) {
