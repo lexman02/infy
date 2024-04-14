@@ -1,10 +1,12 @@
 package middleware
 
 import (
-	"github.com/gin-gonic/gin"
-	"github.com/golang-jwt/jwt/v5"
 	"infy/models"
 	"infy/utils"
+	"net/http"
+
+	"github.com/gin-gonic/gin"
+	"github.com/golang-jwt/jwt/v5"
 )
 
 // Authorized checks if the user is authorized by checking the JWT token
@@ -58,5 +60,17 @@ func ErrorHandler() gin.HandlerFunc {
 			c.JSON(400, gin.H{"errors": c.Errors})
 			c.Abort()
 		}
+	}
+}
+
+func AdminAuthorized() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		user, exists := c.Get("user")
+		if !exists || !user.(*models.User).IsAdmin {
+			c.JSON(http.StatusForbidden, gin.H{"error": "Admin privileges required"})
+			c.Abort()
+			return
+		}
+		c.Next()
 	}
 }

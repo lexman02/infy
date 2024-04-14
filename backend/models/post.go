@@ -18,6 +18,12 @@ type Post struct {
 	Content   string             `json:"content"`
 }
 
+type ReportedPost struct {
+	ID          primitive.ObjectID `json:"id" bson:"_id"`
+	ReportCount int                `json:"report_count" bson:"report_count"`
+	Post        *Post              `json:"post" bson:"post"`
+}
+
 type UserReactions struct {
 	UserID   primitive.ObjectID `json:"user_id" bson:"user_id"`
 	Liked    bool               `json:"liked"`
@@ -94,15 +100,19 @@ func UpdateUserPost(id, content string, userId primitive.ObjectID, ctx context.C
 }
 
 // DeleteUserPost deletes a post by ID and user ID
-func DeleteUserPost(id string, userId primitive.ObjectID, ctx context.Context) error {
+func DeleteUserPost(id string, user *User, ctx context.Context) error {
 	// Encode the ID to an ObjectID type
-	objectID, err := primitive.ObjectIDFromHex(id)
+	postID, err := primitive.ObjectIDFromHex(id)
 	if err != nil {
 		return err
 	}
 
 	// Create the filter
-	filter := bson.D{{Key: "_id", Value: objectID}, {Key: "user._id", Value: userId}}
+	filter := bson.D{{Key: "_id", Value: postID}, {Key: "user._id", Value: user.ID}}
+
+	if user.IsAdmin {
+		filter = bson.D{{Key: "_id", Value: postID}}
+	}
 
 	// Delete the post by ID and user ID if they match
 	results, err := db.PostsCollection().DeleteOne(ctx, filter)
@@ -116,7 +126,6 @@ func DeleteUserPost(id string, userId primitive.ObjectID, ctx context.Context) e
 	}
 
 	return nil
-
 }
 
 // Save saves a post to the database
@@ -197,4 +206,73 @@ func FindPostsByMovieID(movieID string, ctx context.Context, limit int64) ([]*Po
 	}
 
 	return posts, nil
+}
+
+func FindReportedPosts(ctx context.Context, limit int64) ([]*ReportedPost, error) {
+	opts := options.Find().SetSort(bson.D{{Key: "report_count", Value: -1}}).SetLimit(limit)
+	cursor, err := db.ReportedPostsCollection().Find(ctx, bson.D{}, opts)
+	if err != nil {
+		return nil, err
+	}
+	defer cursor.Close(ctx)
+
+	var reportedPosts []*ReportedPost
+	if err = cursor.All(ctx, &reportedPosts); err != nil {
+		return nil, err
+	}
+
+	return reportedPosts, nil
+}
+
+func ReportPost(postID string, ctx context.Context) error {
+	// Encode the post ID to an ObjectID type
+	postObjectID, err := primitive.ObjectIDFromHex(postID)
+	if err != nil {
+		return err
+	}
+
+	var post Post
+	err = db.PostsCollection().FindOne(ctx, bson.M{"_id": postObjectID}).Decode(&post)
+	if err != nil {
+		return err
+	}
+
+	// Check if the post has already been reported
+	var reportedPost ReportedPost
+	err = db.ReportedPostsCollection().FindOne(ctx, bson.M{"post._id": postObjectID}).Decode(&reportedPost)
+	if err == mongo.ErrNoDocuments {
+		// If the post has not been reported, create a new reported post
+		reportedPost = ReportedPost{ID: primitive.NewObjectID(), ReportCount: 1, Post: &post}
+		_, err = db.ReportedPostsCollection().InsertOne(ctx, reportedPost)
+		return err
+	}
+
+	if err == nil {
+		// If the post has been reported, increment the report count
+		_, err = db.ReportedPostsCollection().UpdateOne(ctx, bson.M{"post._id": postObjectID}, bson.M{"$inc": bson.M{"report_count": 1}})
+		return err
+	}
+
+	return err
+}
+
+func RemoveReportedPost(postID string, ctx context.Context) error {
+	// Encode the post ID to an ObjectID type
+	postObjectID, err := primitive.ObjectIDFromHex(postID)
+	if err != nil {
+		return err
+	}
+
+	// Delete the reported post by post ID
+	results, err := db.ReportedPostsCollection().DeleteOne(ctx, bson.M{"post._id": postObjectID})
+	if err != nil {
+		return err
+	}
+
+	// Check if nothing was deleted and return an error
+	if results.DeletedCount == 0 {
+		return mongo.ErrNoDocuments
+	}
+
+	return nil
 }

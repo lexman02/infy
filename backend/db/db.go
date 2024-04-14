@@ -57,3 +57,8 @@ func CommentsCollection() *mongo.Collection {
 func PollsCollection() *mongo.Collection {
 	return client.Database("infy").Collection("polls")
 }
+
+// ReportedPostsCollection returns the reported posts collection from the database
+func ReportedPostsCollection() *mongo.Collection {
+	return client.Database("infy").Collection("reported_posts")
+}

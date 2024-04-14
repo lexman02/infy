@@ -24,6 +24,7 @@ func InitRoutes() *gin.Engine {
 	ProfileRoutes(router)
 	CommentRoutes(router)
 	MovieRoutes(router)
+	AdminRoutes(router)
 
 	return router
 }

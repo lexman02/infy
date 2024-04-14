@@ -262,3 +262,43 @@ func FindFollowedWhoWatchedMovie(userID, movieID string) ([]User, error) {
 
 	return users, nil
 }
+
+// ToggleAdmin toggles the admin status of a user
+func ToggleAdmin(userID string, ctx context.Context) error {
+	// Convert the user ID to an ObjectID
+	userObjectID, err := primitive.ObjectIDFromHex(userID)
+	if err != nil {
+		return err
+	}
+
+	// Check if the user is already an admin
+	user, err := FindUserByID(userID, ctx)
+	if err != nil {
+		return err
+	}
+
+	// Update to the opposite of the current value
+	update := bson.M{"$set": bson.M{"isAdmin": !user.IsAdmin}}
+	_, err = db.UsersCollection().UpdateOne(ctx, bson.M{"_id": userObjectID}, update)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+// GetUsers returns all users
+func GetUsers() ([]User, error) {
+	var users []User
+	cursor, err := db.UsersCollection().Find(context.Background(), bson.M{})
+	if err != nil {
+		return nil, err
+	}
+	defer cursor.Close(context.Background())
+
+	if err = cursor.All(context.Background(), &users); err != nil {
+		return nil, err
+	}
+
+	return users, nil
+}

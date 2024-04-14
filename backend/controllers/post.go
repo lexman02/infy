@@ -244,7 +244,7 @@ func DeletePost(c *gin.Context) {
 	}
 
 	// Delete the post
-	err := models.DeleteUserPost(c.Param("id"), user.(*models.User).ID, c.Request.Context())
+	err := models.DeleteUserPost(c.Param("id"), user.(*models.User), c.Request.Context())
 	if err != nil {
 		// Check if the post was not found or the user is not the author
 		if err == mongo.ErrNoDocuments {
@@ -380,4 +380,15 @@ func GetUserPosts(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, postsResponse)
+}
+
+func ReportPost(c *gin.Context) {
+	err := models.ReportPost(c.Param("id"), c.Request.Context())
+	if err != nil {
+		c.JSON(500, gin.H{"error": "An error occurred"})
+		log.Println(err)
+		return
+	}
+
+	c.JSON(200, gin.H{"message": "Post reported successfully"})
 }
