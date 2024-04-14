@@ -1,6 +1,7 @@
 package middleware
 
 import (
+	"context"
 	"infy/models"
 	"infy/utils"
 	"net/http"
@@ -13,44 +14,53 @@ import (
 func Authorized() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		// Get the token from the cookie
-		cookie, err := c.Cookie("token")
+		token, err := c.Cookie("token")
 		if err != nil {
 			c.JSON(401, gin.H{"error": "Unauthorized"})
 			c.Abort()
 			return
 		}
 
-		// Parse the token with the JWT_SECRET_KEY from the environment variables
-		token, err := jwt.Parse(cookie, func(token *jwt.Token) (interface{}, error) {
-			jwtSecretKey := utils.GetEnv("JWT_SECRET_KEY", "")
-			return []byte(jwtSecretKey), nil
-		})
+		user, err := GetUserFromToken(token, c.Request.Context())
 		if err != nil {
 			c.JSON(401, gin.H{"error": "Unauthorized"})
 			c.Abort()
 			return
 		}
 
-		// Check if the token is valid
-		if !token.Valid {
-			c.JSON(401, gin.H{"error": "Token is not valid"})
-			c.Abort()
-			return
-		}
-
-		// Get the user from the token
-		if claims, ok := token.Claims.(jwt.MapClaims); ok && token.Valid {
-			userId := claims["sub"].(string)
-			user, err := models.FindUserByID(userId, c.Request.Context())
-			if err != nil {
-				c.JSON(401, gin.H{"error": "Unauthorized"})
-				c.Abort()
-				return
-			}
+		if user != nil {
 			c.Set("user", user)
 			c.Next()
+			return
 		}
+
+		c.JSON(401, gin.H{"error": "Unauthorized"})
+		c.Abort()
 	}
+}
+
+func GetUserFromToken(token string, ctx context.Context) (*models.User, error) {
+	// Parse the token with the JWT_SECRET_KEY from the environment variables
+	parsedToken, err := jwt.Parse(token, func(token *jwt.Token) (interface{}, error) {
+		jwtSecretKey := utils.GetEnv("JWT_SECRET_KEY", "")
+		return []byte(jwtSecretKey), nil
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	// Get the user from the token
+	if claims, ok := parsedToken.Claims.(jwt.MapClaims); ok && parsedToken.Valid {
+		userId := claims["sub"].(string)
+		user, err := models.FindUserByID(userId, ctx)
+		if err != nil {
+			return nil, err
+		}
+
+		return user, nil
+	}
+
+	return nil, nil
 }
 
 func ErrorHandler() gin.HandlerFunc {

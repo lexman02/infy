@@ -30,11 +30,14 @@ func GetPosts(c *gin.Context) {
 	// Get the user ID from the token
 	var userID primitive.ObjectID
 	if token != "" {
-		middleware.Authorized()(c)
-		user, exists := c.Get("user")
-		if exists {
-			userID = user.(*models.User).ID
+		user, err := middleware.GetUserFromToken(token, c.Request.Context())
+		if err != nil {
+			c.JSON(500, gin.H{"error": "An error occurred"})
+			log.Println(err)
+			return
 		}
+
+		userID = user.ID
 	}
 
 	// Create a response with the post and the created date
@@ -100,11 +103,14 @@ func GetPost(c *gin.Context) {
 	// Get the user ID from the token
 	var userID primitive.ObjectID
 	if token != "" {
-		middleware.Authorized()(c)
-		user, exists := c.Get("user")
-		if exists {
-			userID = user.(*models.User).ID
+		user, err := middleware.GetUserFromToken(token, c.Request.Context())
+		if err != nil {
+			c.JSON(500, gin.H{"error": "An error occurred"})
+			log.Println(err)
+			return
 		}
+
+		userID = user.ID
 	}
 
 	// Like and dislike counters
@@ -337,11 +343,14 @@ func GetUserPosts(c *gin.Context) {
 	// Get the user ID from the token
 	var authenticatedUserID primitive.ObjectID
 	if token != "" {
-		middleware.Authorized()(c)
-		user, exists := c.Get("user")
-		if exists {
-			authenticatedUserID = user.(*models.User).ID
+		user, err := middleware.GetUserFromToken(token, c.Request.Context())
+		if err != nil {
+			c.JSON(500, gin.H{"error": "An error occurred"})
+			log.Println(err)
+			return
 		}
+
+		authenticatedUserID = user.ID
 	}
 
 	// Create a response with the post and the created date
