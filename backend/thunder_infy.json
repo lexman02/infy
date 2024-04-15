@@ -1,7 +1,7 @@
 {
     "client": "Thunder Client",
     "collectionName": "infy",
-    "dateExported": "2024-04-09T01:28:40.076Z",
+    "dateExported": "2024-04-15T21:34:02.848Z",
     "version": "1.1",
     "folders": [
         {
@@ -59,6 +59,13 @@
             "containerId": "855ca029-7dcb-460b-908c-6fd3ddfe7a58",
             "created": "2024-04-07T22:00:21.681Z",
             "sortNum": 70000
+        },
+        {
+            "_id": "d0492d1c-bd40-4b1a-adbf-87293fc50708",
+            "name": "Admin",
+            "containerId": "",
+            "created": "2024-04-14T20:25:23.850Z",
+            "sortNum": 80000
         }
     ],
     "requests": [
@@ -810,6 +817,210 @@
                     "isPath": false
                 }
             ],
+            "tests": []
+        },
+        {
+            "_id": "1dd6a4a7-2804-4ed7-8c78-fd6e03b382e3",
+            "colId": "69955776-64ba-4c59-86a7-701eadc586aa",
+            "containerId": "6299c7fd-5ef2-4c92-b6ff-82989330908d",
+            "name": "Logout",
+            "url": "http://localhost:8000/auth/logout",
+            "method": "POST",
+            "sortNum": 220000,
+            "created": "2024-04-14T19:22:45.327Z",
+            "modified": "2024-04-14T19:23:44.372Z",
+            "headers": [
+                {
+                    "name": "User-Agent",
+                    "value": "Thunder Client (https://www.thunderclient.com)",
+                    "isDisabled": true
+                }
+            ],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "826eac9a-f382-4d08-9cc3-f6c195cebd46",
+            "colId": "69955776-64ba-4c59-86a7-701eadc586aa",
+            "containerId": "d0492d1c-bd40-4b1a-adbf-87293fc50708",
+            "name": "Get users",
+            "url": "http://localhost:8000/admin/users",
+            "method": "GET",
+            "sortNum": 240000,
+            "created": "2024-04-14T20:25:31.470Z",
+            "modified": "2024-04-14T20:25:44.886Z",
+            "headers": [
+                {
+                    "name": "User-Agent",
+                    "value": "Thunder Client (https://www.thunderclient.com)",
+                    "isDisabled": true
+                }
+            ],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "1ba36d11-3fb4-410b-90b3-e699c2b9f8f2",
+            "colId": "69955776-64ba-4c59-86a7-701eadc586aa",
+            "containerId": "d0492d1c-bd40-4b1a-adbf-87293fc50708",
+            "name": "Toggle admin user",
+            "url": "http://localhost:8000/admin/users/65f269e17533d263ef30e25c",
+            "method": "PUT",
+            "sortNum": 250000,
+            "created": "2024-04-14T20:26:51.853Z",
+            "modified": "2024-04-14T20:27:29.383Z",
+            "headers": [
+                {
+                    "name": "User-Agent",
+                    "value": "Thunder Client (https://www.thunderclient.com)",
+                    "isDisabled": true
+                }
+            ],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "f0b347f3-8404-4bfd-b001-b2e7e9a49047",
+            "colId": "69955776-64ba-4c59-86a7-701eadc586aa",
+            "containerId": "d0492d1c-bd40-4b1a-adbf-87293fc50708",
+            "name": "Get reported posts",
+            "url": "http://localhost:8000/admin/reports/posts",
+            "method": "GET",
+            "sortNum": 260000,
+            "created": "2024-04-14T20:39:32.168Z",
+            "modified": "2024-04-14T20:39:46.663Z",
+            "headers": [
+                {
+                    "name": "User-Agent",
+                    "value": "Thunder Client (https://www.thunderclient.com)",
+                    "isDisabled": true
+                }
+            ],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "0c9ad6b9-176e-47d6-914a-75512d038e0f",
+            "colId": "69955776-64ba-4c59-86a7-701eadc586aa",
+            "containerId": "5c047a0f-866f-454b-bcff-140ec2ede87b",
+            "name": "Report a post",
+            "url": "http://localhost:8000/posts/65f62981db96c538c627ec60/report",
+            "method": "GET",
+            "sortNum": 270000,
+            "created": "2024-04-14T20:43:25.403Z",
+            "modified": "2024-04-14T20:44:42.716Z",
+            "headers": [],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "68d531e5-5cf6-414d-9d6d-38b5e7a9ea73",
+            "colId": "69955776-64ba-4c59-86a7-701eadc586aa",
+            "containerId": "d0492d1c-bd40-4b1a-adbf-87293fc50708",
+            "name": "Delete reported post",
+            "url": "http://localhost:8000/admin/reports/posts/65f62981db96c538c627ec60",
+            "method": "DELETE",
+            "sortNum": 280000,
+            "created": "2024-04-14T20:52:26.416Z",
+            "modified": "2024-04-14T20:52:41.398Z",
+            "headers": [
+                {
+                    "name": "User-Agent",
+                    "value": "Thunder Client (https://www.thunderclient.com)",
+                    "isDisabled": true
+                }
+            ],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "605968bb-578e-4005-b7d1-9fcc19eab846",
+            "colId": "69955776-64ba-4c59-86a7-701eadc586aa",
+            "containerId": "a32f63bd-f02b-4c3c-874d-9659ee978ed3",
+            "name": "Add movie to watchlist",
+            "url": "http://localhost:8000/profile/movies/add/watchlist",
+            "method": "POST",
+            "sortNum": 290000,
+            "created": "2024-04-15T00:40:05.413Z",
+            "modified": "2024-04-15T00:40:51.951Z",
+            "headers": [
+                {
+                    "name": "User-Agent",
+                    "value": "Thunder Client (https://www.thunderclient.com)",
+                    "isDisabled": true
+                }
+            ],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"movieId\": \"697\"\n}",
+                "form": []
+            },
+            "tests": []
+        },
+        {
+            "_id": "a2b1b520-263a-46a7-92e0-53dccc171ec2",
+            "colId": "69955776-64ba-4c59-86a7-701eadc586aa",
+            "containerId": "a32f63bd-f02b-4c3c-874d-9659ee978ed3",
+            "name": "Remove movie from watchlist",
+            "url": "http://localhost:8000/profile/movies/watchlist/697",
+            "method": "DELETE",
+            "sortNum": 295000,
+            "created": "2024-04-15T16:20:29.045Z",
+            "modified": "2024-04-15T16:21:15.460Z",
+            "headers": [
+                {
+                    "name": "User-Agent",
+                    "value": "Thunder Client (https://www.thunderclient.com)",
+                    "isDisabled": true
+                }
+            ],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "01e22894-8f5f-42c7-a665-5e085ed99b83",
+            "colId": "69955776-64ba-4c59-86a7-701eadc586aa",
+            "containerId": "a32f63bd-f02b-4c3c-874d-9659ee978ed3",
+            "name": "Remove movie from watched list",
+            "url": "http://localhost:8000/profile/movies/watched/697",
+            "method": "DELETE",
+            "sortNum": 297500,
+            "created": "2024-04-15T21:25:41.232Z",
+            "modified": "2024-04-15T21:31:37.856Z",
+            "headers": [
+                {
+                    "name": "User-Agent",
+                    "value": "Thunder Client (https://www.thunderclient.com)",
+                    "isDisabled": true
+                }
+            ],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "57abebcd-99a3-4646-b6b4-72f543bee667",
+            "colId": "69955776-64ba-4c59-86a7-701eadc586aa",
+            "containerId": "a32f63bd-f02b-4c3c-874d-9659ee978ed3",
+            "name": "Add movie to watched list",
+            "url": "http://localhost:8000/profile/movies/add/watched",
+            "method": "POST",
+            "sortNum": 300000,
+            "created": "2024-04-15T16:18:23.030Z",
+            "modified": "2024-04-15T16:18:35.610Z",
+            "headers": [
+                {
+                    "name": "User-Agent",
+                    "value": "Thunder Client (https://www.thunderclient.com)",
+                    "isDisabled": true
+                }
+            ],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"movieId\": \"697\"\n}",
+                "form": []
+            },
             "tests": []
         }
     ]

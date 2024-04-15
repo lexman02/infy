@@ -1,6 +1,6 @@
 {
     "info": {
-        "_postman_id": "9239cbd2-7ea0-40c3-b381-b4a44d2bc4ac",
+        "_postman_id": "f6a80b84-2043-41e2-9875-f2b8812e71c3",
         "name": "infy",
         "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
         "description": ""
@@ -308,6 +308,31 @@
                             "port": "8000"
                         }
                     }
+                },
+                {
+                    "name": "Logout",
+                    "request": {
+                        "method": "POST",
+                        "url": {
+                            "raw": "http://localhost:8000/auth/logout",
+                            "path": [
+                                "auth",
+                                "logout"
+                            ],
+                            "protocol": "http",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "8000"
+                        },
+                        "header": [
+                            {
+                                "key": "User-Agent",
+                                "value": "Thunder Client (https://www.thunderclient.com)",
+                                "disabled": true
+                            }
+                        ]
+                    }
                 }
             ]
         },
@@ -515,6 +540,25 @@
                             }
                         ]
                     }
+                },
+                {
+                    "name": "Report a post",
+                    "request": {
+                        "method": "GET",
+                        "url": {
+                            "raw": "http://localhost:8000/posts/65f62981db96c538c627ec60/report",
+                            "path": [
+                                "posts",
+                                "65f62981db96c538c627ec60",
+                                "report"
+                            ],
+                            "protocol": "http",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "8000"
+                        }
+                    }
                 }
             ]
         },
@@ -607,6 +651,132 @@
                                 "profile",
                                 "unfollow",
                                 "65dcae795093cf1dfee05ff5"
+                            ],
+                            "protocol": "http",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "8000"
+                        },
+                        "header": [
+                            {
+                                "key": "User-Agent",
+                                "value": "Thunder Client (https://www.thunderclient.com)",
+                                "disabled": true
+                            }
+                        ]
+                    }
+                },
+                {
+                    "name": "Add movie to watchlist",
+                    "request": {
+                        "method": "POST",
+                        "url": {
+                            "raw": "http://localhost:8000/profile/movies/add/watchlist",
+                            "path": [
+                                "profile",
+                                "movies",
+                                "add",
+                                "watchlist"
+                            ],
+                            "protocol": "http",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "8000"
+                        },
+                        "header": [
+                            {
+                                "key": "User-Agent",
+                                "value": "Thunder Client (https://www.thunderclient.com)",
+                                "disabled": true
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            },
+                            "raw": "{\n  \"movieId\": \"697\"\n}"
+                        }
+                    }
+                },
+                {
+                    "name": "Add movie to watched list",
+                    "request": {
+                        "method": "POST",
+                        "url": {
+                            "raw": "http://localhost:8000/profile/movies/add/watched",
+                            "path": [
+                                "profile",
+                                "movies",
+                                "add",
+                                "watched"
+                            ],
+                            "protocol": "http",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "8000"
+                        },
+                        "header": [
+                            {
+                                "key": "User-Agent",
+                                "value": "Thunder Client (https://www.thunderclient.com)",
+                                "disabled": true
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            },
+                            "raw": "{\n  \"movieId\": \"697\"\n}"
+                        }
+                    }
+                },
+                {
+                    "name": "Remove movie from watchlist",
+                    "request": {
+                        "method": "DELETE",
+                        "url": {
+                            "raw": "http://localhost:8000/profile/movies/watchlist/697",
+                            "path": [
+                                "profile",
+                                "movies",
+                                "watchlist",
+                                "697"
+                            ],
+                            "protocol": "http",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "8000"
+                        },
+                        "header": [
+                            {
+                                "key": "User-Agent",
+                                "value": "Thunder Client (https://www.thunderclient.com)",
+                                "disabled": true
+                            }
+                        ]
+                    }
+                },
+                {
+                    "name": "Remove movie from watched list",
+                    "request": {
+                        "method": "DELETE",
+                        "url": {
+                            "raw": "http://localhost:8000/profile/movies/watched/697",
+                            "path": [
+                                "profile",
+                                "movies",
+                                "watched",
+                                "697"
                             ],
                             "protocol": "http",
                             "host": [
@@ -997,6 +1167,115 @@
                             "path": [
                                 "movies",
                                 "search"
+                            ],
+                            "protocol": "http",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "8000"
+                        },
+                        "header": [
+                            {
+                                "key": "User-Agent",
+                                "value": "Thunder Client (https://www.thunderclient.com)",
+                                "disabled": true
+                            }
+                        ]
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Admin",
+            "item": [
+                {
+                    "name": "Get users",
+                    "request": {
+                        "method": "GET",
+                        "url": {
+                            "raw": "http://localhost:8000/admin/users",
+                            "path": [
+                                "admin",
+                                "users"
+                            ],
+                            "protocol": "http",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "8000"
+                        },
+                        "header": [
+                            {
+                                "key": "User-Agent",
+                                "value": "Thunder Client (https://www.thunderclient.com)",
+                                "disabled": true
+                            }
+                        ]
+                    }
+                },
+                {
+                    "name": "Toggle admin user",
+                    "request": {
+                        "method": "PUT",
+                        "url": {
+                            "raw": "http://localhost:8000/admin/users/65f269e17533d263ef30e25c",
+                            "path": [
+                                "admin",
+                                "users",
+                                "65f269e17533d263ef30e25c"
+                            ],
+                            "protocol": "http",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "8000"
+                        },
+                        "header": [
+                            {
+                                "key": "User-Agent",
+                                "value": "Thunder Client (https://www.thunderclient.com)",
+                                "disabled": true
+                            }
+                        ]
+                    }
+                },
+                {
+                    "name": "Get reported posts",
+                    "request": {
+                        "method": "GET",
+                        "url": {
+                            "raw": "http://localhost:8000/admin/reports/posts",
+                            "path": [
+                                "admin",
+                                "reports",
+                                "posts"
+                            ],
+                            "protocol": "http",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "8000"
+                        },
+                        "header": [
+                            {
+                                "key": "User-Agent",
+                                "value": "Thunder Client (https://www.thunderclient.com)",
+                                "disabled": true
+                            }
+                        ]
+                    }
+                },
+                {
+                    "name": "Delete reported post",
+                    "request": {
+                        "method": "DELETE",
+                        "url": {
+                            "raw": "http://localhost:8000/admin/reports/posts/65f62981db96c538c627ec60",
+                            "path": [
+                                "admin",
+                                "reports",
+                                "posts",
+                                "65f62981db96c538c627ec60"
                             ],
                             "protocol": "http",
                             "host": [
