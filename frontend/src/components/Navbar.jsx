@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import {useLocation} from "react-router-dom";
-import {HomeIcon, MagnifyingGlassIcon, StarIcon, UserCircleIcon} from "@heroicons/react/20/solid";
+import {HomeIcon, MagnifyingGlassIcon, BookmarkIcon, UserCircleIcon} from "@heroicons/react/20/solid";
 import NavbarItem from "./NavbarItem.jsx";
 import { UserContext } from "../contexts/UserProvider";
 
@@ -25,7 +25,7 @@ export default function Navbar(){
             <nav className="flex items-center justify-center space-x-14 md:space-x-20 h-full">
                 <NavbarItem to="/" icon={HomeIcon}/>
                 <NavbarItem to="/search" icon={MagnifyingGlassIcon}/>
-                <NavbarItem to="/favorites" icon={StarIcon}/>
+                <NavbarItem to="/watchlist" icon={BookmarkIcon}/>
                 {Avatar() && <NavbarItem to="/profile" icon={UserCircleIcon}/>}
                 {!Avatar() && <NavbarItem to="/login" icon={UserCircleIcon}/>}
             </nav>

@@ -4,7 +4,7 @@ import axios from 'axios';
 import { ArrowLeftIcon } from '@heroicons/react/20/solid';
 import Post from '../components/Post';
 import Comment from '../components/Comment';
-import NewComment from '../components/NewCOmment';
+import NewComment from '../components/NewComment';
 
 export default function DetailedPost() {
     const [post, setPost] = useState(null);

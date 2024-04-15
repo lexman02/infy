@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { useLocation } from "react-router-dom";
 
 
-export default function MovieSearchPost({ onSelectResult }){
+
+export default function MovieSearch({ onSelectResult }){
     const [inputValue, setInputValue] = useState('');
     const [searchResults, setSearchResults] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
-
+    let location = useLocation();
     const inputClass = isLoading || searchResults.length > 0 ? 'border-b rounded-t-lg' : 'border rounded-lg';
 
     useEffect(() => {
@@ -34,7 +36,7 @@ export default function MovieSearchPost({ onSelectResult }){
     return (
         <div>
             <div>
-                <label htmlFor="movie-search" className="block mb-2 text-md font-medium text-neutral-200">Create a new post</label>
+                <label htmlFor="movie-search" className="block mb-2 text-md font-medium text-neutral-200">{location.pathname === '/' ? 'Create a new post' : 'Discover the InfyVerse'}</label>
                 <input type="text" id="movie-search" name="movie-search" placeholder="Search for a movie..." onChange={e => setInputValue(e.target.value)} className={`${inputClass} border-indigo-500/30 bg-indigo-950/70 text-neutral-200 sm:text-sm block w-full p-2.5`}/>
             </div>
             <div className="last:rounded-b-lg px-6 bg-indigo-950/70 shadow">

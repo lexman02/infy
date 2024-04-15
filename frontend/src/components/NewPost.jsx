@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import MovieSearchPost from './MovieSearchPost';
+import MovieSearch from './MovieSearch';
 import { PaperAirplaneIcon } from '@heroicons/react/20/solid';
 import axios from 'axios';
 
@@ -37,7 +37,7 @@ export default function NewPost({ onNewPost }) {
 
     return (
         <div>
-            {!selectedMovie && <MovieSearchPost onSelectResult={handleSelectResult} />}
+            {!selectedMovie && <MovieSearch onSelectResult={handleSelectResult} />}
             {selectedMovie && (
                 <div>
                     <div className="transition-all duration-500 cursor-pointer" onClick={() => setSelectedMovie(null)}>
