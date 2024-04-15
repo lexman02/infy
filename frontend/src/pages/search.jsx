@@ -15,11 +15,6 @@ export default function Search(){
                 <div>
                     {!selectedMovie && <MovieSearch onSelectResult={handleSelectResult} />}
                 </div>
-                <br/>
-                <br/>
-                <div>
-                    <h1 className="text-xl">Trending</h1>
-                </div>
         </div>
     );
 } 
