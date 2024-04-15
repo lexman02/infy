@@ -55,9 +55,10 @@ Next function might be redundant so idk if we want to just keep one saying findc
 
 // FindCommentsByPostID finds comments by post ID
 func FindCommentsByPostID(postID string, ctx context.Context, limit int64) ([]*Comment, error) {
-	postObjectID, _ := primitive.ObjectIDFromHex(postID)                                        // Assuming postID is valid and converting it to ObjectID
-	opts := options.Find().SetSort(bson.D{bson.E{Key: "createdAt", Value: -1}}).SetLimit(limit) // Sorting by createdAt in descending order
-	cursor, err := db.CommentsCollection().Find(ctx, bson.M{"postId": postObjectID}, opts)
+	postObjectID, _ := primitive.ObjectIDFromHex(postID)
+
+	opts := options.Find().SetSort(bson.D{bson.E{Key: "createdAt", Value: -1}}).SetLimit(limit)
+	cursor, err := db.CommentsCollection().Find(ctx, bson.M{"post_id": postObjectID}, opts)
 	if err != nil {
 		return nil, err
 	}
