@@ -57,7 +57,7 @@ Next function might be redundant so idk if we want to just keep one saying findc
 func FindCommentsByPostID(postID string, ctx context.Context, limit int64) ([]*Comment, error) {
 	postObjectID, _ := primitive.ObjectIDFromHex(postID)
 
-	opts := options.Find().SetSort(bson.D{bson.E{Key: "createdAt", Value: -1}}).SetLimit(limit)
+	opts := options.Find().SetSort(bson.D{bson.E{Key: "_id", Value: -1}}).SetLimit(limit)
 	cursor, err := db.CommentsCollection().Find(ctx, bson.M{"post_id": postObjectID}, opts)
 	if err != nil {
 		return nil, err

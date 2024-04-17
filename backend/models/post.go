@@ -44,7 +44,7 @@ func NewPost(user *User, movie *Movie, content string) *Post {
 
 // FindAllPosts finds all the posts
 func FindAllPosts(ctx context.Context, limit int64) ([]*Post, error) {
-	opts := options.Find().SetSort(bson.D{bson.E{Key: "createdAt", Value: -1}}).SetLimit(limit) // Corrected line for sorting
+	opts := options.Find().SetSort(bson.D{bson.E{Key: "_id", Value: -1}}).SetLimit(limit) // Corrected line for sorting
 	cursor, err := db.PostsCollection().Find(ctx, bson.D{}, opts)
 	if err != nil {
 		return nil, err
@@ -171,7 +171,7 @@ func FindPostsByUserID(userID string, ctx context.Context, limit int64) ([]*Post
 	}
 
 	// Define sorting and limiting options
-	opts := options.Find().SetSort(bson.D{{Key: "createdAt", Value: -1}}).SetLimit(limit)
+	opts := options.Find().SetSort(bson.D{{Key: "_id", Value: -1}}).SetLimit(limit)
 
 	filter := bson.M{"user._id": userObjectID}
 	cursor, err := db.PostsCollection().Find(ctx, filter, opts)
@@ -192,7 +192,7 @@ func FindPostsByMovieID(movieID string, ctx context.Context, limit int64) ([]*Po
 	var posts []*Post
 
 	// Define sorting and limiting options
-	opts := options.Find().SetSort(bson.D{{Key: "createdAt", Value: -1}}).SetLimit(limit)
+	opts := options.Find().SetSort(bson.D{{Key: "_id", Value: -1}}).SetLimit(limit)
 
 	filter := bson.M{"movie_id": movieID}
 	cursor, err := db.PostsCollection().Find(ctx, filter, opts)
