@@ -10,6 +10,7 @@ export default function NewComment({ onNewComment, postID }) {
         await axios.post('http://localhost:8000/comments/', data, {withCredentials: true})
             .then(() => {
                 onNewComment();
+                window.location.reload(); // Refresh the page
             })
             .catch(error => {
                 console.error(error);
