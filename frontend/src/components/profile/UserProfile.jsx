@@ -26,6 +26,8 @@ export default function UserProfile({ userData }) {
         getProfileData();
     }, []);
 
+    const avatar = profileData.profile.avatar ? `http://localhost:8000/avatars/${profileData.profile.avatar}` : defaultAvatar;
+
     return (
         <div className="md:my-6 md:mx-60 flex-grow rounded-lg">
             {profileData && (
@@ -33,7 +35,7 @@ export default function UserProfile({ userData }) {
                     <div className="bg-black/40 p-5 rounded-lg">
                         <div className="flex flex-col space-y-4 md:flex-row md:justify-between md:items-center">
                             <div className="flex space-x-4 items-center">
-                                <img src={`${defaultAvatar}`} className=" w-28 h-28 rounded-full" />
+                                <img src={avatar} className=" w-28 h-28 rounded-full" />
                                 <div>
                                     <h1 className="text-xl">
                                         {profileData.profile.first_name} {profileData.profile.last_name}

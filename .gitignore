@@ -26,3 +26,5 @@
 # macOS files
 .DS_Store
 .env
+
+backend/uploads/*

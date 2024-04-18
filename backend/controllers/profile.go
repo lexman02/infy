@@ -187,3 +187,49 @@ func RemoveMovieFromWatchlist(c *gin.Context) {
 
 	c.JSON(http.StatusOK, gin.H{"message": "Movie removed from watchlist successfully"})
 }
+
+func AddUserAvatar(c *gin.Context) {
+	user, exists := c.Get("user")
+	if !exists {
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "Unauthorized"})
+		return
+	}
+
+	file, err := c.FormFile("avatar")
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "No file uploaded"})
+		log.Println(err)
+		return
+	}
+
+	if file.Header.Get("Content-Type") != "image/jpeg" && file.Header.Get("Content-Type") != "image/png" {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid file type. Only JPEG and PNG images are allowed"})
+		return
+	}
+
+	if file.Size > 5<<20 {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "File size should not exceed 5MB"})
+		return
+	}
+
+	// set the filename to the user's ID and save the file using the original filetype
+	file.Filename = user.(*models.User).ID.Hex() + file.Filename[len(file.Filename)-4:]
+
+	// save the file to the uploads/avatars directory
+	filepath := "uploads/avatars/" + file.Filename
+	err = c.SaveUploadedFile(file, filepath)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Could not save file"})
+		log.Println(err)
+		return
+	}
+
+	err = models.AddAvatar(user.(*models.User), file.Filename, c.Request.Context())
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Could not add avatar"})
+		log.Println(err)
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"message": "Avatar added successfully"})
+}

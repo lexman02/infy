@@ -15,6 +15,7 @@ func ProfileRoutes(r *gin.Engine) {
 		{
 			userProfile.GET("/", controllers.GetUserProfile)
 			//userProfile.PUT("/", controllers.UpdateUserProfile)
+			userProfile.POST("/avatar", controllers.AddUserAvatar)
 		}
 
 		profile.GET("/:username", controllers.GetProfile)

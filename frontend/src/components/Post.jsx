@@ -15,9 +15,6 @@ export default function Post({ post, detailed = false }) {
     const [edit, setEdit] = useState(false);
     const { userData } = useContext(UserContext);
 
-    const isAdmin = post.post.user.isAdmin;
-    const author = post.post.user.username;
-
     const navigate = useNavigate();
     const navigateToPost = () => {
         if (!detailed) {
@@ -25,7 +22,9 @@ export default function Post({ post, detailed = false }) {
         }
     }
 
-
+    const isAdmin = userData.user.isAdmin;
+    const author = post.post.user.username;
+    const avatar = post.post.user.profile.avatar ? `http://localhost:8000/avatars/${post.post.user.profile.avatar}` : defaultAvatar;
     const fullName = `${post.post.user.profile.first_name} ${post.post.user.profile.last_name}`;
 
     function handleLike() {
@@ -101,13 +100,16 @@ export default function Post({ post, detailed = false }) {
             });
     }
 
+    console.log('isAdmin:', isAdmin);
+    console.log('author:', author);
+    console.log('userData.user.username:', userData.user.username);
 
     return (
         <div className="flex justify-between space-x-8 bg-black/40 p-4 text-neutral-100 last:rounded-b-lg">
             <div className="flex flex-col justify-around w-full">
                 {/* Post author details */}
                 <div className="flex space-x-2 items-center">
-                    <img src={`${post.post.user.profile.avatar || defaultAvatar}`} alt={fullName} className="w-11 h-11 rounded-full" />
+                    <img src={avatar} alt={post.post.user.username} className="w-10 h-10 rounded-full" />
                     <div>
                         <div className="flex items-end space-x-1">
                             <h2 className="font-bold">

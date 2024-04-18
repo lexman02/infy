@@ -296,3 +296,26 @@ func GetUsers() ([]User, error) {
 
 	return users, nil
 }
+
+// AddAvatar adds an avatar to the user's profile
+func AddAvatar(user *User, filepath string, ctx context.Context) error {
+	update := bson.M{"$set": bson.M{"profile.avatar": filepath}}
+	_, err := db.UsersCollection().UpdateByID(ctx, user.ID, update)
+
+	err = refreshUser(user, ctx)
+
+	return err
+}
+
+// refreshUser updates the user in all posts and comments
+func refreshUser(user *User, ctx context.Context) error {
+	// Update the user in all posts
+	update := bson.M{"$set": bson.M{"user": user}}
+	_, err := db.PostsCollection().UpdateMany(ctx, bson.M{"user._id": user.ID}, update)
+
+	// Update the user in all comments
+	update = bson.M{"$set": bson.M{"user": user}}
+	_, err = db.CommentsCollection().UpdateMany(ctx, bson.M{"user._id": user.ID}, update)
+
+	return err
+}

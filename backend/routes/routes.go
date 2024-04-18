@@ -18,6 +18,9 @@ func InitRoutes() *gin.Engine {
 		MaxAge:           12 * time.Hour,
 	}))
 
+	// Serve avatar images
+	router.Static("/avatars", "./uploads/avatars")
+
 	// Initialize the routes
 	AuthRoutes(router)
 	PostRoutes(router)
