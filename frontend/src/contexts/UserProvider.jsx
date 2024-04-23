@@ -6,10 +6,8 @@ export const UserContext = React.createContext();
 export default function UserProvider({ children }) {
     const [userData, setUserData] = useState(null);
 
-
     function getUserData() {
-        if (userData === null) {
-            axios.get('http://localhost:8000/auth/user', {withCredentials: true})
+        axios.get('http://localhost:8000/auth/user', { withCredentials: true })
             .then(response => {
                 if (response.data) {
                     setUserData(response.data);
@@ -20,15 +18,16 @@ export default function UserProvider({ children }) {
                     setUserData(null);
                 }
             });
-        }
     }
 
     useEffect(() => {
-        getUserData();
+        if (userData === null || userData === undefined) {
+            getUserData();
+        }
     });
 
     return (
-        <UserContext.Provider value={{userData, setUserData}}>
+        <UserContext.Provider value={{ userData, setUserData }}>
             {children}
         </UserContext.Provider>
     );

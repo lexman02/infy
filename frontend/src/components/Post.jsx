@@ -24,7 +24,7 @@ export default function Post({ post, detailed = false }) {
 
     const isAdmin = userData.user.isAdmin;
     const author = post.post.user.username;
-    const avatar = post.post.user.profile.avatar ? `http://localhost:8000/avatars/${post.post.user.profile.avatar}` : defaultAvatar;
+    const avatar = post.post && post.post.user.profile.avatar ? `http://localhost:8000/avatars/${post.post.user.profile.avatar}` : defaultAvatar;
     const fullName = `${post.post.user.profile.first_name} ${post.post.user.profile.last_name}`;
 
     function handleLike() {
@@ -99,10 +99,6 @@ export default function Post({ post, detailed = false }) {
                 console.error(error);
             });
     }
-
-    console.log('isAdmin:', isAdmin);
-    console.log('author:', author);
-    console.log('userData.user.username:', userData.user.username);
 
     return (
         <div className="flex justify-between space-x-8 bg-black/40 p-4 text-neutral-100 last:rounded-b-lg">

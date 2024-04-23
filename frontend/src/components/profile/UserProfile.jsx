@@ -26,7 +26,7 @@ export default function UserProfile({ userData }) {
         getProfileData();
     }, []);
 
-    const avatar = profileData.profile.avatar ? `http://localhost:8000/avatars/${profileData.profile.avatar}` : defaultAvatar;
+    const avatar = profileData && profileData.profile.avatar ? `http://localhost:8000/avatars/${profileData.profile.avatar}` : defaultAvatar;
 
     return (
         <div className="md:my-6 md:mx-60 flex-grow rounded-lg">
