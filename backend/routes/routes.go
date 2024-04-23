@@ -7,6 +7,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// InitRoutes initializes all the route groups and settings for the application.
 func InitRoutes() *gin.Engine {
 	router := gin.Default()
 	router.Use(cors.New(cors.Config{
@@ -18,10 +19,10 @@ func InitRoutes() *gin.Engine {
 		MaxAge:           12 * time.Hour,
 	}))
 
-	// Serve avatar images
+	// Serve avatar images from the specified directory
 	router.Static("/avatars", "./uploads/avatars")
 
-	// Initialize the routes
+	// Register the route groups
 	AuthRoutes(router)
 	PostRoutes(router)
 	ProfileRoutes(router)

@@ -49,11 +49,6 @@ func NewProfile(firstName, lastName string, dateOfBirth time.Time, preferences *
 	return &Profile{FirstName: firstName, LastName: lastName, DateOfBirth: dateOfBirth, Avatar: "", Rank: "Newbie", Preferences: *preferences}
 }
 
-//// NewPreferences creates a new preferences instance
-//func NewPreferences(genres, watchList, watched []string) *Preferences {
-//	return &Preferences{Genres: genres, Following: nil, Followers: nil, WatchList: watchList, Watched: watched}
-//}
-
 // NewPreferences creates a new preferences instance with empty slices
 func NewPreferences() *Preferences {
 	return &Preferences{Genres: []string{}, Following: nil, Followers: nil, WatchList: []string{}, Watched: []string{}}

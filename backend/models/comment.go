@@ -28,9 +28,6 @@ func NewComment(postID primitive.ObjectID, user *User, content string) *Comment 
 	return &Comment{ID: primitive.NewObjectID(), PostID: postID, User: user, Likes: 0, Dislikes: 0, Content: content}
 }
 
-//FindCommentsByUser finds all comments created by a user
-//TODO if we want to implement
-
 // FindCommentByID finds comments by comment ID
 func FindCommentsByID(id string, ctx context.Context) (*Comment, error) {
 	var comment Comment
@@ -46,12 +43,6 @@ func FindCommentsByID(id string, ctx context.Context) (*Comment, error) {
 
 	return &comment, err
 }
-
-/*
-
-Next function might be redundant so idk if we want to just keep one saying findcommentbyid
-
-*/
 
 // FindCommentsByPostID finds comments by post ID
 func FindCommentsByPostID(postID string, ctx context.Context, limit int64) ([]*Comment, error) {

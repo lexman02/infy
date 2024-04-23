@@ -7,13 +7,13 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// AuthRoutes authentication routes
+// AuthRoutes sets up the authentication routes for the application.
 func AuthRoutes(r *gin.Engine) {
 	auth := r.Group("/auth")
 	{
-		auth.POST("/login", controllers.Login)
-		auth.POST("/signup", controllers.Signup)
-		auth.GET("/user", middleware.Authorized(), controllers.User)
-		auth.POST("/logout", middleware.Authorized(), controllers.Logout)
+		auth.POST("/login", controllers.Login)                            // Handles user login
+		auth.POST("/signup", controllers.Signup)                          // Handles user registration
+		auth.GET("/user", middleware.Authorized(), controllers.User)      // Retrieves the logged-in user's profile
+		auth.POST("/logout", middleware.Authorized(), controllers.Logout) // Handles user logout
 	}
 }

@@ -11,6 +11,7 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
+// Poll represents a poll related to a movie, containing multiple options for responses.
 type Poll struct {
 	ID        string    `bson:"_id" json:"id"`
 	MovieID   string    `bson:"movie_id" json:"movie_id"`
@@ -20,77 +21,67 @@ type Poll struct {
 	Options   []Option  `bson:"options" json:"options"`
 }
 
+// Option defines a single selectable option within a poll.
 type Option struct {
 	ID    string `bson:"_id" json:"id"`
 	Text  string `bson:"text" json:"text"`
 	Votes int    `bson:"votes" json:"votes"`
 }
 
+// NewPoll creates a new Poll with the specified question and associated movie ID.
 func NewPoll(question, movieID string) *Poll {
 	return &Poll{
 		ID:        primitive.NewObjectID().Hex(),
 		MovieID:   movieID,
 		Question:  question,
 		CreatedAt: time.Now(),
-		EndsAt:    time.Now().Add(24 * time.Hour),
+		EndsAt:    time.Now().Add(24 * time.Hour), // Poll ends in 24 hours from creation
 		Options:   nil,
 	}
 }
 
+// AddOption adds a new option to the Poll.
 func (p *Poll) AddOption(text string) {
 	p.Options = append(p.Options, Option{
 		ID:    primitive.NewObjectID().Hex(),
 		Text:  text,
-		Votes: 0,
+		Votes: 0, // Initialize votes to zero for the new option
 	})
 }
 
+// Save inserts the Poll into the database.
 func (p *Poll) Save(ctx context.Context) error {
 	_, err := db.PollsCollection().InsertOne(ctx, p)
-	if err != nil {
-		return err
-	}
-
-	return nil
+	return err
 }
 
+// IncrementPollOptionVote increases the vote count for a specific option in a poll.
 func IncrementPollOptionVote(pollID, optionID string, ctx context.Context) error {
-	// Convert the pollID and optionID to ObjectIDs
 	pollObjectID, err := primitive.ObjectIDFromHex(pollID)
 	if err != nil {
-		return err
+		return err // Handle invalid ObjectID format
 	}
 
-	// optionObjectID, err := primitive.ObjectIDFromHex(optionID)
-	// if err != nil {
-	// 	return err
-	// }
-
-	filter := bson.M{
-		"_id": pollObjectID,
-	}
-
-	update := bson.M{
-		"$inc": bson.M{"options.$[elem].votes": 1},
-	}
-
+	filter := bson.M{"_id": pollObjectID}
+	update := bson.M{"$inc": bson.M{"options.$[elem].votes": 1}}
 	arrayFilters := options.Update().SetArrayFilters(options.ArrayFilters{
 		Filters: []interface{}{bson.M{"elem._id": optionID}},
 	})
 
-	poll, err := db.PollsCollection().UpdateOne(ctx, filter, update, arrayFilters)
+	result, err := db.PollsCollection().UpdateOne(ctx, filter, update, arrayFilters)
 	if err != nil {
 		return err
 	}
 
-	fmt.Println("MatchedCount: ", poll.MatchedCount)
-	fmt.Println("ModifiedCount: ", poll.ModifiedCount)
-	fmt.Println("UpsertedCount: ", poll.UpsertedCount)
-	fmt.Println("UpsertedID: ", poll.UpsertedID)
+	fmt.Println("MatchedCount: ", result.MatchedCount)
+	fmt.Println("ModifiedCount: ", result.ModifiedCount)
+	fmt.Println("UpsertedCount: ", result.UpsertedCount)
+	fmt.Println("UpsertedID: ", result.UpsertedID)
 
 	return nil
 }
 
+// FindPollsByMovieID retrieves all polls associated with a specific movie ID.
 func FindPollsByMovieID(movieID string, ctx context.Context) ([]*Poll, error) {
 	var polls []*Poll
 	filter := bson.M{"movie_id": movieID}
