@@ -4,14 +4,13 @@ import ProfilePosts from "./ProfilePosts";
 import WatchedPosts from "./WatchedPosts";
 import WatchlistPosts from "./WatchlistPosts";
 
-export default function ProfileNav() {
-
+export default function ProfileNav(user) {
     const [activeTab, setActiveTab] = useState('ProfilePosts')
 
     const renderTab = (component) => {
         switch (component) {
             case 'ProfilePosts':
-                return <ProfilePosts />;
+                return <ProfilePosts userID={user.user.id} />;
             case 'WatchedPosts':
                 return <WatchedPosts />;
             case 'WatchlistPosts':

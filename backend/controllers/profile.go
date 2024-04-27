@@ -22,14 +22,21 @@ func GetUserProfile(c *gin.Context) {
 
 // GetProfile fetches and returns a user profile based on a username provided as a URL parameter.
 func GetProfile(c *gin.Context) {
-	profile, err := models.FindUserProfileByUsername(c.Param("username"), c.Request.Context())
+	user, err := models.FindUserByUsername(c.Param("username"), c.Request.Context())
 	if err != nil {
 		c.JSON(500, gin.H{"error": "An error occurred"}) // Error handling if the profile cannot be retrieved.
 		log.Println(err)
 		return
 	}
 
-	c.JSON(200, gin.H{"profile": profile}) // Returns the fetched profile.
+	profileResponse := map[string]interface{}{
+		"id":       user.ID.Hex(),
+		"username": user.Username,
+		"is_admin": user.IsAdmin,
+		"profile":  user.Profile,
+	}
+
+	c.JSON(200, gin.H{"user": profileResponse})
 }
 
 // Follow allows the authenticated user to follow another user specified by their user ID.

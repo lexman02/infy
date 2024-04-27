@@ -22,7 +22,8 @@ export default function Post({ post, detailed = false }) {
         }
     }
 
-    const isAdmin = userData.user.isAdmin;
+
+    const isAdmin = userData && (userData.user ? userData.user.isAdmin : false);
     const author = post.post.user.username;
     const avatar = post.post && post.post.user.profile.avatar ? `http://localhost:8000/avatars/${post.post.user.profile.avatar}` : defaultAvatar;
     const fullName = `${post.post.user.profile.first_name} ${post.post.user.profile.last_name}`;
@@ -105,14 +106,16 @@ export default function Post({ post, detailed = false }) {
             <div className="flex flex-col justify-around w-full">
                 {/* Post author details */}
                 <div className="flex space-x-2 items-center">
-                    <img src={avatar} alt={post.post.user.username} className="w-10 h-10 rounded-full" />
+                    <Link to={"/profile/" + post.post.user.username}>
+                        <img src={avatar} alt={post.post.user.username} className="w-10 h-10 rounded-full" />
+                    </Link>
                     <div>
-                        <div className="flex items-end space-x-1">
+                        <Link to={"/profile/" + post.post.user.username} className="flex items-end space-x-1">
                             <h2 className="font-bold">
                                 {fullName}
                             </h2>
                             <span className="text-neutral-500 text-sm font-light">@{post.post.user.username}</span>
-                        </div>
+                        </Link>
                         <div className="flex items-end space-x-1 text-sm text-neutral-400">
                             <p className="font-light">
                                 watched
@@ -145,9 +148,9 @@ export default function Post({ post, detailed = false }) {
                     {!detailed && <ChatBubbleOvalLeftIcon className="h-6 w-6 text-neutral-200 hover:cursor-pointer" onClick={navigateToPost} />}
                     <div className="flex space-x-3 items-center">
                         <Popup trigger={<EllipsisHorizontalIcon className="h-6 w-6 text-neutral-200 hover:cursor-pointer" />} position="right center">
-                            <div className="flex flex-col space-y-2 px-5 py-1 bg-black">
-                                {author === userData.user.username ? <button className="text-neutral-200 hover:bg-neutral-800 flex p-2 rounded-lg" onClick={handleEdit}><PencilIcon className="h-5 w-5" /><h1 className="pl-2">Edit</h1> </button> : null}
-                                {isAdmin || author == userData.user.username ? <button className="text-neutral-200 hover:bg-neutral-800 flex p-2 rounded-lg" onClick={handleDelete}><TrashIcon className="h-5 w-5" /><h1 className="pl-2">Delete</h1></button> : null}
+                            <div className="flex flex-col space-y-2 px-5 py-1 bg-neutral-950 rounded-lg">
+                                {userData && author === userData.user.username ? <button className="text-neutral-200 hover:bg-neutral-800 flex p-2 rounded-lg" onClick={handleEdit}><PencilIcon className="h-5 w-5" /><h1 className="pl-2">Edit</h1> </button> : null}
+                                {userData && (isAdmin || author === userData.user.username ? <button className="text-neutral-200 hover:bg-neutral-800 flex p-2 rounded-lg" onClick={handleDelete}><TrashIcon className="h-5 w-5" /><h1 className="pl-2">Delete</h1></button> : null)}
                                 <button className="text-neutral-200 hover:bg-neutral-800 flex p-2 rounded-lg" onClick={handleReport}><FlagIcon className="h-5 w-5" /><h1 className="pl-2">Report</h1></button>
                             </div>
                         </Popup>

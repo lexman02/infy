@@ -12,6 +12,7 @@ import MovieDetails from './pages/MovieDetails.jsx';
 import axios from 'axios';
 import { useContext } from 'react';
 import { UserContext } from './contexts/UserProvider';
+import NotFound from './pages/NotFound.jsx';
 
 
 export default function App() {
@@ -51,10 +52,11 @@ export default function App() {
           <Route exact path="/signup" element={<Signup />} />
           <Route exact path="/" element={<Home />} />
           <Route path="/post/:postID" element={<DetailedPost />} />
-          <Route exact path="/profile" element={<Profile />} />
+          <Route path="/profile/:username" element={<Profile />} />
           <Route exact path="/watchlist" element={<Watchlist />} />
           <Route exact path="/search" element={<Search />} />
           <Route exact path="/movie/:movieID" element={<MovieDetails />} />
+          <Route path="*" element={<NotFound />} />
         </Routes>
         <Navbar />
       </Router>

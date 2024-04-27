@@ -1,17 +1,62 @@
-import { useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
+import { useParams } from "react-router-dom";
+import axios from "axios";
+import { WrenchIcon } from "@heroicons/react/20/solid";
 import { UserContext } from "../contexts/UserProvider";
-import UserProfile from "../components/profile/UserProfile";
+import defaultAvatar from "../img/default-avatar.png"
+import FollowButton from "../components/profile/FollowButton";
+import ProfileNav from "../components/profile/ProfileNav";
 
 export default function Profile() {
+    const [profileData, setProfileData] = useState(null);
     const { userData } = useContext(UserContext);
+    const { username } = useParams();
+
+    function getProfileData() {
+        axios.get(`http://localhost:8000/profile/${username}`, { withCredentials: true })
+            .then(response => {
+                if (response.data) {
+                    setProfileData(response.data.user);
+                }
+            })
+            .catch(error => {
+                console.error(error);
+                setProfileData(null);
+            });
+    }
+
+    useEffect(() => {
+        getProfileData();
+    }, []);
+
+    const avatar = profileData && (profileData.profile.avatar ? `http://localhost:8000/avatars/${profileData.profile.avatar}` : defaultAvatar);
 
     return (
-        <div>
-            {userData && (
+        profileData && (
+            <div className="md:my-6 md:mx-60 flex-grow rounded-lg">
                 <div>
-                    <UserProfile userData={userData} />
+                    <div className="bg-black/40 p-5 rounded-t-lg">
+                        <div className="flex flex-col space-y-4 md:flex-row md:justify-between md:items-center">
+                            <div className="flex space-x-4 items-center">
+                                <img src={avatar} className=" w-28 h-28 rounded-full" />
+                                <div>
+                                    <h1 className="text-xl">
+                                        {profileData.profile.first_name} {profileData.profile.last_name}
+                                        {profileData.is_admin ? <WrenchIcon className="w-6 h-6 inline-block ml-2" /> : null}
+                                    </h1>
+                                    <h1 className="text-lg">@{profileData.username}</h1>
+                                </div>
+                            </div>
+                            {userData && (
+                                <FollowButton isFollowing={false} userData={userData} />
+                            )}
+                        </div>
+                    </div>
+                    <div>
+                        <ProfileNav user={profileData} />
+                    </div>
                 </div>
-            )}
-        </div>
+            </div>
+        )
     );
 }

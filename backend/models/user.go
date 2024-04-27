@@ -80,7 +80,7 @@ func FindUserByID(id string, ctx context.Context) (*User, error) {
 	return &user, err
 }
 
-func FindUserProfileByUsername(username string, ctx context.Context) (*Profile, error) {
+func FindUserByUsername(username string, ctx context.Context) (*User, error) {
 	var user User
 
 	err := db.UsersCollection().FindOne(ctx, bson.M{"username": username}).Decode(&user)
@@ -88,7 +88,7 @@ func FindUserProfileByUsername(username string, ctx context.Context) (*Profile, 
 		return nil, err
 	}
 
-	return &user.Profile, nil
+	return &user, nil
 }
 
 // FollowUser adds a user to the following list and updates the other user's followers list

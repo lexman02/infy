@@ -1,16 +1,14 @@
 import React from "react";
 import Post from "../Post";
 import axios from "axios";
-import { UserContext } from "../../contexts/UserProvider";
 import { useState, useEffect } from "react";
 
 
-export default function ProfilePosts() {
+export default function ProfilePosts(userID) {
     const [posts, setPosts] = useState([]);
-    const { userData } = React.useContext(UserContext);
 
     useEffect(() => {
-        axios.get(`http://localhost:8000/posts/user/${userData.user.id}`, { withCredentials: true })
+        axios.get(`http://localhost:8000/posts/user/${userID.userID}`, { withCredentials: true })
             .then(response => {
                 if (response.data.length > 0) {
                     setPosts(response.data);
@@ -30,8 +28,8 @@ export default function ProfilePosts() {
                     {posts.length > 0 ? (
                         posts.map(post => <Post key={post.post.id} post={post} />)
                     ) : (
-                        <div className="p-4 text-neutral-300 bg-indigo-900 font-medium text-lg bg-black/40 rounded-b-lg text-center">
-                            <h1 className="">No posts, yet...</h1>
+                        <div className="p-4 text-neutral-300 font-medium text-lg bg-black/40 rounded-b-lg text-center">
+                            <h1 className="">No posts yet...</h1>
                         </div>
                     )}
                 </div>
