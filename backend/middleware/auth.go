@@ -1,7 +1,7 @@
 package middleware
 
 import (
-	"context"
+	"errors"
 	"infy/models"
 	"infy/utils"
 	"net/http"
@@ -20,7 +20,7 @@ func Authorized() gin.HandlerFunc {
 			return
 		}
 
-		user, err := GetUserFromToken(token, c.Request.Context()) // Decode the token to retrieve the user.
+		user, err := GetUserFromToken(token, c) // Decode the token to retrieve the user.
 		if err != nil || user == nil {
 			c.JSON(401, gin.H{"error": "Unauthorized"}) // Respond with unauthorized if the token is invalid or user does not exist.
 			c.Abort()
@@ -32,19 +32,24 @@ func Authorized() gin.HandlerFunc {
 	}
 }
 
-// GetUserFromToken decodes a JWT token and retrieves the user from the database.
-func GetUserFromToken(token string, ctx context.Context) (*models.User, error) {
+func GetUserFromToken(token string, c *gin.Context) (*models.User, error) {
+	// Parse the token with the JWT_SECRET_KEY from the environment variables
 	parsedToken, err := jwt.Parse(token, func(token *jwt.Token) (interface{}, error) {
 		jwtSecretKey := utils.GetEnv("JWT_SECRET_KEY", "") // Retrieve JWT secret key from environment.
 		return []byte(jwtSecretKey), nil
 	})
 	if err != nil {
-		return nil, err // Return error if the token parsing fails.
+		if err.Error() == "token has invalid claims: token is expired" {
+			c.SetCookie("token", "", -1, "/", utils.GetEnv("SITE_DOMAIN", "localhost"), utils.IsProd(), true)
+			err = errors.New("token deleted due to expiration")
+			return nil, err
+		}
+		return nil, err
 	}
 
 	if claims, ok := parsedToken.Claims.(jwt.MapClaims); ok && parsedToken.Valid {
-		userId := claims["sub"].(string)        // Extract user ID from token claims.
-		return models.FindUserByID(userId, ctx) // Fetch the user from the database by ID.
+		userId := claims["sub"].(string)                        // Extract user ID from token claims.
+		return models.FindUserByID(userId, c.Request.Context()) // Fetch the user from the database by ID.
 	}
 
 	return nil, nil // Return nil if the token is not valid or claims are not correctly parsed.

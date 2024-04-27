@@ -134,13 +134,13 @@ func Signup(c *gin.Context) {
 
 // User retrieves and displays the current authenticated user's details.
 func User(c *gin.Context) {
-	user := c.MustGet("user").(*models.User)
-	if user == nil {
+	user, exists := c.Get("user")
+	if !exists {
 		c.JSON(401, gin.H{"error": "Unauthorized"})
 		return
 	}
 
-	c.JSON(200, gin.H{"user": user})
+	c.JSON(200, gin.H{"user": user.(*models.User)})
 }
 
 // Logout terminates the user session by clearing the authentication token cookie.
