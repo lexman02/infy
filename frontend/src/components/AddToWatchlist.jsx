@@ -1,8 +1,15 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import Snackbar from '@mui/material/Snackbar';
+import Alert from '@mui/material/Alert';
 
 export default function AddToWatchlist({ isAdded = false, movieID }) {
     const [addded, setAdded] = useState(isAdded);
+    const [errorMessage, setErrorMessage] = useState('');
+
+    const handleCloseError = () => {
+        setErrorMessage('');
+    };
 
     // Add to list
     async function addMovie() {
@@ -11,7 +18,14 @@ export default function AddToWatchlist({ isAdded = false, movieID }) {
                 setAdded(true);
             })
             .catch((error) => {
-                console.error('ERROR adding to watchlist: ', error);
+                console.error(error);
+                if (error.response && error.response.data && error.response.data.message) {
+                    // If the error contains a specific message, set that as the errorMessage
+                    setErrorMessage(error.response.data.message);
+                } else {
+                    // If no specific message is available, set a generic error message
+                    setErrorMessage('ERROR occured adding to watchlist.');
+                }
             });
     }
 
@@ -23,7 +37,14 @@ export default function AddToWatchlist({ isAdded = false, movieID }) {
                 setAdded(false);
             })
             .catch((error) => {
-                console.error('ERROR removing from watchlist: ', error);
+                console.error(error);
+                if (error.response && error.response.data && error.response.data.message) {
+                    // If the error contains a specific message, set that as the errorMessage
+                    setErrorMessage(error.response.data.message);
+                } else {
+                    // If no specific message is available, set a generic error message
+                    setErrorMessage('ERROR occured adding to watchlist.');
+                }
             });
     }
 
@@ -39,6 +60,13 @@ export default function AddToWatchlist({ isAdded = false, movieID }) {
                     Add to Watchlist
                 </button>
             )}
+
+            <Snackbar open={!!errorMessage} autoHideDuration={6000} onClose={handleCloseError}>
+                <Alert elevation={6} variant="filled" severity="error" onClose={handleCloseError}>
+                    {errorMessage}
+                </Alert>
+            </Snackbar>
+
         </div>
     )
 }

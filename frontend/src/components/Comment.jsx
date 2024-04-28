@@ -7,6 +7,8 @@ import { UserContext } from "../contexts/UserProvider";
 import { useContext, useState } from "react";
 import axios from "axios";
 import EditComment from "./EditComment";
+import Snackbar from '@mui/material/Snackbar';
+import Alert from '@mui/material/Alert';
 
 export default function Comment({ comment }) {
     const [edit, setEdit] = useState(false);
@@ -18,6 +20,11 @@ export default function Comment({ comment }) {
     const isAdmin = userData.user.isAdmin;
     const fullName = `${comment.user.profile.first_name} ${comment.user.profile.last_name}`;
     const avatar = comment.user.profile.avatar ? `http://localhost:8000/avatars/${comment.user.profile.avatar}` : defaultAvatar;
+    const [errorMessage, setErrorMessage] = useState('');
+
+    const handleCloseError = () => {
+        setErrorMessage('');
+    };
 
     function handleLike() {
         console.log('Like');
@@ -39,6 +46,13 @@ export default function Comment({ comment }) {
             })
             .catch((error) => {
                 console.error(error);
+                if (error.response && error.response.data && error.response.data.message) {
+                    // If the error contains a specific message, set that as the errorMessage
+                    setErrorMessage(error.response.data.message);
+                } else {
+                    // If no specific message is available, set a generic error message
+                    setErrorMessage('An error occured while deleting this comment.');
+                }
             });
     }
 
@@ -51,6 +65,14 @@ export default function Comment({ comment }) {
             })
             .catch((error) => {
                 console.error(error);
+                console.error(error);
+                if (error.response && error.response.data && error.response.data.message) {
+                    // If the error contains a specific message, set that as the errorMessage
+                    setErrorMessage(error.response.data.message);
+                } else {
+                    // If no specific message is available, set a generic error message
+                    setErrorMessage('An error occured while reporting.');
+                }
             });
     }
 
@@ -97,6 +119,13 @@ export default function Comment({ comment }) {
                     </div>
                 </div>
             </div>
+
+            <Snackbar open={!!errorMessage} autoHideDuration={6000} onClose={handleCloseError}>
+                <Alert elevation={6} variant="filled" severity="error" onClose={handleCloseError}>
+                    {errorMessage}
+                </Alert>
+            </Snackbar>
+
         </div>
     );
 }

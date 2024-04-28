@@ -6,6 +6,8 @@ import defaultAvatar from "../img/default-avatar.png";
 import Popup from "reactjs-popup"
 import { UserContext } from "../contexts/UserProvider";
 import EditPost from "./EditPost";
+import Snackbar from '@mui/material/Snackbar';
+import Alert from '@mui/material/Alert';
 
 export default function Post({ post, detailed = false }) {
     const [liked, setLiked] = useState(post.liked);
@@ -13,6 +15,7 @@ export default function Post({ post, detailed = false }) {
     const [likes, setLikes] = useState(post.likes);
     const [dislikes, setDislikes] = useState(post.dislikes);
     const [edit, setEdit] = useState(false);
+    const [errorMessage, setErrorMessage] = useState('');
     const { userData } = useContext(UserContext);
 
     const navigate = useNavigate();
@@ -22,6 +25,9 @@ export default function Post({ post, detailed = false }) {
         }
     }
 
+    const handleCloseError = () => {
+        setErrorMessage('');
+    }
 
     const isAdmin = userData && (userData.user ? userData.user.isAdmin : false);
     const author = post.post.user.username;
@@ -48,6 +54,13 @@ export default function Post({ post, detailed = false }) {
             })
             .catch((error) => {
                 console.error(error);
+                if (error.response && error.response.data && error.response.data.message) {
+                    // If the error contains a specific message, set that as the errorMessage
+                    setErrorMessage(error.response.data.message);
+                } else {
+                    // If no specific message is available, set a generic error message
+                    setErrorMessage('An error occured while liking.');
+                }
             });
     }
 
@@ -71,6 +84,13 @@ export default function Post({ post, detailed = false }) {
             })
             .catch((error) => {
                 console.error(error);
+                if (error.response && error.response.data && error.response.data.message) {
+                    // If the error contains a specific message, set that as the errorMessage
+                    setErrorMessage(error.response.data.message);
+                } else {
+                    // If no specific message is available, set a generic error message
+                    setErrorMessage('An error occured while disliking.');
+                }
             });
     }
 
@@ -86,6 +106,13 @@ export default function Post({ post, detailed = false }) {
             })
             .catch((error) => {
                 console.error(error);
+                if (error.response && error.response.data && error.response.data.message) {
+                    // If the error contains a specific message, set that as the errorMessage
+                    setErrorMessage(error.response.data.message);
+                } else {
+                    // If no specific message is available, set a generic error message
+                    setErrorMessage('An error occured during deletion.');
+                }
             });
     }
 
@@ -98,6 +125,13 @@ export default function Post({ post, detailed = false }) {
             })
             .catch((error) => {
                 console.error(error);
+                if (error.response && error.response.data && error.response.data.message) {
+                    // If the error contains a specific message, set that as the errorMessage
+                    setErrorMessage(error.response.data.message);
+                } else {
+                    // If no specific message is available, set a generic error message
+                    setErrorMessage('An error occured during reporting.');
+                }
             });
     }
 
@@ -158,6 +192,12 @@ export default function Post({ post, detailed = false }) {
                 </div>
             </div>
             <img src={`https://image.tmdb.org/t/p/original/${post.post.movie.poster_path}`} alt={post.post.movie.title} className="w-20 h-32 object-cover rounded-lg" />
+
+            <Snackbar open={!!errorMessage} autoHideDuration={6000} onClose={handleCloseError}>
+                <Alert elevation={6} variant="filled" severity="error" onClose={handleCloseError}>
+                    {errorMessage}
+                </Alert>
+            </Snackbar>
         </div>
     )
 }

@@ -2,12 +2,20 @@ import React, { useState } from 'react';
 import MovieSearch from './MovieSearch';
 import { PaperAirplaneIcon } from '@heroicons/react/20/solid';
 import axios from 'axios';
+import Snackbar from '@mui/material/Snackbar';
+import Alert from '@mui/material/Alert';
 
 export default function NewPost({ onNewPost }) {
     const [selectedMovie, setSelectedMovie] = useState(null);
 
     const handleSelectResult = (movie) => {
         setSelectedMovie(movie);
+    };
+
+    const [errorMessage, setErrorMessage] = useState('');
+
+    const handleCloseError = () => {
+        setErrorMessage('');
     };
 
     const handleSubmit = async (e) => {
@@ -22,6 +30,13 @@ export default function NewPost({ onNewPost }) {
                     axios.post(`http://localhost:8000/profile/movies/add/watched`, { 'movieId': data.movie_id }, { withCredentials: true })
                         .catch(error => {
                             console.error(error);
+                            if (error.response && error.response.data && error.response.data.message) {
+                                // If the error contains a specific message, set that as the errorMessage
+                                setErrorMessage(error.response.data.message);
+                            } else {
+                                // If no specific message is available, set a generic error message
+                                setErrorMessage('An error occured.');
+                            }
                         });
                 }
 
@@ -69,6 +84,13 @@ export default function NewPost({ onNewPost }) {
                     </form>
                 </div>
             )}
+
+            <Snackbar open={!!errorMessage} autoHideDuration={6000} onClose={handleCloseError}>
+                <Alert elevation={6} variant="filled" severity="error" onClose={handleCloseError}>
+                    {errorMessage}
+                </Alert>
+            </Snackbar>
+
         </div>
     );
 }

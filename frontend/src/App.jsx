@@ -10,23 +10,37 @@ import DetailedPost from "./pages/DetailedPost.jsx";
 import logo from './img/logo.png';
 import MovieDetails from './pages/MovieDetails.jsx';
 import axios from 'axios';
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import { UserContext } from './contexts/UserProvider';
+import Snackbar from '@mui/material/Snackbar';
+import Alert from '@mui/material/Alert';
 import NotFound from './pages/NotFound.jsx';
 
 
 export default function App() {
 
   const { userData, setUserData } = useContext(UserContext);
+  const [errorMessage, setErrorMessage] = useState('');
+
+  const handleCloseError = () => {
+    setErrorMessage('');
+  };
 
   function logout() {
     axios.post('http://localhost:8000/auth/logout', {}, { withCredentials: true })
       .then(() => {
         setUserData(null);
-        window.location.href = '/';
+        window.location.href = '/login';
       })
       .catch(error => {
         console.error(error);
+        if (error.response && error.response.data && error.response.data.message) {
+          // If the error contains a specific message, set that as the errorMessage
+          setErrorMessage(error.response.data.message);
+        } else {
+          // If no specific message is available, set a generic error message
+          setErrorMessage('An error occured while liking.');
+        }
       });
   }
 
@@ -60,6 +74,13 @@ export default function App() {
         </Routes>
         <Navbar />
       </Router>
+
+      <Snackbar open={!!errorMessage} autoHideDuration={6000} onClose={handleCloseError}>
+        <Alert elevation={6} variant="filled" severity="error" onClose={handleCloseError}>
+          {errorMessage}
+        </Alert>
+      </Snackbar>
+
     </div>
   )
 }

@@ -1,12 +1,21 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import Snackbar from '@mui/material/Snackbar';
+import Alert from '@mui/material/Alert';
+
 
 export default function Search() {
     const [inputValue, setInputValue] = useState('');
     const [searchResults, setSearchResults] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
+    const [errorMessage, setErrorMessage] = useState('');
 
+    const handleCloseError = () => {
+        setErrorMessage('');
+    };
+
+    // If search bar is empty, display Trending films, otherwise return search results
     useEffect(() => {
         if (inputValue !== '') {
             setIsLoading(true);
@@ -20,6 +29,7 @@ export default function Search() {
                     })
                     .catch(error => {
                         console.error(error);
+                        setErrorMessage('An error occurred while searching.');
                         setIsLoading(false);
                     });
             }, 1500);
@@ -36,6 +46,13 @@ export default function Search() {
                 .catch(error => {
                     console.error(error);
                     setIsLoading(false);
+                    if (error.response && error.response.data && error.response.data.message) {
+                        // If the error contains a specific message, set that as the errorMessage
+                        setErrorMessage(error.response.data.message);
+                    } else {
+                        // If no specific message is available, set a generic error message
+                        setErrorMessage('An error occurred while fetching Trending Movies.');
+                    }
                 });
         }
     }, [inputValue]);
@@ -46,6 +63,12 @@ export default function Search() {
                 <label htmlFor="movie-search" className="block mb-2 text-md font-medium text-neutral-200">Discover the InfyVerse</label>
                 <input type="text" id="movie-search" name="movie-search" placeholder="Search for a movie..." onChange={e => setInputValue(e.target.value)} className="border rounded-lg border-indigo-500/30 bg-indigo-950/70 text-neutral-200 sm:text-sm block w-full p-2.5" />
             </div>
+
+            <Snackbar open={!!errorMessage} autoHideDuration={6000} onClose={handleCloseError}>
+                <Alert elevation={6} variant="filled" severity="error" onClose={handleCloseError}>
+                    {errorMessage}
+                </Alert>
+            </Snackbar>
 
             {isLoading ? (
                 <div className="flex justify-center items-center h-2/3 p-6" >

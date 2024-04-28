@@ -6,9 +6,12 @@ import { UserContext } from "../contexts/UserProvider";
 import defaultAvatar from "../img/default-avatar.png"
 import FollowButton from "../components/profile/FollowButton";
 import ProfileNav from "../components/profile/ProfileNav";
+import Snackbar from '@mui/material/Snackbar';
+import Alert from '@mui/material/Alert';
 
 export default function Profile() {
     const [profileData, setProfileData] = useState(null);
+    const [errorMessage, setErrorMessage] = useState('');
     const { userData } = useContext(UserContext);
     const { username } = useParams();
 
@@ -22,6 +25,17 @@ export default function Profile() {
             .catch(error => {
                 console.error(error);
                 setProfileData(null);
+                if (error.response && error.response.data && error.response.data.message) {
+                    // If the error contains a specific message, set that as the errorMessage
+                    setErrorMessage(error.response.data.message);
+                } else {
+                    // If no specific message is available, set a generic error message
+                    setErrorMessage('The user profile could not be loaded at this time. Please try again later.');
+                    // wait 5 seconds then go home
+                    setTimeout(() => {
+                        window.location.href = '/';
+                    }, 5000);
+                }
             });
     }
 
@@ -29,11 +43,15 @@ export default function Profile() {
         getProfileData();
     }, []);
 
+    const handleCloseError = () => {
+        setErrorMessage('');
+    };
+
     const avatar = profileData && (profileData.profile.avatar ? `http://localhost:8000/avatars/${profileData.profile.avatar}` : defaultAvatar);
 
     return (
-        profileData && (
-            <div className="md:my-6 md:mx-60 flex-grow rounded-lg">
+        <div className="md:my-6 md:mx-60 flex-grow rounded-lg">
+            {profileData && (
                 <div>
                     <div className="bg-black/40 p-5 rounded-t-lg">
                         <div className="flex flex-col space-y-4 md:flex-row md:justify-between md:items-center">
@@ -56,7 +74,12 @@ export default function Profile() {
                         <ProfileNav user={profileData} />
                     </div>
                 </div>
-            </div>
-        )
+            )}
+            <Snackbar Snackbar open={!!errorMessage} autoHideDuration={6000} onClose={handleCloseError} >
+                <Alert elevation={6} variant="filled" severity="error" onClose={handleCloseError}>
+                    {errorMessage}
+                </Alert>
+            </Snackbar>
+        </div>
     );
 }

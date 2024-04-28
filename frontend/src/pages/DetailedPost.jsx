@@ -5,12 +5,19 @@ import { ArrowLeftIcon } from '@heroicons/react/20/solid';
 import Post from '../components/Post';
 import Comment from '../components/Comment';
 import NewComment from '../components/NewComment';
+import Snackbar from '@mui/material/Snackbar';
+import Alert from '@mui/material/Alert';
 
 export default function DetailedPost() {
     const [post, setPost] = useState(null);
     const [newComment, setNewComment] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
     const { postID } = useParams();
+    const [errorMessage, setErrorMessage] = useState('');
+
+    const handleCloseError = () => {
+        setErrorMessage('');
+    };
 
     const handleNewComment = () => {
         setNewComment(!newComment);
@@ -25,6 +32,13 @@ export default function DetailedPost() {
             .catch((error) => {
                 console.error(error);
                 setIsLoading(false);
+                if (error.response && error.response.data && error.response.data.message) {
+                    // If the error contains a specific message, set that as the errorMessage
+                    setErrorMessage(error.response.data.message);
+                } else {
+                    // If no specific message is available, set a generic error message
+                    setErrorMessage('An error occurred while getting posts. Wait a bit then try again.');
+                }
             });
     }, [newComment, postID]);
 
@@ -42,6 +56,13 @@ export default function DetailedPost() {
                     </span>
                 </div>
             </div>
+
+            <Snackbar open={!!errorMessage} autoHideDuration={6000} onClose={handleCloseError}>
+                <Alert elevation={6} variant="filled" severity="error" onClose={handleCloseError}>
+                    {errorMessage}
+                </Alert>
+            </Snackbar>
+
             <Post post={post} detailed={true} />
             <div className=" border-t border-neutral-500 bg-black/40 px-4 pb-4 pt-2">
                 <NewComment onNewComment={handleNewComment} postID={post.post.id} />

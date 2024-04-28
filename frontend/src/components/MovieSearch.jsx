@@ -1,13 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-
+import Snackbar from '@mui/material/Snackbar';
+import Alert from '@mui/material/Alert';
 
 export default function MovieSearch({ onSelectResult }){
     const [inputValue, setInputValue] = useState('');
     const [searchResults, setSearchResults] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
     const inputClass = isLoading || searchResults.length > 0 ? 'border-b rounded-t-lg' : 'border rounded-lg';
+    const [errorMessage, setErrorMessage] = useState('');
 
+    const handleCloseError = () => {
+        setErrorMessage('');
+    };
+
+    // Fetch movies based on search
     useEffect(() => {
         if (inputValue !== '') {
             setIsLoading(true);
@@ -21,6 +28,13 @@ export default function MovieSearch({ onSelectResult }){
                     .catch(error => {
                         console.error(error);
                         setIsLoading(false);
+                        if (error.response && error.response.data && error.response.data.message) {
+                            // If the error contains a specific message, set that as the errorMessage
+                            setErrorMessage(error.response.data.message);
+                        } else {
+                            // If no specific message is available, set a generic error message
+                            setErrorMessage('An error occured while processing your search.');
+                        }
                     });
             }, 1500);
 
@@ -60,6 +74,13 @@ export default function MovieSearch({ onSelectResult }){
                     </div>
                 ))}
             </div>
+
+            <Snackbar open={!!errorMessage} autoHideDuration={6000} onClose={handleCloseError}>
+                <Alert elevation={6} variant="filled" severity="error" onClose={handleCloseError}>
+                    {errorMessage}
+                </Alert>
+            </Snackbar>
+
         </div>
     );
 }

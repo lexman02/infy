@@ -1,8 +1,18 @@
 import React from 'react';
 import { PaperAirplaneIcon } from '@heroicons/react/20/solid';
 import axios from 'axios';
+import { useState } from "react";
+import Snackbar from '@mui/material/Snackbar';
+import Alert from '@mui/material/Alert';
 
 export default function EditPost({ onEdit, comment }) {
+    const [errorMessage, setErrorMessage] = useState('');
+
+    const handleCloseError = () => {
+        setErrorMessage('');
+    };
+
+    // Handles the editted comment
     const handleSubmit = async (e) => {
         e.preventDefault();
         const data = Object.fromEntries(new FormData(e.target));
@@ -12,6 +22,13 @@ export default function EditPost({ onEdit, comment }) {
             })
             .catch(error => {
                 console.error(error);
+                if (error.response && error.response.data && error.response.data.message) {
+                    // If the error contains a specific message, set that as the errorMessage
+                    setErrorMessage(error.response.data.message);
+                } else {
+                    // If no specific message is available, set a generic error message
+                    setErrorMessage('An error occured.');
+                }
             });
 
         onEdit;
@@ -31,6 +48,13 @@ export default function EditPost({ onEdit, comment }) {
                     </div>
                 </div>
             </form>
+
+            <Snackbar open={!!errorMessage} autoHideDuration={6000} onClose={handleCloseError}>
+                <Alert elevation={6} variant="filled" severity="error" onClose={handleCloseError}>
+                    {errorMessage}
+                </Alert>
+            </Snackbar>
+
         </div>
     );
 }

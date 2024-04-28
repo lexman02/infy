@@ -1,8 +1,16 @@
 import React, { useState } from 'react';
 import { PaperAirplaneIcon } from '@heroicons/react/20/solid';
 import axios from 'axios';
+import Snackbar from '@mui/material/Snackbar';
+import Alert from '@mui/material/Alert';
 
 export default function NewComment({ onNewComment, postID }) {
+    const [errorMessage, setErrorMessage] = useState('');
+
+    const handleCloseError = () => {
+        setErrorMessage('');
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         const data = Object.fromEntries(new FormData(e.target));
@@ -14,6 +22,13 @@ export default function NewComment({ onNewComment, postID }) {
             })
             .catch(error => {
                 console.error(error);
+                if (error.response && error.response.data && error.response.data.message) {
+                    // If the error contains a specific message, set that as the errorMessage
+                    setErrorMessage(error.response.data.message);
+                } else {
+                    // If no specific message is available, set a generic error message
+                    setErrorMessage('An error occured.');
+                }
             });
     }
 
@@ -29,6 +44,13 @@ export default function NewComment({ onNewComment, postID }) {
                     </button>
                 </div>
             </form>
+
+            <Snackbar open={!!errorMessage} autoHideDuration={6000} onClose={handleCloseError}>
+                <Alert elevation={6} variant="filled" severity="error" onClose={handleCloseError}>
+                    {errorMessage}
+                </Alert>
+            </Snackbar>
+
         </div>
     );
 }
