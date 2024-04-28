@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"infy/api"
+	"infy/db"
 	"infy/middleware"
 	"infy/models"
 	"log"
@@ -14,8 +15,10 @@ import (
 
 // GetPosts retrieves a list of posts and enriches them with user-specific reaction data.
 func GetPosts(c *gin.Context) {
+	postCollection := models.PostStore{Collection: db.PostsCollection()}
+
 	// Retrieve posts with a default limit for pagination
-	posts, err := models.FindAllPosts(c.Request.Context(), 20)
+	posts, err := postCollection.FindAllPosts(c.Request.Context(), 20)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to retrieve posts"})
 		log.Println(err)
@@ -80,9 +83,11 @@ func GetPosts(c *gin.Context) {
 
 // GetPost retrieves a single post by ID and its associated comments, including user-specific reaction data.
 func GetPost(c *gin.Context) {
+	postCollection := models.PostStore{Collection: db.PostsCollection()}
+
 	// Get the post by ID
 	limit := int64(20)
-	post, err := models.FindPostByID(c.Param("id"), c.Request.Context())
+	post, err := postCollection.FindPostByID(c.Param("id"), c.Request.Context())
 	if err != nil {
 		c.JSON(500, gin.H{"error": "An error occurred"})
 		log.Println(err)
@@ -153,10 +158,11 @@ func GetPost(c *gin.Context) {
 
 // GetPostsByMovieID fetches all posts related to a specific movie by the movie's ID.
 func GetPostsByMovieID(c *gin.Context) {
+	postCollection := models.PostStore{Collection: db.PostsCollection()}
 	movieID := c.Param("movieID") // Extracting movieID from the URL parameter
 	limit := int64(20)
 
-	posts, err := models.FindPostsByMovieID(movieID, c.Request.Context(), limit)
+	posts, err := postCollection.FindPostsByMovieID(movieID, c.Request.Context(), limit)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to retrieve posts for the movie"})
 		return
@@ -167,6 +173,8 @@ func GetPostsByMovieID(c *gin.Context) {
 
 // CreatePost handles the creation of a new post related to a movie.
 func CreatePost(c *gin.Context) {
+	postCollection := models.PostStore{Collection: db.PostsCollection()}
+
 	var post struct {
 		MovieID string `json:"movie_id" binding:"required"`
 		Content string `json:"content" binding:"required"`
@@ -196,7 +204,7 @@ func CreatePost(c *gin.Context) {
 
 	// Create the post
 	newPost := models.NewPost(user.(*models.User), movie, post.Content)
-	if err := newPost.Save(c.Request.Context()); err != nil {
+	if err := postCollection.Save(c.Request.Context(), newPost); err != nil {
 		c.JSON(500, gin.H{"error": "An error occurred"})
 		log.Println(err)
 		return
@@ -207,6 +215,8 @@ func CreatePost(c *gin.Context) {
 
 // UpdatePost allows authorized users to modify an existing post.
 func UpdatePost(c *gin.Context) {
+	postCollection := models.PostStore{Collection: db.PostsCollection()}
+
 	var post struct {
 		Content string `json:"content" binding:"required"`
 	}
@@ -226,7 +236,7 @@ func UpdatePost(c *gin.Context) {
 	}
 
 	// Update the post
-	err := models.UpdateUserPost(c.Param("id"), post.Content, user.(*models.User).ID, c.Request.Context())
+	err := postCollection.UpdateUserPost(c.Param("id"), post.Content, user.(*models.User).ID, c.Request.Context())
 	if err != nil {
 		// Check if the post was not found or the user is not the author
 		if err == mongo.ErrNoDocuments {
@@ -250,6 +260,8 @@ func UpdatePost(c *gin.Context) {
 
 // DeletePost allows authorized users to delete an existing post.
 func DeletePost(c *gin.Context) {
+	postCollection := models.PostStore{Collection: db.PostsCollection()}
+
 	// Get the user from the context
 	user, exists := c.Get("user")
 	if !exists {
@@ -258,7 +270,7 @@ func DeletePost(c *gin.Context) {
 	}
 
 	// Delete the post
-	err := models.DeleteUserPost(c.Param("id"), user.(*models.User), c.Request.Context())
+	err := postCollection.DeleteUserPost(c.Param("id"), user.(*models.User), c.Request.Context())
 	if err != nil {
 		// Check if the post was not found or the user is not the author
 		if err == mongo.ErrNoDocuments {
@@ -282,6 +294,8 @@ func DeletePost(c *gin.Context) {
 
 // LikePost handles the action of a user liking a post.
 func LikePost(c *gin.Context) {
+	postCollection := models.PostStore{Collection: db.PostsCollection()}
+
 	user, exists := c.Get("user")
 	if !exists {
 		c.JSON(500, gin.H{"error": "An error occurred"})
@@ -299,7 +313,7 @@ func LikePost(c *gin.Context) {
 		return
 	}
 
-	err := models.UpdateReaction(c.Param("id"), user.(*models.User).ID, !reaction.IsLiked, false, c.Request.Context())
+	err := postCollection.UpdateReaction(c.Param("id"), user.(*models.User).ID, !reaction.IsLiked, false, c.Request.Context())
 	if err != nil {
 		c.JSON(500, gin.H{"error": "An error occurred"})
 		log.Println(err)
@@ -309,6 +323,8 @@ func LikePost(c *gin.Context) {
 
 // DislikePost handles the action of a user disliking a post.
 func DislikePost(c *gin.Context) {
+	postCollection := models.PostStore{Collection: db.PostsCollection()}
+
 	user, exists := c.Get("user")
 	if !exists {
 		c.JSON(500, gin.H{"error": "An error occurred"})
@@ -326,7 +342,7 @@ func DislikePost(c *gin.Context) {
 		return
 	}
 
-	err := models.UpdateReaction(c.Param("id"), user.(*models.User).ID, false, !reaction.IsDisliked, c.Request.Context())
+	err := postCollection.UpdateReaction(c.Param("id"), user.(*models.User).ID, false, !reaction.IsDisliked, c.Request.Context())
 	if err != nil {
 		c.JSON(500, gin.H{"error": "An error occurred"})
 		log.Println(err)
@@ -336,10 +352,12 @@ func DislikePost(c *gin.Context) {
 
 // GetUserPosts retrieves posts created by a specific user.
 func GetUserPosts(c *gin.Context) {
+	postCollection := models.PostStore{Collection: db.PostsCollection()}
+
 	userID := c.Param("userID")
 	limit := int64(20)
 
-	posts, err := models.FindPostsByUserID(userID, c.Request.Context(), limit)
+	posts, err := postCollection.FindPostsByUserID(userID, c.Request.Context(), limit)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to retrieve user's posts"})
 		return

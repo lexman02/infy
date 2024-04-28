@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"infy/db"
 	"infy/models"
 	"log"
 	"net/http"
@@ -34,7 +35,8 @@ func DeleteReportedPost(c *gin.Context) {
 		return
 	}
 
-	err := models.DeleteUserPost(postID, user.(*models.User), c.Request.Context())
+	postCollection := models.PostStore{Collection: db.PostsCollection()}
+	err := postCollection.DeleteUserPost(postID, user.(*models.User), c.Request.Context())
 	if err != nil {
 		// Handle specific errors based on the MongoDB response.
 		if err == mongo.ErrNoDocuments {

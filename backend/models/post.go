@@ -37,15 +37,19 @@ type Movie struct {
 	Tagline    string `json:"tagline"`
 }
 
+type PostStore struct {
+	Collection *mongo.Collection
+}
+
 // NewPost creates a new post instance
 func NewPost(user *User, movie *Movie, content string) *Post {
 	return &Post{ID: primitive.NewObjectID(), User: user, Reactions: nil, Movie: movie, Content: content}
 }
 
 // FindAllPosts finds all the posts
-func FindAllPosts(ctx context.Context, limit int64) ([]*Post, error) {
+func (store *PostStore) FindAllPosts(ctx context.Context, limit int64) ([]*Post, error) {
 	opts := options.Find().SetSort(bson.D{bson.E{Key: "_id", Value: -1}}).SetLimit(limit) // Corrected line for sorting
-	cursor, err := db.PostsCollection().Find(ctx, bson.D{}, opts)
+	cursor, err := store.Collection.Find(ctx, bson.D{}, opts)
 	if err != nil {
 		return nil, err
 	}
@@ -59,7 +63,7 @@ func FindAllPosts(ctx context.Context, limit int64) ([]*Post, error) {
 }
 
 // FindPostByID finds a post by ID
-func FindPostByID(id string, ctx context.Context) (*Post, error) {
+func (store *PostStore) FindPostByID(id string, ctx context.Context) (*Post, error) {
 	var post Post
 
 	// Encode the ID to an ObjectID type
@@ -69,13 +73,13 @@ func FindPostByID(id string, ctx context.Context) (*Post, error) {
 	}
 
 	// Find the post by ID
-	err = db.PostsCollection().FindOne(ctx, bson.M{"_id": objectID}).Decode(&post)
+	err = store.Collection.FindOne(ctx, bson.M{"_id": objectID}).Decode(&post)
 
 	return &post, err
 }
 
 // UpdateUserPost updates a post by ID and user ID
-func UpdateUserPost(id, content string, userId primitive.ObjectID, ctx context.Context) error {
+func (store *PostStore) UpdateUserPost(id, content string, userId primitive.ObjectID, ctx context.Context) error {
 	// Encode the ID to an ObjectID type
 	objectID, err := primitive.ObjectIDFromHex(id)
 	if err != nil {
@@ -91,7 +95,7 @@ func UpdateUserPost(id, content string, userId primitive.ObjectID, ctx context.C
 
 	// Find the post by ID and user ID and update it if they match
 	var post Post
-	err = db.PostsCollection().FindOneAndUpdate(ctx, filter, update, opts).Decode(&post)
+	err = store.Collection.FindOneAndUpdate(ctx, filter, update, opts).Decode(&post)
 	if err != nil {
 		return err
 	}
@@ -100,7 +104,7 @@ func UpdateUserPost(id, content string, userId primitive.ObjectID, ctx context.C
 }
 
 // DeleteUserPost deletes a post by ID and user ID
-func DeleteUserPost(id string, user *User, ctx context.Context) error {
+func (store *PostStore) DeleteUserPost(id string, user *User, ctx context.Context) error {
 	// Encode the ID to an ObjectID type
 	postID, err := primitive.ObjectIDFromHex(id)
 	if err != nil {
@@ -115,7 +119,7 @@ func DeleteUserPost(id string, user *User, ctx context.Context) error {
 	}
 
 	// Delete the post by ID and user ID if they match
-	results, err := db.PostsCollection().DeleteOne(ctx, filter)
+	results, err := store.Collection.DeleteOne(ctx, filter)
 	if err != nil {
 		return err
 	}
@@ -128,10 +132,10 @@ func DeleteUserPost(id string, user *User, ctx context.Context) error {
 	return nil
 }
 
-// Save saves a post to the database
-func (p *Post) Save(ctx context.Context) error {
+// Save saves a post to the database using the given collection
+func (store *PostStore) Save(ctx context.Context, p *Post) error {
 	// Insert the post into the database
-	_, err := db.PostsCollection().InsertOne(ctx, p)
+	_, err := store.Collection.InsertOne(ctx, p)
 	if err != nil {
 		return err
 	}
@@ -139,7 +143,7 @@ func (p *Post) Save(ctx context.Context) error {
 	return nil
 }
 
-func UpdateReaction(postID string, userID primitive.ObjectID, like, dislike bool, ctx context.Context) error {
+func (store *PostStore) UpdateReaction(postID string, userID primitive.ObjectID, like, dislike bool, ctx context.Context) error {
 	// Encode the post ID to an ObjectID type
 	postObjectID, err := primitive.ObjectIDFromHex(postID)
 	if err != nil {
@@ -150,13 +154,13 @@ func UpdateReaction(postID string, userID primitive.ObjectID, like, dislike bool
 	reaction := UserReactions{UserID: userID, Liked: like, Disliked: dislike}
 
 	// Remove the existing reaction from the user
-	_, err = db.PostsCollection().UpdateOne(ctx, bson.M{"_id": postObjectID}, bson.M{"$pull": bson.M{"reactions": bson.M{"user_id": userID}}})
+	_, err = store.Collection.UpdateOne(ctx, bson.M{"_id": postObjectID}, bson.M{"$pull": bson.M{"reactions": bson.M{"user_id": userID}}})
 	if err != nil {
 		return err
 	}
 
 	// Add the new reaction from the user
-	_, err = db.PostsCollection().UpdateOne(ctx, bson.M{"_id": postObjectID}, bson.M{"$push": bson.M{"reactions": reaction}})
+	_, err = store.Collection.UpdateOne(ctx, bson.M{"_id": postObjectID}, bson.M{"$push": bson.M{"reactions": reaction}})
 	if err != nil {
 		return err
 	}
@@ -164,7 +168,7 @@ func UpdateReaction(postID string, userID primitive.ObjectID, like, dislike bool
 	return nil
 }
 
-func FindPostsByUserID(userID string, ctx context.Context, limit int64) ([]*Post, error) {
+func (store *PostStore) FindPostsByUserID(userID string, ctx context.Context, limit int64) ([]*Post, error) {
 	userObjectID, err := primitive.ObjectIDFromHex(userID)
 	if err != nil {
 		return nil, err
@@ -174,7 +178,7 @@ func FindPostsByUserID(userID string, ctx context.Context, limit int64) ([]*Post
 	opts := options.Find().SetSort(bson.D{{Key: "_id", Value: -1}}).SetLimit(limit)
 
 	filter := bson.M{"user._id": userObjectID}
-	cursor, err := db.PostsCollection().Find(ctx, filter, opts)
+	cursor, err := store.Collection.Find(ctx, filter, opts)
 	if err != nil {
 		return nil, err
 	}
@@ -188,14 +192,14 @@ func FindPostsByUserID(userID string, ctx context.Context, limit int64) ([]*Post
 	return posts, nil
 }
 
-func FindPostsByMovieID(movieID string, ctx context.Context, limit int64) ([]*Post, error) {
+func (store *PostStore) FindPostsByMovieID(movieID string, ctx context.Context, limit int64) ([]*Post, error) {
 	var posts []*Post
 
 	// Define sorting and limiting options
 	opts := options.Find().SetSort(bson.D{{Key: "_id", Value: -1}}).SetLimit(limit)
 
 	filter := bson.M{"movie_id": movieID}
-	cursor, err := db.PostsCollection().Find(ctx, filter, opts)
+	cursor, err := store.Collection.Find(ctx, filter, opts)
 	if err != nil {
 		return nil, err
 	}
