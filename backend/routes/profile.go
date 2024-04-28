@@ -31,6 +31,10 @@ func ProfileRoutes(r *gin.Engine) {
 			movies.DELETE("/watched/:id", controllers.RemoveMovieFromWatched)                      // Removes a movie from the watched list
 			movies.DELETE("/watchlist/:id", controllers.RemoveMovieFromWatchlist)                  // Removes a movie from the watchlist
 			movies.GET("/:movieID/watchedByFollowed", controllers.GetFollowedUsersWhoWatchedMovie) // Gets followed users who watched a specific movie
+			movies.GET("/watched/recommendations", controllers.GetRecommendationsFromWatched)
+			movies.GET("/watchlist/recommendations", controllers.GetRecommendationsFromWatchList)
+			movies.GET("/following/watched", controllers.GetRecommendationsFromFollowing)
+			movies.GET("/followers/watched", controllers.GetRecommendationsFromFollowers)
 		}
 	}
 }
