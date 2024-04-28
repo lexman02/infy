@@ -25,7 +25,7 @@ func InitMongo() {
 
 	conn, err := mongo.Connect(ctx, options.Client().ApplyURI(uri))
 	if err != nil {
-		panic(err)
+		log.Fatal(err)
 	}
 
 	client = conn
@@ -34,7 +34,7 @@ func InitMongo() {
 // CloseMongo is a function that closes the connection to the MongoDB database
 func CloseMongo() {
 	if err := client.Disconnect(ctx); err != nil {
-		panic(err)
+		log.Fatal(err)
 	}
 }
 
