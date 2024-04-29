@@ -25,7 +25,6 @@ export default function Home() {
                 }
             })
             .catch(error => {
-                console.error(error);
                 if (error.response && error.response.data && error.response.data.message) {
                     // If the error contains a specific message, set that as the errorMessage
                     setErrorMessage(error.response.data.message);

@@ -9,6 +9,7 @@ import Signup from "./pages/Signup.jsx";
 import DetailedPost from "./pages/DetailedPost.jsx";
 import logo from './img/logo.png';
 import MovieDetails from './pages/MovieDetails.jsx';
+import ActorDetails from './pages/ActorDetails.jsx';
 import axios from 'axios';
 import { useContext, useState } from 'react';
 import { UserContext } from './contexts/UserProvider';
@@ -70,6 +71,7 @@ export default function App() {
           <Route exact path="/watchlist" element={<Watchlist />} />
           <Route exact path="/search" element={<Search />} />
           <Route exact path="/movie/:movieID" element={<MovieDetails />} />
+          <Route exact path="/actor/:actorID" element={<ActorDetails />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
         <Navbar />

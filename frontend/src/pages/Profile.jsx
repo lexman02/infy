@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { WrenchIcon } from "@heroicons/react/20/solid";
 import { UserContext } from "../contexts/UserProvider";
@@ -14,6 +14,7 @@ export default function Profile() {
     const [errorMessage, setErrorMessage] = useState('');
     const { userData } = useContext(UserContext);
     const { username } = useParams();
+    const navigate = useNavigate();
 
     function getProfileData() {
         axios.get(`http://localhost:8000/profile/${username}`, { withCredentials: true })
@@ -31,12 +32,12 @@ export default function Profile() {
                 } else {
                     // If no specific message is available, set a generic error message
                     setErrorMessage('The user profile could not be loaded at this time. Please try again later.');
-                    // wait 5 seconds then go home
-                    setTimeout(() => {
-                        window.location.href = '/';
-                    }, 5000);
                 }
             });
+    }
+
+    if (!profileData) {
+        navigate('/404');
     }
 
     useEffect(() => {

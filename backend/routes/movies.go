@@ -22,5 +22,15 @@ func MovieRoutes(r *gin.Engine) {
 
 		movies.GET("/search", controllers.SearchMovies)                    // Searches for movies based on a query
 		movies.GET("/trending/:timeWindow", controllers.GetTrendingMovies) // Retrieves trending movies within a specified time window
+
+		// New actor details route + movie credits route + movie actorID finder + Movie Trailers
+		movies.GET("/actor/:actorID", controllers.GetActorDetails)
+		movies.GET("/actor/:actorID/movies", controllers.GetActorMovieCredits)
+		movies.GET("/:movieID/trailers", controllers.GetMovieTrailers)
+	}
+
+	people := r.Group("/people")
+	{
+		people.GET("/search", controllers.SearchPeople) // Retrieves details for a specific person
 	}
 }

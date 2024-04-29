@@ -1,74 +1,107 @@
-import React, { useEffect, useState, useContext } from 'react';
-import { useParams } from 'react-router-dom';
-import axios from 'axios';
-import { UserContext } from '../contexts/UserProvider';
+import React, { useEffect, useState, useContext } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import axios from "axios";
+import { UserContext } from "../contexts/UserProvider";
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
+import MovieTrailer from "../components/moviedetails/MovieTrailer";
+import MovieCast from "../components/moviedetails/MovieCast";
+import SimilarMovies from "../components/moviedetails/SimilarMovies";
+import MovieReviews from "../components/moviedetails/MovieReviews";
+import OtherVideos from "../components/moviedetails/OtherVideos";
 
 export default function MovieDetails() {
-  const { movieID } = useParams();
-  const [movie, setMovie] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
-  const { userData } = useContext(UserContext); 
-  const [errorMessage, setErrorMessage] = useState('');
+    const { movieID } = useParams();
+    const [movie, setMovie] = useState(null);
+    const [otherVideos, setOtherVideos] = useState([]);
+    const [isLoading, setIsLoading] = useState(true);
+    const [errors, setErrors] = useState([]);
+    const { userData } = useContext(UserContext);
+    const navigate = useNavigate();
 
-  const handleCloseError = () => {
-        setErrorMessage('');
-  };
+    const handleCloseError = () => {
+        setErrors([]);
+    };
 
-  // Fetch movie details
-  useEffect(() => {
-    if (movieID) {
-      setIsLoading(true);
-      axios.get(`http://localhost:8000/movies/${movieID}`)
-        .then(response => {
-          setMovie(response.data);
-          setIsLoading(false);
-        })
-        .catch(error => {
-          console.error(error);
-            setIsLoading(false);
-            if (error.response && error.response.data && error.response.data.message) {
-                // If the error contains a specific message, set that as the errorMessage
-                setErrorMessage(error.response.data.message);
-            } else {
-                // If no specific message is available, set a generic error message
-                setErrorMessage('An error occurred while fetching details, please wait then try again.');
-            }
-        });
-    } else {
-      console.log("Movie ID is undefined.");
+    // Fetch movie details
+    useEffect(() => {
+        if (movieID) {
+            setIsLoading(true);
+            axios.get(`http://localhost:8000/movies/${movieID}`)
+                .then(response => {
+                    setMovie(response.data);
+                    setIsLoading(false);
+                })
+                .catch(error => {
+                    if (error.response && error.response.data && error.response.data.message) {
+                        setErrors(errors => [...errors, error.response.data.message]);
+                    }
+                    setIsLoading(false);
+                });
+        }
+    }, [movieID]);
+
+    function showError() {
+        return errors.length > 0;
     }
-  }, [movieID]);
 
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
+    if (isLoading) {
+        return <div>Loading...</div>;
+    }
 
-  if (!movie) {
-    return <div>Movie not found.</div>;
-  }
+    if (!movie) {
+        navigate('/404');
+    }
 
-  return (
-      <div className="text-neutral-100 font-sans p-4">
+    return (
+        <div className="md:my-6 md:mx-60 flex-grow p-4 md:p-0 space-y-8">
+            <div className="flex flex-col md:flex-row space-y-4 md:space-x-8 lg:items-start items-center">
+                {/* Poster Section */}
+                <div className="flex-shrink-0">
+                    <img src={`https://image.tmdb.org/t/p/original/${movie.poster_path}`} alt={movie.title} className="rounded-lg mb-4 w-full lg:w-auto lg:max-w-xs object-cover" />
+                </div>
 
-          <Snackbar open={!!errorMessage} autoHideDuration={6000} onClose={handleCloseError}>
-              <Alert elevation={6} variant="filled" severity="error" onClose={handleCloseError}>
-                  {errorMessage}
-              </Alert>
-          </Snackbar>
-
-      <div className="flex flex-col items-center">
-        <img src={`https://image.tmdb.org/t/p/original/${movie.poster_path}`} alt={movie.title} className="w-60 h-90 object-cover rounded-lg mb-4"/>
-        <h1 className="text-3xl font-bold">{movie.title}</h1>
-        <p className="text-neutral-400 mt-2 text-center">{movie.tagline}</p>
-        <p className="text-md text-neutral-200 mt-2">Release Date: {movie.release_date}</p>
-        <p className="text-md text-neutral-200 mt-2">Runtime: {movie.runtime} minutes</p>
-        <p className="text-md text-neutral-200 mt-2">Genres: {movie.genres?.map(genre => genre.name).join(', ')}</p>
-        <div className="mt-4 text-lg">
-          <p>Description: {movie.overview || "No additional description provided."}</p>
-        </div>
-      </div>
-    </div>
-  );
+                {/* Movie Details Section */}
+                <div className="flex flex-col text-center md:text-start items-center lg:items-start space-y-4 md:space-y-2">
+                    <div>
+                        <h1 className="text-4xl font-extrabold">{movie.title}</h1>
+                        <p className="text-neutral-400 text-2xl font-medium mt-2 md:m-0">{movie.tagline}</p>
+                    </div>
+                    <div className="flex bg-indigo-900/70 rounded-lg py-1 px-3">
+                        <p className="text-xl text-neutral-200">
+                            {new Date(movie.release_date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
+                        </p>
+                        <span className="text-xl text-neutral-200 mx-2">•</span>
+                        <p className="text-xl text-neutral-200">
+                            {Math.floor(movie.runtime / 60)} hour(s) {movie.runtime % 60} minutes
+                        </p>
+                    </div>
+                    <p className="text-lg text-neutral-50">
+                        {movie.overview || "No additional description provided."}
+                    </p>
+                </div>
+            </div>
+            {/* Main Trailer Section */}
+            <MovieTrailer movieID={movieID} setOtherVideos={setOtherVideos} setErrors={setErrors} />
+            {/* Cast Section */}
+            <MovieCast movieID={movieID} setErrors={setErrors} />
+            {/* Similar Movies Section */}
+            <SimilarMovies movieID={movieID} setErrors={setErrors} />
+            {/* Reviews Section */}
+            <MovieReviews movieID={movieID} setErrors={setErrors} />
+            {/* Other Videos Section */}
+            {otherVideos.length > 0 && (
+                <OtherVideos otherVideos={otherVideos} />
+            )}
+            {
+                errors.map((error, index) => (
+                    <Snackbar key={index} open={showError()} autoHideDuration={6000} onClose={handleCloseError}>
+                        <Alert elevation={6} variant="filled" severity="error" onClose={handleCloseError}>
+                            {error}
+                        </Alert>
+                    </Snackbar>
+                ))
+            }
+        </div >
+    );
 }
