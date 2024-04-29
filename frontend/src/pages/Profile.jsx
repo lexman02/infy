@@ -40,6 +40,12 @@ export default function Profile() {
         navigate('/404');
     }
 
+    function adminAccess() {
+        if (userData.user.isAdmin) {
+            window.location.href = "/admin";
+        }
+    }
+
     useEffect(() => {
         getProfileData();
     }, []);
@@ -58,12 +64,14 @@ export default function Profile() {
                         <div className="flex flex-col space-y-4 md:flex-row md:justify-between md:items-center">
                             <div className="flex space-x-4 items-center">
                                 <img src={avatar} className=" w-28 h-28 rounded-full" />
-                                <div>
-                                    <h1 className="text-xl">
-                                        {profileData.profile.first_name} {profileData.profile.last_name}
-                                        {profileData.is_admin ? <WrenchIcon className="w-6 h-6 inline-block ml-2" /> : null}
-                                    </h1>
-                                    <h1 className="text-lg">@{profileData.username}</h1>
+                                <div className="flex items-center space-x-4">
+                                    <div>
+                                        <h1 className="text-xl">
+                                            {profileData.profile.first_name} {profileData.profile.last_name}
+                                        </h1>
+                                        <h1 className="text-lg">@{profileData.username}</h1>
+                                    </div>
+                                    {profileData.is_admin ? <WrenchIcon className="w-6 h-6 inline-block ml-2 hover:cursor-pointer" onClick={adminAccess} /> : null}
                                 </div>
                             </div>
                             {userData && (

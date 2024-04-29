@@ -13,6 +13,7 @@ import ActorDetails from './pages/ActorDetails.jsx';
 import axios from 'axios';
 import { useContext, useState } from 'react';
 import { UserContext } from './contexts/UserProvider';
+import Admin from './pages/Admin.jsx';
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
 import NotFound from './pages/NotFound.jsx';
@@ -71,6 +72,7 @@ export default function App() {
           <Route exact path="/watchlist" element={<Watchlist />} />
           <Route exact path="/search" element={<Search />} />
           <Route exact path="/movie/:movieID" element={<MovieDetails />} />
+          <Route exact path="/admin" element={<Admin />} />
           <Route exact path="/actor/:actorID" element={<ActorDetails />} />
           <Route path="*" element={<NotFound />} />
         </Routes>

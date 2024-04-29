@@ -79,7 +79,7 @@ export default function Search() {
                     </svg>
                 </div >
             ) : (
-                <div class="grid grid-flow-row grid-cols-3 gap-x-2">
+                <div className="grid grid-flow-row grid-cols-3 gap-x-2">
                     {searchResults.map((result, index) => (
                         <Link to={"/movie/" + result.id} key={result.id} className="cursor-pointer">
                             <div className="flex hover:bg-black/30 hover:rounded-lg">
