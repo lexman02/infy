@@ -17,7 +17,6 @@ export default function Navbar() {
             <nav className="flex items-center justify-center space-x-14 md:space-x-20 h-full">
                 <NavbarItem to="/" icon={HomeIcon} />
                 <NavbarItem to="/search" icon={MagnifyingGlassIcon} />
-                <NavbarItem to="/watchlist" icon={BookmarkIcon} />
                 {userData ? <NavbarItem to={`/profile/${userData.user.username}`} icon={UserCircleIcon} avatar={userData.user.profile.avatar} /> : <NavbarItem to="/login" icon={UserCircleIcon} />}
             </nav>
         </div>

@@ -34,7 +34,7 @@ export default function ProfilePosts(userID) {
                     setErrorMessage('An error occurred while fetching posts, or there are no posts.');
                 }
             });
-    }, []);
+    }, [userID]);
 
     return (
         <div>
@@ -44,7 +44,7 @@ export default function ProfilePosts(userID) {
                         posts.map(post => <Post key={post.post.id} post={post} />)
                     ) : (
                         <div className="p-4 text-neutral-300 font-medium text-lg bg-black/40 rounded-b-lg text-center">
-                            <h1 className="">No posts yet...</h1>
+                            <h1>No posts yet...</h1>
                         </div>
                     )}
                 </div>

@@ -6,6 +6,8 @@ import WatchlistPosts from "./WatchlistPosts";
 
 export default function ProfileNav(user) {
     const [activeTab, setActiveTab] = useState('ProfilePosts')
+    const watched = user.user.profile.preferences.watched;
+    const watchlist = user.user.profile.preferences.watchlist
 
     // Tabs on the profile page
     const renderTab = (component) => {
@@ -13,9 +15,9 @@ export default function ProfileNav(user) {
             case 'ProfilePosts':
                 return <ProfilePosts userID={user.user.id} />;
             case 'WatchedPosts':
-                return <WatchedPosts />;
+                return <WatchedPosts watched={watched} />;
             case 'WatchlistPosts':
-                return <WatchlistPosts />;
+                return <WatchlistPosts watchlist={watchlist} />;
         }
     }
 

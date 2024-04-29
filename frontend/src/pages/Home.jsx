@@ -25,9 +25,9 @@ export default function Home() {
                 }
             })
             .catch(error => {
-                if (error.response && error.response.data && error.response.data.message) {
+                if (error.response && error.response.data && error.response.data.error) {
                     // If the error contains a specific message, set that as the errorMessage
-                    setErrorMessage(error.response.data.message);
+                    setErrorMessage(error.response.data.error);
                 } else {
                     // If no specific message is available, set a generic error message
                     setErrorMessage('An error occurred while getting posts.');

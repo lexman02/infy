@@ -68,7 +68,6 @@ export default function AddToWatchlist({ isAdded = false, movieID }) {
                     {errorMessage}
                 </Alert>
             </Snackbar>
-
         </div>
     )
 }

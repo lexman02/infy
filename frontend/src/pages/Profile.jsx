@@ -24,7 +24,6 @@ export default function Profile() {
                 }
             })
             .catch(error => {
-                console.error(error);
                 setProfileData(null);
                 if (error.response && error.response.data && error.response.data.message) {
                     // If the error contains a specific message, set that as the errorMessage
@@ -41,8 +40,10 @@ export default function Profile() {
     }
 
     function adminAccess() {
-        if (userData.user.isAdmin) {
+        if (userData && userData.user.isAdmin) {
             window.location.href = "/admin";
+        } else {
+            setErrorMessage('You do not have permission to access this page.');
         }
     }
 
@@ -55,7 +56,8 @@ export default function Profile() {
     };
 
     const avatar = profileData && (profileData.profile.avatar ? `http://localhost:8000/avatars/${profileData.profile.avatar}` : defaultAvatar);
-    const isFollowing = userData && profileData && userData.user.profile.preferences.following.includes(profileData.id);
+    const followers = profileData && userData.user.profile.preferences.following;
+    const isFollowing = userData && profileData && followers !== null ? followers.includes(profileData.id) : false;
 
     return (
         <div className="md:my-6 md:mx-60 flex-grow rounded-lg">
@@ -85,6 +87,7 @@ export default function Profile() {
                     </div>
                 </div>
             )}
+
             <Snackbar Snackbar open={!!errorMessage} autoHideDuration={6000} onClose={handleCloseError} >
                 <Alert elevation={6} variant="filled" severity="error" onClose={handleCloseError}>
                     {errorMessage}

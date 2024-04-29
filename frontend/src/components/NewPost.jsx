@@ -29,10 +29,9 @@ export default function NewPost({ onNewPost }) {
                 if (data.watched) {
                     axios.post(`http://localhost:8000/profile/movies/add/watched`, { 'movieId': data.movie_id }, { withCredentials: true })
                         .catch(error => {
-                            console.error(error);
-                            if (error.response && error.response.data && error.response.data.message) {
+                            if (error.response && error.response.data && error.response.data.error) {
                                 // If the error contains a specific message, set that as the errorMessage
-                                setErrorMessage(error.response.data.message);
+                                setErrorMessage(error.response.data.error);
                             } else {
                                 // If no specific message is available, set a generic error message
                                 setErrorMessage('An error occured.');
