@@ -98,13 +98,13 @@ func (u *User) FollowUser(id string, ctx context.Context) error {
 		return err
 	}
 
-	followUser := bson.M{"$addToSet": bson.M{"following": userId}} // Prevent duplicates
+	followUser := bson.M{"$addToSet": bson.M{"profile.preferences.following": userId}} // Prevent duplicates
 	_, err = db.UsersCollection().UpdateByID(ctx, u.ID, followUser)
 	if err != nil {
 		return err
 	}
 
-	followerUser := bson.M{"$addToSet": bson.M{"followers": u.ID}} // Prevent duplicates
+	followerUser := bson.M{"$addToSet": bson.M{"profile.preferences.followers": u.ID}} // Prevent duplicates
 	_, err = db.UsersCollection().UpdateByID(ctx, userId, followerUser)
 	if err != nil {
 		return err
@@ -120,13 +120,13 @@ func (u *User) UnfollowUser(id string, ctx context.Context) error {
 		return err
 	}
 
-	unfollowUser := bson.M{"$pull": bson.M{"following": userId}}
+	unfollowUser := bson.M{"$pull": bson.M{"profile.preferences.following": userId}}
 	_, err = db.UsersCollection().UpdateByID(ctx, u.ID, unfollowUser)
 	if err != nil {
 		return err
 	}
 
-	unfollowerUser := bson.M{"$pull": bson.M{"followers": u.ID}}
+	unfollowerUser := bson.M{"$pull": bson.M{"profile.preferences.followers": u.ID}}
 	_, err = db.UsersCollection().UpdateByID(ctx, userId, unfollowerUser)
 	if err != nil {
 		return err

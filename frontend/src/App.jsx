@@ -18,9 +18,7 @@ import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
 import NotFound from './pages/NotFound.jsx';
 
-
 export default function App() {
-
   const { userData, setUserData } = useContext(UserContext);
   const [errorMessage, setErrorMessage] = useState('');
 
@@ -50,12 +48,11 @@ export default function App() {
     window.location.href = '/signup';
   }
 
-
   return (
-    <div className="flex flex-col bg-black/10 min-h-screen text-neutral-100 font-sans">
-      <div className='flex justify-end'>
-        {userData === null ? <button onClick={handleSignup} className="flex justify-center w-20 bg-violet-900 text-neutral-50 rounded-lg px-4 py-2 m-2 hover:bg-violet-950">Signup</button> : null}
-        {userData !== null ? <button onClick={logout} className="flex justify-center w-20 bg-violet-900 text-neutral-50 rounded-lg px-4 py-2 m-2 hover:bg-violet-950">Logout</button> : null}
+    <div className="bg-space-infy flex flex-col bg-black/10 min-h-screen text-neutral-100 font-sans">
+      <div className="flex justify-end border-b border-neutral-700">
+        {userData === null ? <button onClick={handleSignup} className="flex justify-center w-20 bg-violet-900/70 text-neutral-50 rounded-lg p-1 m-2 hover:bg-violet-950">Signup</button> : null}
+        {userData !== null ? <button onClick={logout} className="flex justify-center w-20 bg-violet-900/70 text-neutral-50 rounded-lg p-1 m-2 hover:bg-violet-950">Logout</button> : null}
       </div>
       <div className="flex justify-center">
         <a href="/">

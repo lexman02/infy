@@ -55,6 +55,7 @@ export default function Profile() {
     };
 
     const avatar = profileData && (profileData.profile.avatar ? `http://localhost:8000/avatars/${profileData.profile.avatar}` : defaultAvatar);
+    const isFollowing = userData && profileData && userData.user.profile.preferences.following.includes(profileData.id);
 
     return (
         <div className="md:my-6 md:mx-60 flex-grow rounded-lg">
@@ -74,8 +75,8 @@ export default function Profile() {
                                     {profileData.is_admin ? <WrenchIcon className="w-6 h-6 inline-block ml-2 hover:cursor-pointer" onClick={adminAccess} /> : null}
                                 </div>
                             </div>
-                            {userData && (
-                                <FollowButton isFollowing={false} userData={userData} />
+                            {userData && profileData.id !== userData.user.id && (
+                                <FollowButton isFollowing={isFollowing} userID={profileData.id} />
                             )}
                         </div>
                     </div>
