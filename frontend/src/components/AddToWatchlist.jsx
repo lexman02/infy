@@ -7,6 +7,8 @@ export default function AddToWatchlist({ isAdded = false, movieID }) {
     const [addded, setAdded] = useState(isAdded);
     const [errorMessage, setErrorMessage] = useState('');
 
+    console.log(isAdded);
+
     const handleCloseError = () => {
         setErrorMessage('');
     };
@@ -31,7 +33,7 @@ export default function AddToWatchlist({ isAdded = false, movieID }) {
 
     // Remove from list
     async function removeMovie() {
-        await axios.delete(`http://localhost:8000/profile/movies/watchlist/${movieID.toString}`, { withCredentials: true })
+        await axios.delete(`http://localhost:8000/profile/movies/watchlist/${movieID.toString()}`, { withCredentials: true })
             .then((response) => {
                 console.log(response.data.message);
                 setAdded(false);

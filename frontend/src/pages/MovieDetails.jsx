@@ -9,6 +9,7 @@ import MovieCast from "../components/moviedetails/MovieCast";
 import SimilarMovies from "../components/moviedetails/SimilarMovies";
 import MovieReviews from "../components/moviedetails/MovieReviews";
 import OtherVideos from "../components/moviedetails/OtherVideos";
+import AddToWatchlist from "../components/AddToWatchlist";
 
 export default function MovieDetails() {
     const { movieID } = useParams();
@@ -45,6 +46,9 @@ export default function MovieDetails() {
         return errors.length > 0;
     }
 
+    const isAdded = userData && userData.user.profile && userData.user.profile.preferences.watchlist.includes(movieID);
+    console.log(isAdded,);
+
     if (isLoading) {
         return <div>Loading...</div>;
     }
@@ -67,7 +71,7 @@ export default function MovieDetails() {
                         <h1 className="text-4xl font-extrabold">{movie.title}</h1>
                         <p className="text-neutral-400 text-2xl font-medium mt-2 md:m-0">{movie.tagline}</p>
                     </div>
-                    <div className="flex bg-indigo-900/70 rounded-lg py-1 px-3">
+                    <div className="flex bg-indigo-900/70 rounded-lg py-1 px-3 font-semibold">
                         <p className="text-xl text-neutral-200">
                             {new Date(movie.release_date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
                         </p>
@@ -79,6 +83,9 @@ export default function MovieDetails() {
                     <p className="text-lg text-neutral-50">
                         {movie.overview || "No additional description provided."}
                     </p>
+                    <div className="flex space-x-4">
+                        <AddToWatchlist isAdded={isAdded} movieID={movieID} />
+                    </div>
                 </div>
             </div>
             {/* Main Trailer Section */}

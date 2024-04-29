@@ -35,7 +35,7 @@ type Preferences struct {
 	Genres    []string             `json:"genres"`
 	Following []primitive.ObjectID `json:"following" bson:"following,omitempty"` // IDs of users
 	Followers []primitive.ObjectID `json:"followers" bson:"followers,omitempty"` // IDs of users
-	WatchList []string             `json:"watch_list"`                           // Movie IDs
+	WatchList []string             `json:"watchlist"`                            // Movie IDs
 	Watched   []string             `json:"watched"`                              // Movie IDs
 }
 
@@ -296,10 +296,16 @@ func GetUsers() ([]User, error) {
 func AddAvatar(user *User, filepath string, ctx context.Context) error {
 	update := bson.M{"$set": bson.M{"profile.avatar": filepath}}
 	_, err := db.UsersCollection().UpdateByID(ctx, user.ID, update)
+	if err != nil {
+		return err
+	}
 
 	err = refreshUser(user, ctx)
+	if err != nil {
+		return err
+	}
 
-	return err
+	return nil
 }
 
 // refreshUser updates the user in all posts and comments
@@ -307,10 +313,16 @@ func refreshUser(user *User, ctx context.Context) error {
 	// Update the user in all posts
 	update := bson.M{"$set": bson.M{"user": user}}
 	_, err := db.PostsCollection().UpdateMany(ctx, bson.M{"user._id": user.ID}, update)
+	if err != nil {
+		return err
+	}
 
 	// Update the user in all comments
 	update = bson.M{"$set": bson.M{"user": user}}
 	_, err = db.CommentsCollection().UpdateMany(ctx, bson.M{"user._id": user.ID}, update)
+	if err != nil {
+		return err
+	}
 
-	return err
+	return nil
 }
